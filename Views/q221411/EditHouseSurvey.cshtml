@@ -1,0 +1,34 @@
+﻿@model List<TAPI_Interviewer.Models.KLOWF.AnswerList>
+@{
+    ViewBag.Title = "응답 정보";
+}
+
+<html>
+<head>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#exit').click(function () {
+                window.location.href = './PanelInfo?hid=@ViewBag.HID';
+            });
+        });
+    </script>
+    <link href="@Url.Content("../../Content/p160619/PanelInfo.css")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div>
+        <label>수정 할 문항을 터치 해 주세요. 수정 후 꼭 ▶▶ 버튼을 터치해서 완료 하셔야 합니다.</label>
+        <input type="button" id="exit" class="infoButton" value="나가기" />
+        <p />
+        <table class="infoTable">
+        @foreach (TAPI_Interviewer.Models.KLOWF.AnswerList answerList in Model)
+        {
+            <tr>
+                <td class="tdValue">
+                    <a href="../../?c=@answerList.Url" style="color:blue;">@(new HtmlString(answerList.Title))</a>
+                </td>
+            </tr>
+        }
+        </table>
+    </div>
+</body>
+</html>

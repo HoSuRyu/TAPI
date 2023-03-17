@@ -1,0 +1,128 @@
+﻿@Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "List";
+        settings.KeyFieldName = "HRC일련번호";
+        settings.CallbackRouteValues = new { Controller = "q221150", Action = "ListPartial" };
+        settings.Width = System.Web.UI.WebControls.Unit.Pixel(1600);
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "HRC일련번호";
+            column.Caption = "HRC<br/>일련번호";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(40);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "가구";
+            column.SetDataItemTemplateContent(c =>
+            {
+                Html.DevExpress().Button(
+                    buttonSettings =>
+                    {
+                        buttonSettings.Name = Guid.NewGuid().ToString();
+                        buttonSettings.Text = "리스트";
+                        buttonSettings.ClientSideEvents.Click = string.Format("function(s, e) {{ goHouseList('{0}', '{1}'); }}", DataBinder.Eval(c.DataItem, "HRC일련번호"), DataBinder.Eval(c.DataItem, "진행상태"));
+                        buttonSettings.ControlStyle.Font.Size = System.Web.UI.WebControls.FontUnit.Point(11);
+                        buttonSettings.ControlStyle.Font.Name = "맑은 고딕";
+                    }).Render();
+            });
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(40);
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "HRC층번호";
+            column.Caption = "층번호";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(50);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "시도명";
+            column.Caption = "시도";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(50);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "시군구명";
+            column.Caption = "시군구";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(50);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "읍면동명";
+            column.Caption = "읍면동";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(50);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "대체조사구";
+            column.Caption = "본/대체";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(30);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "완료수";
+            column.Caption = "완료수";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(30);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "진행상태";
+            column.Caption = "진행상태";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(40);
+
+            column.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+            comboBoxProperties.DataSource = ViewBag.StatusList;
+            comboBoxProperties.DropDownStyle = DropDownStyle.DropDownList;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "대체요청";
+            column.SetDataItemTemplateContent(c =>
+            {
+                Html.DevExpress().Button(
+                    buttonSettings =>
+                    {
+                        buttonSettings.Name = Guid.NewGuid().ToString();
+                        buttonSettings.Text = "대체요청";
+                        buttonSettings.ClientSideEvents.Click = string.Format("function(s, e) {{ goReplace('{0}', '{1}'); }}", DataBinder.Eval(c.DataItem, "HRC일련번호"), DataBinder.Eval(c.DataItem, "진행상태"));
+                        buttonSettings.ControlStyle.Font.Size = System.Web.UI.WebControls.FontUnit.Point(11);
+                        buttonSettings.ControlStyle.Font.Name = "맑은 고딕";
+                    }).Render();
+            });
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(40);
+        });
+
+
+        settings.Styles.Header.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+        settings.Styles.Cell.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+        settings.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+
+        settings.Settings.ShowFilterRow = true;
+        settings.Settings.ShowFilterRowMenu = false;
+        settings.Settings.VerticalScrollableHeight = 650;
+        settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
+        settings.SettingsBehavior.AllowDragDrop = false;
+
+        settings.SettingsBehavior.AllowFocusedRow = false;
+        settings.ControlStyle.Font.Size = System.Web.UI.WebControls.FontUnit.Point(11);
+        settings.ControlStyle.Font.Name = "맑은 고딕";
+        settings.SettingsBehavior.AllowSort = true;
+    }).Bind(Model).GetHtml()

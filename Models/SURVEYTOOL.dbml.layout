@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11.875, 12.75" name="SURVEYTOOL">
+  <DataContextMoniker Name="/SURVEYTOOLDataContext" />
+  <nestedChildShapes>
+    <classShape Id="80a88a8f-c0fb-42be-84a6-9590ca9c41a0" absoluteBounds="2.875, 0.75, 2, 2.5401025390625">
+      <DataClassMoniker Name="/SURVEYTOOLDataContext/T_Interviewer" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3ce76337-ef1c-498a-ba5c-c6ab415cbe63" absoluteBounds="2.8899999999999997, 1.21, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="86048781-d62d-4826-9720-ffff5c0af525" absoluteBounds="7.5, 0.875, 2, 2.9247054036458331">
+      <DataClassMoniker Name="/SURVEYTOOLDataContext/T_Script" />
+      <nestedChildShapes>
+        <elementListCompartment Id="25502dd9-36f2-4f07-9e0e-24336ad60776" absoluteBounds="7.5150000000000006, 1.335, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="de4b931d-053e-4869-bc9f-4b8cae7f76d9" absoluteBounds="2.875, 3.5, 2, 1.3862939453125">
+      <DataClassMoniker Name="/SURVEYTOOLDataContext/T_InterviewerLoginInfo" />
+      <nestedChildShapes>
+        <elementListCompartment Id="94bcc151-7102-4ae1-9d16-e2560a1e2ad3" absoluteBounds="2.8899999999999997, 3.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="7508b38f-87b7-4768-8679-46511d8cae4e" absoluteBounds="5.125, 0.75, 2, 3.8862125651041666">
+      <DataClassMoniker Name="/SURVEYTOOLDataContext/T_Questionnaire" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5fc1a863-b33b-4ebc-8c58-fe80f0fbc777" absoluteBounds="5.14, 1.21, 1.9700000000000002, 3.3262125651041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="becbbd9f-d96a-49c4-b49a-1d2f9cdba4dc" absoluteBounds="9.625, 0.875, 2, 1.3862939453125">
+      <DataClassMoniker Name="/SURVEYTOOLDataContext/T_EmployeeInfo" />
+      <nestedChildShapes>
+        <elementListCompartment Id="66f0984e-642b-46ba-a0cd-478ce4375f9d" absoluteBounds="9.64, 1.335, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="fc7ba6e1-6ff1-4369-bf54-2700a50fb2f5" absoluteBounds="0.5, 0.75, 2, 7.1553369140625">
+      <DataClassMoniker Name="/SURVEYTOOLDataContext/T_QuestionnaireDistribution" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ad4c9dfd-d63f-40dd-b9db-23b5a0de7b6e" absoluteBounds="0.51499999999999968, 1.21, 1.9700000000000002, 6.5953369140625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a594c90c-52d0-486a-a6d5-fc85ab52c95a" absoluteBounds="7.625, 4, 2, 8.5014469401041666">
+      <DataClassMoniker Name="/SURVEYTOOLDataContext/T_Quota" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4d828d93-d5d4-4a87-827f-72195c8f84ef" absoluteBounds="7.64, 4.46, 1.9700000000000002, 7.941446940104167" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

@@ -1,0 +1,49 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q221764_GETLISTResult>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "지원 사업 조사 - 수행기관 리스트";
+    }
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/Site.css?version=4")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("../../Content/q210801/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+              
+              
+            });
+
+            function goPersonList(keyid) {
+
+
+                if (keyid != null) {
+                    window.location.href = './PersonList?keyid=' + keyid;
+                }
+            }
+
+
+
+            function Refresh() {
+                location.reload();
+            }
+    </script>
+</head>
+<body>
+
+    <div style="width : 100%;display: inline-block;">
+        <label id="title">@ViewBag.Title</label>
+      
+            <div style="overflow-x:scroll;width:100%;">
+                <br />
+                @Html.Partial("ListPartial", Model)
+            </div>
+</div>
+   
+</body>
+</html>

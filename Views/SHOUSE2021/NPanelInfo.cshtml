@@ -1,0 +1,90 @@
+﻿@model TAPI_Interviewer.Models.SP_SHOUSE2021NH_GETLISTResult
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "4차 서울시 공공임대주택 입주자 패널조사 : HID - " + Model.HID;
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("tr[id='runHouse'],tr[id^='runPerson']").click(function () {
+                //alert($(this).attr('url'));
+                window.location.href = $(this).attr('url');
+            });
+
+            $('#exit').click(function () {
+                window.location.href = './NList';
+            });
+        });
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/SHOUSE2017/Site.css?version=6")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id="main" style="width:100%;">
+        <div style="overflow-x:scroll;width:100%;">
+            <table class="infoTable" style="width:1500px;">
+                <tr>
+                    <td class="tdValueNoColor" colspan="8">가구용 설문</td>
+                </tr>
+                <tr>
+                    <td class="tdValue">HID</td>
+                    <td class="tdValue">최종 응답<br />차수</td>
+                    <td class="tdValue">가구주명</td>
+                    <td class="tdValue">공공임대/퇴거</td>
+                    <td class="tdValue">상세주소</td>
+                    <td class="tdValue">최종 접촉일지<br />- 방문 횟수</td>
+                    <td class="tdValue">최종 접촉일지<br />- 방문 결과</td>
+                    <td class="tdValue">진행 상태</td>
+                </tr>
+                <tr id="runHouse" url="./HContact?hid=@(Model.HID)&stype=2">
+                    <td class="tdValueNoColor">@(Model.HID)</td>
+                    <td class="tdValueNoColor">신규</td>
+                    <td class="tdValueNoColor">@(Model.가구주이름)</td>
+                    <td class="tdValueNoColor">@(Model.공공임대퇴거)</td>
+                    <td class="tdValueNoColor">@(Model.상세주소)</td>
+                    <td class="tdValueNoColor">@(Model.최종_접촉_횟수)</td>
+                    <td class="tdValueNoColor">@(Model.최종_접촉_결과)</td>
+                    <td class="tdValueNoColor">@(Model.가구진행상태)</td>
+                </tr>
+            </table>
+        </div>
+            <br />
+        <div style="overflow-x:scroll;width:100%;">
+            <table class="infoTable">
+                <tr>
+                    <td class="tdValueNoColor" colspan="8">개인용 설문<br /><font size="3" color="red">*가구용 설문을 완료해야 개인용 설문을 시작할 수 있습니다.</font></td>
+                </tr>
+                <tr>
+                    <td class="tdValue">PID</td>
+                    <td class="tdValue">원/신규<br />구분</td>
+                    <td class="tdValue">최종 응답<br />차수</td>
+                    <td class="tdValue">성명</td>
+                    <td class="tdValue">연령</td>
+                    <td class="tdValue">최종 접촉일지<br />- 방문 횟수</td>
+                    <td class="tdValue">최종 접촉일지<br />- 방문 결과</td>
+                    <td class="tdValue">진행 상태</td>
+                </tr>
+                @foreach (TAPI_Interviewer.Models.SP_SHOUSE2021P_GETLISTResult Person in Model.ListSP_SHOUSE2021P_GETLISTResult)
+                {
+                    <tr id="runPerson_@(Person.PID)" url="@(Person.URL)">
+                        <td class="tdValueNoColor">@(Person.PID)</td>
+                        <td class="tdValueNoColor">@(Person.원_신규_구분)</td>
+                        <td class="tdValueNoColor">@(Person.최종응답차수)</td>
+                        <td class="tdValueNoColor">@(Person.성명)</td>
+                        <td class="tdValueNoColor">@(Person.연령)</td>
+                        <td class="tdValueNoColor">@(Person.최종_접촉_횟수)</td>
+                        <td class="tdValueNoColor">@(Person.최종_접촉_결과)</td>
+                        <td class="tdValueNoColor">@(Person.진행상태)</td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <input type="button" id="exit" class="infoButton" value="나가기" />
+    </div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q221026_GETHOUSELISTResult>
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "2022 공공주택 조사 - 관리자 조사";
+    }
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/Site.css?version=4")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+            $(document).ready(function () {
+                setStatus();
+            });
+
+        function runSurvey(pid, code) {
+            if (pid != null) {
+                window.location.href = './PersonList?pid=' + pid +"?code="+ code;
+                }
+        }
+
+            function setStatus() {
+                $.post("./ProgressPartial", null, function (result) {
+                    $("#Progress").replaceWith(result);
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            }
+
+            function Refresh() {
+                location.reload();
+            }
+    </script>
+</head>
+<body>
+    <div style="width : 100%;display: inline-block;">
+        <label id="title">@ViewBag.Title</label>
+        <p />
+        <div id="Progress">
+            @*@Html.Partial("ProgressPartial", Model)*@
+        </div>
+        <p />
+        <div style="overflow-x:scroll;width:100%;">
+            @Html.Partial("HouseListPartial", Model)
+        </div>
+    </div>
+</body>
+</html>

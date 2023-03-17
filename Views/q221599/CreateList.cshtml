@@ -1,0 +1,301 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q221599_GETOFFICELISTResult>
+           
+<html>
+<head>
+    @{
+        ViewBag.Title = "리스트 생성";
+    }
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script type="text/javascript">
+
+        var checkPID = '';
+        function setPID(pid) {
+            checkPID = pid;
+        }
+
+
+        $(document).ready(function () {
+           
+            $('#ok').click(function () {
+
+                if (checkPID == '') {
+                    alert('기관명을 선택해 주세요.');
+                    $("#selectPID").focus();
+                    return;
+                }
+
+                var atype = $("select[name='aType'] option:selected").val();
+                if (atype == '')
+                {
+                    alert('설문 유형을 선택해 주세요.');
+                    $("#atype").focus();
+                    return;
+                }
+
+                var addtype = $("select[name='addType'] option:selected").val();
+                if (addtype == '') {
+                    alert('응답자 컨택 유형을 선택해 주세요.');
+                    $("#addtype").focus();
+                    return;
+                }
+
+                var tel1 = $("select[name='tel1'] option:selected").val();
+                var hp1 = $("select[name='hp1'] option:selected").val();
+                var group = $("#group").val();
+                var grade = $("#grade").val();
+                var name = $("#name").val();
+
+                if (group == '') {
+                    alert('소속부서를 입력해 주세요.');
+                    $("#group").focus();
+                    return;
+                }
+                if (grade == '') {
+                    alert('직급을 입력해 주세요.');
+                    $("#grade").focus();
+                    return;
+                }
+                if (name == '') {
+                    alert('응답자 이름을 입력해 주세요.');
+                    $("#name").focus();
+                    return;
+                }
+
+                var lastTel = '';
+                if (tel1 != '없음' && tel1 != '') {
+                    if ($("#tel2").val() == '' || $("#tel3").val() == '') {
+                        alert('유선 연락처를 확인해 주세요.');
+                        return;
+                    }
+                    lastTel = tel1 + '-' + $("#tel2").val() + '-' + $("#tel3").val();
+
+
+                }
+
+                var lastHp = '';
+                if (hp1 != '없음' && hp1 != '') {
+                    if ($("#hp2").val() == '' || $("#hp3").val() == '') {
+                        alert('무선 연락처를 확인해 주세요.');
+                        return;
+                    }
+                    lastHp = hp1 + '-' + $("#hp2").val() + '-' + $("#hp3").val();
+
+                }
+
+                if (lastHp == '' && lastTel == '') {
+                    alert('연락처를 입력해 주세요.');
+                    return;
+                }
+
+
+                $.post("./CreateOK", {
+                    "PID": checkPID, "atype": atype, "addtype": addtype, "group": group, "grade": grade, "name": name, "tel": lastTel, "hp": lastHp
+                }, function (result) {
+                    alert(result);
+
+                    if (result == '생성 되었습니다.') {
+                        window.location.href = './List';
+                        //window.close();
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+            $('#cancel').click(function () {
+                //window.close();
+                window.location.href = './List';
+            });
+        });
+
+
+    </script>
+    <link href="@Url.Content("../../Content/p170980/Site.css?version=2")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/jquery.chained.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+   
+    @Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "기관리스트";
+        settings.KeyFieldName = "기관 리스트";
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "PID";
+            column.Caption = "PID";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(100);
+
+            column.CellStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+        });
+
+        //settings.Columns.Add("기관명").SetDataItemTemplateContent(content =>
+        //{
+        //    Html.DevExpress().RadioButton(b =>
+        //    {
+        //        b.Name = "selectPID_" + DataBinder.Eval(content.DataItem, "PID");
+        //        b.Properties.ClientSideEvents.ValueChanged = string.Format("function(s, e) {{ setPID('{0}'); }}", DataBinder.Eval(content.DataItem, "PID"));
+        //        b.Text = DataBinder.Eval(content.DataItem, "기관명").ToString();
+        //        b.GroupName = "selectPID";
+
+        //    }).Render();
+        //});
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "기관명 선택";
+            column.SetDataItemTemplateContent(c =>
+            {
+                Html.DevExpress().RadioButton(
+                    
+                    ButtonSettings =>
+                    {
+                        ButtonSettings.GroupName = "selectPID";
+                        ButtonSettings.Name = "selectPID_" + DataBinder.Eval(c.DataItem, "PID");
+                        ButtonSettings.Text = DataBinder.Eval(c.DataItem, "기관명").ToString();
+                        ButtonSettings.Checked = false;
+                        
+                        ButtonSettings.Properties.ClientSideEvents.ValueChanged = string.Format("function(s, e) {{ setPID('{0}'); }}", DataBinder.Eval(c.DataItem, "PID"));
+                        
+                    }
+                ).Render();
+            });
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(400);
+
+            column.CellStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Left;
+        });
+
+
+        settings.Styles.Header.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+        //settings.Styles.Cell.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+
+        settings.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+        settings.Settings.ShowFilterRow = false;
+        settings.Settings.ShowFilterRowMenu = false;
+        settings.Settings.VerticalScrollableHeight = 400;
+        settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
+        settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+    }).Bind(Model).GetHtml()
+
+    <table class="infoTable">
+      
+        <tr>
+            <td class="tdHeader">
+                설문 유형
+            </td>
+            <td class="tdValue">
+                <select id="aType" name="aType" class="bagic_select" >
+                    <option value=""></option>          
+                    <option value="1">인사</option>          
+                    <option value="2">재무</option>          
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                응답자 컨택 유형
+            </td>
+            <td class="tdValue">
+                <select id="addType" name="addType"  class="bagic_select">
+                    <option value=""></option>          
+                    <option value="기응답자의 소개"> 기응답자의 소개 </option>
+                    <option value="현장 컨택"> 현장 컨택 </option>
+                    <option value="기타"> 기타 </option>                    
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="tdHeader">
+                소속부서
+            </td>
+            <td class="tdValue">
+                <input class="textbox" type="text" id="group" style="width:30%" value="">
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                직급
+            </td>
+            <td class="tdValue">
+                <input class="textbox" type="text" id="grade" style="width:30%" value="">
+            </td>
+        </tr>
+
+        <tr>
+            <td class="tdHeader">
+                이름
+            </td>
+            <td class="tdValue">
+                <input class="textbox" type="text" id="name" style="width:30%" value="">
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                연락처1(유선)
+            </td>
+            <td class="tdValue">
+                <select id="tel1" name="tel1" class="bagic_select">
+                    <option></option>
+                    <option value='02'>서울 02</option>
+                    <option value='051'>부산 051</option>
+                    <option value='053'>대구 053</option>
+                    <option value='032'>인천 032</option>
+                    <option value='062'>광주 062</option>
+                    <option value='042'>대전 042</option>
+                    <option value='052'>울산 052</option>
+                    <option value='044'>세종 044</option>
+                    <option value='031'>경기 031</option>
+                    <option value='033'>강원 033</option>
+                    <option value='043'>충북 043</option>
+                    <option value='041'>충남 041</option>
+                    <option value='063'>전북 063</option>
+                    <option value='061'>전남 061</option>
+                    <option value='054'>경북 054</option>
+                    <option value='055'>경남 055</option>
+                    <option value='064'>제주 064</option>
+                    <option value='070'>인터넷전화 070</option>
+                    <option value='없음'>없음</option>
+                </select>
+                - <input class="textbox" id="tel2" rows="1" size="4" type="tel" value="" maxlength="4">
+                - <input class="textbox" id="tel3" rows="1" size="4" type="tel" value="" maxlength="4">
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                연락처2(무선)
+            </td>
+            <td class="tdValue">
+                <select id="hp1" name="hp1" class="bagic_select">
+                    <option></option>
+                    <option value='010'>010</option>
+                    <option value='011'>011</option>
+                    <option value='016'>016</option>
+                    <option value='017'>017</option>
+                    <option value='018'>018</option>
+                    <option value='019'>019</option>
+                    <option value='없음'>없음</option>
+                </select>
+                - <input class="textbox" id="hp2" rows="1" size="4" type="tel" value="" maxlength="4">
+                - <input class="textbox" id="hp3" rows="1" size="4" type="tel" value="" maxlength="4">
+            </td>
+        </tr>     
+
+      
+    </table>
+
+    <div class="buttonDiv">
+        <center>
+            <input type="button" id="ok" class="infoButton" value="리스트 추가" />
+            <input type="button" id="cancel" class="infoButton" value="나가기" />
+        </center>
+    </div>
+</body>
+</html>

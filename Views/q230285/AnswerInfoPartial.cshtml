@@ -1,0 +1,85 @@
+﻿@model List<TAPI_Interviewer.Models.SP_KLIPS2023_GETPERSONLISTResult>
+
+
+<br />
+<div class="tablebox">
+    <table class="tbl_sty03" cellpadding="0" cellspacing="0" border="0" style="width:100%;">
+        <thead>
+            <tr>
+                <td colspan="10"><b>개인용 설문</b><br />* 가구용 설문을 완료해야 개인용 설문을 시작할 수 있습니다.</td>
+            </tr>
+            <tr>
+                <th>PID</th>
+                <th>이름</th>
+                <th>만나이</th>
+                <th>성별</th>
+                <th>유형</th>
+                <th>설문 진행상태</th>
+                <th>개인용/신규용 설문참여</th>
+                <th>응답태도 진행상태</th>
+                <th>응답태도 설문참여</th>
+                <th>최종진행상태</th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+        @foreach (TAPI_Interviewer.Models.SP_KLIPS2023_GETPERSONLISTResult list in Model)
+        {
+            <tr>
+                <td class="txt_center">
+                    @(list.PID)
+                </td>
+
+                <td class="txt_center">
+                    @(list.이름)
+                </td>
+                <td class="txt_center">
+                    @(list.나이)
+                </td>
+
+                <td class="txt_center">
+                    @(list.성별)
+                </td>
+                <td class="txt_center">
+                    @(list.유형)
+                </td>
+                <td class="txt_center">
+                    @(list.설문진행상태)
+                </td>
+
+                <td class="txt_center">
+                    @if (list.유형 == "기존")
+            {
+                        <input type="button" id="personStart" class="infoButtonT" style="margin-right: 10px;" value="진행하기" onclick="personSuveyClick( @(list.PID), '@(list.설문진행상태)');" />
+                    }
+                    else
+                    {
+                        <input type="button" id="personStart" class="infoButtonT" style="margin-right: 10px;" value="진행하기" onclick="newPersonSuveyClick( @(list.PID), '@(list.설문진행상태)');" />
+                    }
+                </td>
+
+                <td class="txt_center">
+                    @(list.응답태도진행상태)
+                </td>
+                <td class="txt_center" align="center">
+
+                    @if (list.설문진행상태 != "완료")
+                    {
+                        <input type="button" id="personStart" class="infoButtonTdisabled" style="margin-right: 10px;" value="진행하기" disabled="disabled" />
+                    }
+                    else
+                    {
+                        <input type="button" id="personStart" class="infoButtonT" style="margin-right: 10px;" value="진행하기" onclick="attitudeSurveyClick( @(list.PID), '@(list.응답태도진행상태)');" />
+                    }
+
+
+                </td>
+                <td class="txt_center">
+                    @(list.최종진행상태)
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

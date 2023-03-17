@@ -1,0 +1,13 @@
+.dxeEditArea.dxeEditAreaSys
+{
+    font-size: 23px;
+    font-family: 'Nanum Gothic';
+    height:45px !important;
+}
+
+#sign_out_button
+{
+    font-size: 25px;
+    font-family: 'Nanum Gothic';
+    float:right;
+}

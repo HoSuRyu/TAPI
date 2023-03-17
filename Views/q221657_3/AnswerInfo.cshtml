@@ -1,0 +1,958 @@
+﻿@model TAPI_Interviewer.Models.SP_q221657_GETCOMPANYLISTResult
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "상가 임대차 실태조사 - 기본 정보 입력";
+
+        string[] tel = string.IsNullOrEmpty(Model.휴대전화) == true ? new string[] { "" } : Model.휴대전화.Trim().Split('-');
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+            $(":checkbox[name='IschangeCname']").change(function () {
+                if( $('#IschangeCname').is(':checked')){
+
+                    $("#changeCname").removeAttr('disabled');
+                }
+                else {
+                    $("#changeCname").attr('disabled', 'disabled');
+                }
+            });
+
+
+            $("select[name='age']").val("@(Model.응답자나이)").attr("selected", "selected");
+            $(":radio[name='gender']").filter('[value="@(Model.응답자성별)"]').prop('checked', true);
+            $("select[name='tel1']").val("@(tel[0])").attr("selected", "selected");
+            $(":radio[name='cType']").filter('[value="@(Model.사업체형태)"]').prop('checked', true);
+            $("select[name='area']").val("@(Model.사업장면적)").attr("selected", "selected");
+            $(":radio[name='positionType']").filter('[value="@(Model.입지유형)"]').prop('checked', true);
+            $("select[name='memberC']").val("@(Model.종업원수)").attr("selected", "selected");
+            $(":radio[name='aType']").filter('[value="@(Model.조사방법)"]').prop('checked', true);
+
+            if( '@Model.생성여부' != '')
+            {
+                $(":radio[name='bType']").filter('[value="@(Model.업종)"]').prop('checked', true);
+            }
+
+            $('#save').click(function () {
+                saveInfo('./CompanyList?keyid=@(Model.상권ID)', true, false);
+            });
+
+            $('#survey').click(function () {
+
+                if('@(Model.surveyYN)' == '0' && '@(Model.진행상태)' != '완료')
+                {
+                    alert('해당 업종은 더이상 조사할 수 없습니다.');
+                    return;
+                }
+                saveInfo('./Survey?keyid=@(Model.상권ID)&pid=@(Model.PID)', false, false);
+            });
+
+            $('#sendMsg').click(function(){
+                if( '@(Model.진행상태)' == '완료')
+                {
+                    alert('설문을 완료한 응답자 입니다.');
+                    return;
+                }
+                saveInfo('./AnswerInfo?keyid=@(Model.상권ID)&pid=@(Model.PID)', true, true);
+            });
+
+            $('#exit').click(function () {
+                window.location.href = './CompanyList?keyid=@(Model.상권ID)';
+            });
+
+
+
+        });
+
+
+
+        function saveInfo(href, onlySave, sendMsg) {
+
+
+
+            var age = $("select[name='age'] option:selected").val();
+            var gender = $(":radio[name='gender']:checked").val();
+            var tel1 = $("select[name='tel1'] option:selected").val();
+            if(sendMsg == true)
+            {
+                if( tel1 != '010')
+                {
+                    alert('문자 발송은 휴대전화 번호만 가능합니다.');
+                    return;
+                }
+            }
+
+
+            var tel = tel1;
+
+            var cname = $("#changeCname").val();
+            var pname = $("#pname").val();
+
+            var cType = $(":radio[name='cType']:checked").val();
+            var cTypeEtc = $("#cTypeEtc").val();
+            var area = $("select[name='area'] option:selected").val();
+            var memberC = $("select[name='memberC'] option:selected").val();
+
+            var positionType = $(":radio[name='positionType']:checked").val();
+            var positionTypeEtc = $("#positionTypeEtc").val();
+
+
+            if (cname == '' && $('#IschangeCname').is(':checked')) {
+                $("#changeCname").focus();
+                alert('변경 된 사업체명을 입력 해 주세요.');
+                return;
+            }
+
+            var address = '';
+            var btype = '';
+            if('@Model.생성여부' == '생성')
+            {
+                cname = $("#cname").val();
+                if( cname == '')
+                {
+                    alert('사업체명을 입력 해 주세요.');
+                    return;
+                }
+
+                
+                btype = $(":radio[name='bType']:checked").val();
+                if( btype == '' || btype == undefined )
+                {
+                    alert('업종을 선택해 주세요.');
+                    return;
+                }
+
+                address = $("#roadAddrPart1").val();
+                if( address == '' && '@Model.주소' == '')
+                {
+                    alert('사업체 주소를 입력해 주세요.');
+                    return;
+                }
+                var sebuAddr = $("#sebuAddr").val();
+                if( sebuAddr != '')
+                {
+                    address = address + ' ' + sebuAddr;
+                }
+
+            }
+
+            if (pname == '') {
+                $("#pname").focus();
+                alert('이름을 입력 해 주세요.');
+                return;
+            }
+
+            if (pname.length > 50) {
+                $("#pname").focus();
+                alert('이름을 50자 이내로 입력 해 주세요.');
+                return;
+            }
+
+            if (age == '' )
+            {
+                $('#age').focus();
+                alert("응답자 나이를 선택 해 주세요.")
+                return;
+            }
+
+            if (gender == undefined || gender == '')
+            {
+                alert('성별을 선택 해 주세요.');
+                return;
+            }
+
+
+
+            if (tel1=='') {
+                alert('전화번호를 입력해 주세요.');
+                return;
+            }
+
+            if (tel1 != '없음'  && tel1 != '') {
+                tel = tel1 + '-' + $("#tel2").val() + '-' + $("#tel3").val();
+
+                if ( tel != '02-000-0000' && tel != '02-0000-0000' && (isTelePhone(tel) == false && isCellPhone(tel) == false)) {
+                    $("#tel2").focus();
+                    alert('유효한 전화 번호를 입력 해 주세요.');
+                    return;
+                }
+            }
+
+            //if (hp1 != '없음' && hp1 != '') {
+            //    hp = hp1 + '-' + $("#hp2").val() + '-' + $("#hp3").val();
+
+            //    if (hp != '010-0000-0000' && isCellPhone(hp) == false) {
+            //        $("#hp2").focus();
+            //        alert('유효한 휴대전화 번호를 입력 해 주세요.');
+            //        return;
+            //    }
+            //}
+
+            if (cType == undefined || cType == "")
+            {
+                alert("사업체 형태를 선택 해 주세요.");
+                $('#cType').focus();
+                return;
+            }
+
+            if (cType == "기타" && $.trim(cTypeEtc) == "")
+            {
+                $('#cTypeEtc').focus();
+                alert("사업체 형태 기타 내용을 입력 해 주세요.");
+                return;
+            }
+
+            if (area == "" )
+            {
+                alert("사업장 면적을 선택 해 주세요.");
+                $('#cType').focus();
+                return;
+            }
+
+            if (memberC == '' )
+            {
+                $('#memberC').focus();
+                alert("종업원 수를 선택 해 주세요.")
+                return;
+            }
+            if (positionType == undefined || positionType == "")
+            {
+                alert("입지 유형을 선택 해 주세요.");
+                $('#positionType').focus();
+                return;
+            }
+
+            if (positionType == "기타" && $.trim(positionTypeEtc) == "")
+            {
+                $('#positionTypeEtc').focus();
+                alert("입지 유형 기타 내용을 입력 해 주세요.");
+                return;
+            }
+
+
+            var aType = $(":radio[name='aType']:checked").val();
+            if( onlySave == false && (aType == undefined || aType == ""))
+            {
+                alert("조사 방법을 선택 해 주세요.");
+                $('#aType').focus();
+                return;
+            }
+            else if(aType == undefined )
+            {
+                aType = '';
+            }
+
+            $.post("./SaveInfo", { "keyid": @(Model.상권ID), "pid": @(Model.PID), "changeCompanyName":cname, "name": pname, "age":age, "gender": gender, "tel": tel, "companyType":cType,"companyTypeEtc":cTypeEtc, "companyArea":area, "memberCount":memberC, "positionType":positionType, "positionTypeEtc":positionTypeEtc , "atype":aType, "isSend":sendMsg, "address":address , "btype":btype}, function (result) {
+                if (result != '')
+                {
+                    alert(result);
+                }
+                else
+                {
+                    if(sendMsg == true)
+                    {
+                        alert('문자 발송 완료');
+                    }
+                    window.location.href = href;
+                }
+            }).error(function (jqXHR, status, error) {
+                alert(status);
+                alert(error);
+            });
+        }
+
+        function isTelePhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^(0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]|70|505))[1-9]+[0-9]{6,7}$/;
+
+            return regPhone.test(p);
+        }
+
+        function isCellPhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/;
+
+            return regPhone.test(p);
+        }
+
+
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css?version=5")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("../../Content/q210801/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/jquery.chained.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    @Html.Partial("CommonAddressSearchScript")
+
+    <div id="main" style="width:100%;">    
+        <table class="infoTable">
+            <tr>
+                <td class="tdValue">
+                    사업체 일련번호
+                </td>
+                <td class="tdValue3">
+                    @(Model.PID)
+                </td>
+            </tr>
+            @if (Model.생성여부 == "생성")
+            {
+                <tr>
+                    <td class="tdValue">
+                        사업체명
+                    </td>
+                    <td class="tdValue3">
+                        <input class="textbox" id="cname" rows="1" size="40" type="text" value="@(Model.사업체명)">
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td class="tdValue">
+                        사업체명
+                    </td>
+                    <td class="tdValue3">
+                        @(Model.사업체명)
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdValue">
+                        변경 된 사업체명
+                    </td>
+                    <td class="tdValue3">
+                        <input type="checkbox" id="IschangeCname" name="IschangeCname" /><label for="IschangeCname">사업체명 변경 </label>
+                        <input class="textbox" id="changeCname" rows="1" size="20" type="text" value="@(Model.변경된사업체명)" disabled="disabled">
+
+                    </td>
+                </tr>
+            }
+            @if (Model.생성여부 == "생성")
+            {
+                <tr>
+                    <td class="tdValue">
+                        업종
+                    </td>
+                    <td class="tdValue3">
+                        <input type="radio" name="bType" id="bType_1" value="소매업" /><label for="bType_1"> 소매업 </label><br />
+                        <input type="radio" name="bType" id="bType_2" value="음식 및 주점업" /><label for="bType_2"> 음식 및 주점업</label><br />
+                        <input type="radio" name="bType" id="bType_3" value="오락 및 스포츠업" /><label for="bType_3"> 오락 및 스포츠업 </label><br />
+                        <input type="radio" name="bType" id="bType_4" value="기타 개인 서비스업" /><label for="bType_4"> 기타 개인 서비스업</label> 
+                    </td>
+                </tr>
+            }
+            else
+            {
+
+                <tr>
+                    <td class="tdValue">
+                        업종
+                    </td>
+                    <td class="tdValue3">
+                        @(Model.업종)
+                    </td>
+                </tr>
+            }
+            @if (Model.생성여부 == "생성" && Model.주소 != "")
+            {
+                <tr>
+                    <td class="tdValue">
+                        주소
+                    </td>
+                    <td class="tdValue3">
+                        @Model.주소
+                    </td>
+                </tr>
+            }
+
+
+            @if (Model.생성여부 == "생성")
+            {
+                <tr>
+                    <td class="tdValue">
+                        주소검색(수정)
+                    </td>
+                    <td class="tdValue3" colspan="3" style="padding:10px 0px 10px 10px;">
+                        <input type="button" class="infoButton" value="주소검색" onclick="jusoPopUp();" style=" cursor pointer;" id="searchJusoButton"> ◀ 주소검색버튼을 클릭하세요.<br />
+                        <input class="textbox" type="text" id="roadAddrPart1" placeholder="도로명주소 예) 서울특별시 강남구 봉은사로 179" readonly="readonly" title="도로명주소" style="width:90%">
+                        <input type="hidden" id="siNm" title="시도">
+                        <input type="hidden" id="sggNm" title="시군구">
+                        <input type="hidden" id="emdNm" title="읍면동">
+                        <input class="textbox" type="text" id="sebuAddr" maxlength="50" placeholder="상세주소 예)105동 123호" title="상세주소" style="width:90%">
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td class="tdValue">
+                        주소
+                    </td>
+                    <td class="tdValue3">
+                        @Model.주소
+                    </td>
+                </tr>
+            }
+            
+            <tr>
+                <td class="tdValue">
+                    응답자 이름
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="pname" rows="1" size="13" type="text" value="@(Model.응답자이름)">
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    응답자 나이
+                </td>
+                <td class="tdValue3">
+                    <select id="age" name="age" class="tel_select2">
+                        <option></option>
+                        <option value='19'>19</option>
+                        <option value='20'>20</option>
+                        <option value='21'>21</option>
+                        <option value='22'>22</option>
+                        <option value='23'>23</option>
+                        <option value='24'>24</option>
+                        <option value='25'>25</option>
+                        <option value='26'>26</option>
+                        <option value='27'>27</option>
+                        <option value='28'>28</option>
+                        <option value='29'>29</option>
+                        <option value='30'>30</option>
+                        <option value='31'>31</option>
+                        <option value='32'>32</option>
+                        <option value='33'>33</option>
+                        <option value='34'>34</option>
+                        <option value='35'>35</option>
+                        <option value='36'>36</option>
+                        <option value='37'>37</option>
+                        <option value='38'>38</option>
+                        <option value='39'>39</option>
+                        <option value='40'>40</option>
+                        <option value='41'>41</option>
+                        <option value='42'>42</option>
+                        <option value='43'>43</option>
+                        <option value='44'>44</option>
+                        <option value='45'>45</option>
+                        <option value='46'>46</option>
+                        <option value='47'>47</option>
+                        <option value='48'>48</option>
+                        <option value='49'>49</option>
+                        <option value='50'>50</option>
+                        <option value='51'>51</option>
+                        <option value='52'>52</option>
+                        <option value='53'>53</option>
+                        <option value='54'>54</option>
+                        <option value='55'>55</option>
+                        <option value='56'>56</option>
+                        <option value='57'>57</option>
+                        <option value='58'>58</option>
+                        <option value='59'>59</option>
+                        <option value='60'>60</option>
+                        <option value='61'>61</option>
+                        <option value='62'>62</option>
+                        <option value='63'>63</option>
+                        <option value='64'>64</option>
+                        <option value='65'>65</option>
+                        <option value='66'>66</option>
+                        <option value='67'>67</option>
+                        <option value='68'>68</option>
+                        <option value='69'>69</option>
+                        <option value='70'>70</option>
+                        <option value='71'>71</option>
+                        <option value='72'>72</option>
+                        <option value='73'>73</option>
+                        <option value='74'>74</option>
+                        <option value='75'>75</option>
+                        <option value='76'>76</option>
+                        <option value='77'>77</option>
+                        <option value='78'>78</option>
+                        <option value='79'>79</option>
+                        <option value='80'>80</option>
+                        <option value='81'>81</option>
+                        <option value='82'>82</option>
+                        <option value='83'>83</option>
+                        <option value='84'>84</option>
+                        <option value='85'>85</option>
+                        <option value='86'>86</option>
+                        <option value='87'>87</option>
+                        <option value='88'>88</option>
+                        <option value='89'>89</option>
+                        <option value='90'>90</option>
+                        <option value='91'>91</option>
+                        <option value='92'>92</option>
+                        <option value='93'>93</option>
+                        <option value='94'>94</option>
+                        <option value='95'>95</option>
+                        <option value='96'>96</option>
+                        <option value='97'>97</option>
+                        <option value='98'>98</option>
+                        <option value='99'>99</option>
+                    </select>
+                     세
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    응답자 성별
+                </td>
+                <td class="tdValue3">
+                    <input type="radio" name="gender" id="gender_1" value="남" /><label for="gender_1"> 남 </label> &nbsp; &nbsp;
+                    <input type="radio" name="gender" id="gender_2" value="여" /><label for="gender_2"> 여</label>
+                    
+                </td>
+            </tr>
+
+            
+            <tr>
+                <td class="tdValue">
+                    전화 번호
+                </td>
+                <td class="tdValue3">
+                    <select id="tel1" name="tel1" class="tel_select2">
+                        <option></option>
+                        <option value='010'>010</option>
+                        <option value='02'>서울 02</option>
+                        <option value='051'>부산 051</option>
+                        <option value='053'>대구 053</option>
+                        <option value='032'>인천 032</option>
+                        <option value='062'>광주 062</option>
+                        <option value='042'>대전 042</option>
+                        <option value='052'>울산 052</option>
+                        <option value='044'>세종 044</option>
+                        <option value='031'>경기 031</option>
+                        <option value='033'>강원 033</option>
+                        <option value='043'>충북 043</option>
+                        <option value='041'>충남 041</option>
+                        <option value='063'>전북 063</option>
+                        <option value='061'>전남 061</option>
+                        <option value='054'>경북 054</option>
+                        <option value='055'>경남 055</option>
+                        <option value='064'>제주 064</option>
+                        <option value='070'>인터넷전화 070</option>
+                    </select>
+                    - <input class="textbox" id="tel2" rows="1" size="4" type="tel" value="@(tel.Length <= 1 ? "" : tel[1])" maxlength="4">
+                    - <input class="textbox" id="tel3" rows="1" size="4" type="tel" value="@(tel.Length <= 1 ? "" : tel[2])" maxlength="4">
+                    &nbsp;<input type="submit" id="sendMsg" class="infoButtonT" style="margin-right: 10px;" value="문자 발송" />
+                </td>
+            </tr>
+            @*<tr>
+                <td class="tdValue">
+                    휴대전화
+                </td>
+                <td class="tdValue3">
+                    <select id="hp1" name="hp1" class="tel_select2">
+                        <option></option>
+                        <option value='010'>010</option>
+                        <option value='011'>011</option>
+                        <option value='016'>016</option>
+                        <option value='017'>017</option>
+                        <option value='018'>018</option>
+                        <option value='019'>019</option>
+                        <option value='없음'>없음</option>
+                    </select>
+                    - <input class="textbox" id="hp2" rows="1" size="4" type="tel" value="@(hp.Length <= 1 ? "" : hp[1])" maxlength="4">
+                    - <input class="textbox" id="hp3" rows="1" size="4" type="tel" value="@(hp.Length <= 1 ? "" : hp[2])" maxlength="4">
+                </td>
+            </tr>*@
+            
+            
+            
+            <tr>
+                <td class="tdValue">
+                   사업체형태
+                </td>
+                <td class="tdValue3">
+                    <input type="radio" name="cType" id="cType_1" value="독립점(단독사업체)" /><label for="cType_1"> 1. 독립점(단독사업체) </label><br />
+                    <input type="radio" name="cType" id="cType_2" value="직영점" /><label for="cType_2"> 2. 직영점</label><br />
+                    <input type="radio" name="cType" id="cType_3" value="프랜차이즈 가맹점" /><label for="cType_3"> 3. 프랜차이즈 가맹점 </label><br />
+                    <input type="radio" name="cType" id="cType_4" value="기타" /><label for="cType_4"> 4. 기타</label> <input class="textbox" id="cTypeEtc" rows="1" size="30" type="text" value="@(Model.사업체형태기타)">
+                  
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    사업장 면적
+                </td>
+                <td class="tdValue3">
+                    <select id="area" name="area" class="tel_select2">
+                        <option></option>
+                        <option value='1'>1</option>
+                        <option value='2'>2</option>
+                        <option value='3'>3</option>
+                        <option value='4'>4</option>
+                        <option value='5'>5</option>
+                        <option value='6'>6</option>
+                        <option value='7'>7</option>
+                        <option value='8'>8</option>
+                        <option value='9'>9</option>
+                        <option value='10'>10</option>
+                        <option value='11'>11</option>
+                        <option value='12'>12</option>
+                        <option value='13'>13</option>
+                        <option value='14'>14</option>
+                        <option value='15'>15</option>
+                        <option value='16'>16</option>
+                        <option value='17'>17</option>
+                        <option value='18'>18</option>
+                        <option value='19'>19</option>
+                        <option value='20'>20</option>
+                        <option value='21'>21</option>
+                        <option value='22'>22</option>
+                        <option value='23'>23</option>
+                        <option value='24'>24</option>
+                        <option value='25'>25</option>
+                        <option value='26'>26</option>
+                        <option value='27'>27</option>
+                        <option value='28'>28</option>
+                        <option value='29'>29</option>
+                        <option value='30'>30</option>
+                        <option value='31'>31</option>
+                        <option value='32'>32</option>
+                        <option value='33'>33</option>
+                        <option value='34'>34</option>
+                        <option value='35'>35</option>
+                        <option value='36'>36</option>
+                        <option value='37'>37</option>
+                        <option value='38'>38</option>
+                        <option value='39'>39</option>
+                        <option value='40'>40</option>
+                        <option value='41'>41</option>
+                        <option value='42'>42</option>
+                        <option value='43'>43</option>
+                        <option value='44'>44</option>
+                        <option value='45'>45</option>
+                        <option value='46'>46</option>
+                        <option value='47'>47</option>
+                        <option value='48'>48</option>
+                        <option value='49'>49</option>
+                        <option value='50'>50</option>
+                        <option value='51'>51</option>
+                        <option value='52'>52</option>
+                        <option value='53'>53</option>
+                        <option value='54'>54</option>
+                        <option value='55'>55</option>
+                        <option value='56'>56</option>
+                        <option value='57'>57</option>
+                        <option value='58'>58</option>
+                        <option value='59'>59</option>
+                        <option value='60'>60</option>
+                        <option value='61'>61</option>
+                        <option value='62'>62</option>
+                        <option value='63'>63</option>
+                        <option value='64'>64</option>
+                        <option value='65'>65</option>
+                        <option value='66'>66</option>
+                        <option value='67'>67</option>
+                        <option value='68'>68</option>
+                        <option value='69'>69</option>
+                        <option value='70'>70</option>
+                        <option value='71'>71</option>
+                        <option value='72'>72</option>
+                        <option value='73'>73</option>
+                        <option value='74'>74</option>
+                        <option value='75'>75</option>
+                        <option value='76'>76</option>
+                        <option value='77'>77</option>
+                        <option value='78'>78</option>
+                        <option value='79'>79</option>
+                        <option value='80'>80</option>
+                        <option value='81'>81</option>
+                        <option value='82'>82</option>
+                        <option value='83'>83</option>
+                        <option value='84'>84</option>
+                        <option value='85'>85</option>
+                        <option value='86'>86</option>
+                        <option value='87'>87</option>
+                        <option value='88'>88</option>
+                        <option value='89'>89</option>
+                        <option value='90'>90</option>
+                        <option value='91'>91</option>
+                        <option value='92'>92</option>
+                        <option value='93'>93</option>
+                        <option value='94'>94</option>
+                        <option value='95'>95</option>
+                        <option value='96'>96</option>
+                        <option value='97'>97</option>
+                        <option value='98'>98</option>
+                        <option value='99'>99</option>
+                        <option value='100'>100</option>
+                        <option value='101'>101</option>
+                        <option value='102'>102</option>
+                        <option value='103'>103</option>
+                        <option value='104'>104</option>
+                        <option value='105'>105</option>
+                        <option value='106'>106</option>
+                        <option value='107'>107</option>
+                        <option value='108'>108</option>
+                        <option value='109'>109</option>
+                        <option value='110'>110</option>
+                        <option value='111'>111</option>
+                        <option value='112'>112</option>
+                        <option value='113'>113</option>
+                        <option value='114'>114</option>
+                        <option value='115'>115</option>
+                        <option value='116'>116</option>
+                        <option value='117'>117</option>
+                        <option value='118'>118</option>
+                        <option value='119'>119</option>
+                        <option value='120'>120</option>
+                        <option value='121'>121</option>
+                        <option value='122'>122</option>
+                        <option value='123'>123</option>
+                        <option value='124'>124</option>
+                        <option value='125'>125</option>
+                        <option value='126'>126</option>
+                        <option value='127'>127</option>
+                        <option value='128'>128</option>
+                        <option value='129'>129</option>
+                        <option value='130'>130</option>
+                        <option value='131'>131</option>
+                        <option value='132'>132</option>
+                        <option value='133'>133</option>
+                        <option value='134'>134</option>
+                        <option value='135'>135</option>
+                        <option value='136'>136</option>
+                        <option value='137'>137</option>
+                        <option value='138'>138</option>
+                        <option value='139'>139</option>
+                        <option value='140'>140</option>
+                        <option value='141'>141</option>
+                        <option value='142'>142</option>
+                        <option value='143'>143</option>
+                        <option value='144'>144</option>
+                        <option value='145'>145</option>
+                        <option value='146'>146</option>
+                        <option value='147'>147</option>
+                        <option value='148'>148</option>
+                        <option value='149'>149</option>
+                        <option value='150'>150</option>
+                        <option value='151'>151</option>
+                        <option value='152'>152</option>
+                        <option value='153'>153</option>
+                        <option value='154'>154</option>
+                        <option value='155'>155</option>
+                        <option value='156'>156</option>
+                        <option value='157'>157</option>
+                        <option value='158'>158</option>
+                        <option value='159'>159</option>
+                        <option value='160'>160</option>
+                        <option value='161'>161</option>
+                        <option value='162'>162</option>
+                        <option value='163'>163</option>
+                        <option value='164'>164</option>
+                        <option value='165'>165</option>
+                        <option value='166'>166</option>
+                        <option value='167'>167</option>
+                        <option value='168'>168</option>
+                        <option value='169'>169</option>
+                        <option value='170'>170</option>
+                        <option value='171'>171</option>
+                        <option value='172'>172</option>
+                        <option value='173'>173</option>
+                        <option value='174'>174</option>
+                        <option value='175'>175</option>
+                        <option value='176'>176</option>
+                        <option value='177'>177</option>
+                        <option value='178'>178</option>
+                        <option value='179'>179</option>
+                        <option value='180'>180</option>
+                        <option value='181'>181</option>
+                        <option value='182'>182</option>
+                        <option value='183'>183</option>
+                        <option value='184'>184</option>
+                        <option value='185'>185</option>
+                        <option value='186'>186</option>
+                        <option value='187'>187</option>
+                        <option value='188'>188</option>
+                        <option value='189'>189</option>
+                        <option value='190'>190</option>
+                        <option value='191'>191</option>
+                        <option value='192'>192</option>
+                        <option value='193'>193</option>
+                        <option value='194'>194</option>
+                        <option value='195'>195</option>
+                        <option value='196'>196</option>
+                        <option value='197'>197</option>
+                        <option value='198'>198</option>
+                        <option value='199'>199</option>
+                        <option value='200'>200</option>
+                    </select> 평
+                     
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="tdValue">
+                    종업원 수
+                </td>
+                <td class="tdValue3">
+                    <select id="memberC" name="memberC" class="tel_select2">
+                        <option></option>
+                        <option value='0'>0</option>
+                        <option value='1'>1</option>
+                        <option value='2'>2</option>
+                        <option value='3'>3</option>
+                        <option value='4'>4</option>
+                        <option value='5'>5</option>
+                        <option value='6'>6</option>
+                        <option value='7'>7</option>
+                        <option value='8'>8</option>
+                        <option value='9'>9</option>
+                        <option value='10'>10</option>
+                        <option value='11'>11</option>
+                        <option value='12'>12</option>
+                        <option value='13'>13</option>
+                        <option value='14'>14</option>
+                        <option value='15'>15</option>
+                        <option value='16'>16</option>
+                        <option value='17'>17</option>
+                        <option value='18'>18</option>
+                        <option value='19'>19</option>
+                        <option value='20'>20</option>
+                        <option value='21'>21</option>
+                        <option value='22'>22</option>
+                        <option value='23'>23</option>
+                        <option value='24'>24</option>
+                        <option value='25'>25</option>
+                        <option value='26'>26</option>
+                        <option value='27'>27</option>
+                        <option value='28'>28</option>
+                        <option value='29'>29</option>
+                        <option value='30'>30</option>
+                        <option value='31'>31</option>
+                        <option value='32'>32</option>
+                        <option value='33'>33</option>
+                        <option value='34'>34</option>
+                        <option value='35'>35</option>
+                        <option value='36'>36</option>
+                        <option value='37'>37</option>
+                        <option value='38'>38</option>
+                        <option value='39'>39</option>
+                        <option value='40'>40</option>
+                        <option value='41'>41</option>
+                        <option value='42'>42</option>
+                        <option value='43'>43</option>
+                        <option value='44'>44</option>
+                        <option value='45'>45</option>
+                        <option value='46'>46</option>
+                        <option value='47'>47</option>
+                        <option value='48'>48</option>
+                        <option value='49'>49</option>
+                        <option value='50'>50</option>
+                        <option value='51'>51</option>
+                        <option value='52'>52</option>
+                        <option value='53'>53</option>
+                        <option value='54'>54</option>
+                        <option value='55'>55</option>
+                        <option value='56'>56</option>
+                        <option value='57'>57</option>
+                        <option value='58'>58</option>
+                        <option value='59'>59</option>
+                        <option value='60'>60</option>
+                        <option value='61'>61</option>
+                        <option value='62'>62</option>
+                        <option value='63'>63</option>
+                        <option value='64'>64</option>
+                        <option value='65'>65</option>
+                        <option value='66'>66</option>
+                        <option value='67'>67</option>
+                        <option value='68'>68</option>
+                        <option value='69'>69</option>
+                        <option value='70'>70</option>
+                        <option value='71'>71</option>
+                        <option value='72'>72</option>
+                        <option value='73'>73</option>
+                        <option value='74'>74</option>
+                        <option value='75'>75</option>
+                        <option value='76'>76</option>
+                        <option value='77'>77</option>
+                        <option value='78'>78</option>
+                        <option value='79'>79</option>
+                        <option value='80'>80</option>
+                        <option value='81'>81</option>
+                        <option value='82'>82</option>
+                        <option value='83'>83</option>
+                        <option value='84'>84</option>
+                        <option value='85'>85</option>
+                        <option value='86'>86</option>
+                        <option value='87'>87</option>
+                        <option value='88'>88</option>
+                        <option value='89'>89</option>
+                        <option value='90'>90</option>
+                        <option value='91'>91</option>
+                        <option value='92'>92</option>
+                        <option value='93'>93</option>
+                        <option value='94'>94</option>
+                        <option value='95'>95</option>
+                        <option value='96'>96</option>
+                        <option value='97'>97</option>
+                        <option value='98'>98</option>
+                        <option value='99'>99</option>
+                    </select>
+                     명
+                </td>
+            </tr>
+          
+            <tr>
+                <td class="tdValue">
+                    입지 유형
+                </td>
+                <td class="tdValue3">
+                    <input type="radio" name="positionType" id="positionType_1" value="도로변 일반상점" /><label for="positionType_1"> 1. 도로변 일반상점 </label><br />
+                    <input type="radio" name="positionType" id="positionType_2" value="아파트 상가" /><label for="positionType_2"> 2. 아파트 상가</label><br />
+                    <input type="radio" name="positionType" id="positionType_3" value="지하도 상가" /><label for="positionType_3"> 3. 지하도 상가 </label><br />
+                    <input type="radio" name="positionType" id="positionType_4" value="주택가 단독 점포" /><label for="positionType_4"> 4. 주택가 단독 점포</label><br />
+                    <input type="radio" name="positionType" id="positionType_5" value="기타" /><label for="positionType_5"> 5. 기타</label> <input class="textbox" id="positionTypeEtc" rows="1" size="30" type="text" value="@(Model.입지유형기타)">
+                </td>
+            </tr>
+            @{ if (Model.조사방법 != "문자")
+                {
+            <tr>
+                <td class="tdValue">
+                    조사 방법
+                </td>
+                <td class="tdValue3">
+                    
+                        <input type="radio" name="aType" id="atype_1" value="TAPI" /><label for="atype_1"> TAPI </label> &nbsp; &nbsp;
+                        <input type="radio" name="aType" id="atype_2" value="유치" /><label for="atype_2"> 유치조사</label>
+                        <input type="radio" name="aType" id="atype_3" value="문자" hidden="hidden"/>
+
+                </td>
+            </tr>
+                    }
+                }
+            <tr>
+                <td class="tdValue">
+                    조사 진행상태
+                </td>
+                <td class="tdValue3">
+                    @Model.진행상태
+                </td>
+            </tr>
+        </table>
+       
+        <div class="buttonDiv">
+
+            <center>
+                <input type="button" id="save" class="infoButton" style="margin-right: 60px;" value="저장 후 종료" />
+                <input type="button" id="survey" class="infoButton" style="margin-right: 60px;" value="조사하기" />
+                <input type="button" id="exit" class="infoButton" style="margin-right: 60px;" value="취소" />
+            </center>
+     </div>
+</body>
+</html>

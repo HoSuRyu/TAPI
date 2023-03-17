@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="WebDiary_Horse2014">
+  <DataContextMoniker Name="/WebDiary_Horse2014DataContext" />
+  <nestedChildShapes>
+    <classShape Id="40f1da0f-a088-40f1-9a8d-4bc8abd1d33a" absoluteBounds="3.75, 0.75, 2, 5.6169254557291657">
+      <DataClassMoniker Name="/WebDiary_Horse2014DataContext/H_Panel" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3eca4fab-7363-4e31-9134-b51257a8ab47" absoluteBounds="3.765, 1.21, 1.9700000000000002, 5.0569254557291661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="b068fbdd-9b24-4a31-b384-b9efcea300bb" absoluteBounds="6.25, 0.75, 2, 5.0400211588541657">
+      <DataClassMoniker Name="/WebDiary_Horse2014DataContext/H_NewPanel" />
+      <nestedChildShapes>
+        <elementListCompartment Id="174a2bb2-c9b2-4d2b-8aa0-1f4ea2b653f4" absoluteBounds="6.265, 1.21, 1.9700000000000002, 4.4800211588541661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c4d64543-feb7-4360-98aa-c9822701a26b" absoluteBounds="1.375, 0.75, 2, 1.9631982421875">
+      <DataClassMoniker Name="/WebDiary_Horse2014DataContext/H_Member" />
+      <nestedChildShapes>
+        <elementListCompartment Id="66cf2c81-e6b4-4437-8fdb-63226edb2f97" absoluteBounds="1.3900000000000006, 1.21, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

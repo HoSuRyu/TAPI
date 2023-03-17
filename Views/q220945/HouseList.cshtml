@@ -1,0 +1,134 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q220945_GETHOUSELISTResult>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "2022년 경력단절여성 등의 경제활동 실태조사";
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sendReplace').click(function () {
+                window.location.href = './Replace?keyid=@ViewBag.조사구일련번호';
+            });
+
+            $('#writeContact').click(function () {
+                window.location.href = './Contact?keyid=@ViewBag.조사구일련번호';
+            });
+
+            $('#createHouse').click(function () {
+                var param1 = $('#param1').val();
+                var param2 = $('#param2').val();
+              
+
+                if (param1.length != 3)
+                {
+                    $('#param1').focus();
+                    alert("거처번호를 3자리로 입력 해 주세요.")
+                    return;
+                }
+
+                if (param2.length != 3)
+                {
+                    $('#param2').focus();
+                    alert("가구번호를 3자리로 입력 해 주세요.")
+                    return;
+                }
+
+                if (param1 == "000")
+                {
+                    $('#param1').focus();
+                    alert("거쳐번호에 '000'은 입력 할 수 없습니다.")
+                    return;
+                }
+
+                if (param2 == "000")
+                {
+                    $('#param2').focus();
+                    alert("가구번호에 '000'은 입력 할 수 없습니다.")
+                    return;
+                }
+
+               
+
+                $.post("./CreateHouse", { "keyid": @ViewBag.조사구일련번호, "param1": param1, "param2": param2 }, function (result) {
+                    if (result != '')
+                    {
+                        alert(result);
+                    }
+                    else
+                    {
+                        location.reload();
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+            $('#exit').click(function () {
+                window.location.href = './List';
+            });
+
+            $('input[type=tel]').keydown(function (event) {
+                var charCode = (event.which) ? event.which : event.keyCode;
+
+                if (isNumeric(charCode, this) == false) {
+                    event.preventDefault();
+                }
+            });
+        });
+
+        function goPersonList(hid) {
+            if (hid != null) {
+                window.location.href = './PersonList?keyid=@ViewBag.조사구일련번호&hid=' + hid;
+            }
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    <div style="width:100%;display: inline-block;">
+        <table class="infoTable">
+            <tr>
+                <td class="tdValue">조사구 일련번호</td>
+                <td class="tdValue3">@(ViewBag.조사구일련번호)</td>
+            </tr>
+            <tr>
+                <td class="tdValue">조사구번호</td>
+                <td class="tdValue3">@(ViewBag.조사구번호)</td>
+            </tr>
+            <tr>
+                <td class="tdValue">주소</td>
+                <td class="tdValue3">@(ViewBag.주소)</td>
+            </tr>
+            <tr>
+                <td class="tdValue">거처번호</td>
+                <td class="tdValue3"><input class="textbox" id="param1" name="etc" rows="1" size="13" type="tel" value="" maxlength="3" /></td>
+            </tr>
+            <tr>
+                <td class="tdValue">가구번호</td>
+                <td class="tdValue3"><input class="textbox" id="param2" name="etc" rows="1" size="13" type="tel" value="" maxlength="3" /></td>
+            </tr>
+           
+        </table>
+        <div class="buttonDiv">
+            <center>
+                <input type="button" id="writeContact" class="infoButton" style="margin-right: 30px;" value="접촉일지" />
+                <input type="button" id="sendReplace" class="infoButton" style="margin-right: 30px;" value="대체 요청" />
+                <input type="button" id="createHouse" class="infoButton" style="margin-right: 30px;" value="가구 추가" />
+                <input type="button" id="exit" class="infoButton" style="margin-right: 30px;" value="닫기" />
+            </center>
+        </div>
+        <div style="overflow-x:scroll;width:100%;">
+            @Html.Partial("HouseListPartial", Model)
+        </div>
+    </div>
+</body>
+</html>

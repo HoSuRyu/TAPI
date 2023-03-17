@@ -1,0 +1,574 @@
+﻿@model TAPI_Interviewer.Models.SP_q220557_GETLISTResult
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "축산 환경 실태 조사";
+
+        string isAddr = Model.주소확인;
+        string[] phone = string.IsNullOrEmpty(Model.휴대폰번호) == true ? new string[] { "" } : Model.휴대폰번호.Trim().Split('-');
+
+        string[] tel = string.IsNullOrEmpty(Model.발송연락처) == true ? new string[] { "" } : Model.발송연락처.Trim().Split('-');
+        
+
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("select[name='phone1']").val("@(phone[0])").attr("selected", "selected");
+            $("select[name='tel1']").val("@(tel[0])").attr("selected", "selected");
+            $("input:radio[name ='farmStatus']:input[value='@Model.운영상태']").attr("checked", true);
+
+            $('#save').click(function () {
+
+              
+                saveInfo('저장');
+            });
+
+            $('#survey').click(function () {
+
+
+                if('@Model.최종진행상태' == '완료')
+                {
+                    alert('이미 설문을 완료하였습니다.')
+                    return;
+                }
+
+                var fStatus = $(":radio[name='farmStatus']:checked").val();
+                if (fStatus == undefined || fStatus == '')
+                {
+                    alert("'운영상태'를 선택해 주세요.");
+                    return;
+                }
+                if( fStatus =='폐업')
+                {
+                    alert("'폐업'일 경우 설문을 할 수 없습니다.");
+                    return;
+                }else if( fStatus =='휴업')
+                {
+                    alert("'휴업'일 경우 설문을 할 수 없습니다.");
+                    return;
+                }
+
+
+                if('@Model.최종진행상태' == '조사불가')
+                {
+                    alert("접촉일지 상태가 '조사불가'일 경우 설문을 할 수 없습니다.");
+                    return;
+                }
+
+                saveInfo('설문');
+            });
+
+            $('#sendMsg').click(function () {
+
+                if('@Model.최종진행상태' == '완료')
+                {
+                    alert('이미 설문을 완료하였습니다.')
+                    return;
+                }
+
+                var fStatus = $(":radio[name='farmStatus']:checked").val();
+                if (fStatus == undefined || fStatus == '')
+                {
+                    alert("'운영상태'를 선택해 주세요.");
+                    return;
+                }
+
+                @*if( fStatus =='폐업')
+                {
+                    alert("'폐업'일 경우 문자를 발송할 수 없습니다.");
+                    return;
+                }
+                else if( fStatus =='휴업')
+                {
+                    alert("'휴업'일 경우 문자를 발송할 수 없습니다.");
+                    return;
+                }
+
+                if('@Model.최종진행상태' == '조사불가')
+                {
+                    alert("접촉일지 상태가 '조사불가'일 경우 조사 문자 발송을 할 수 없습니다.");
+                    return;
+                }*@
+
+                var phone = $("select[name='tel1'] option:selected").val();
+                if (phone == '') {
+                    $("#tel2").focus();
+                    alert('발송할 휴대 전화 번호를 입력 해 주세요.');
+                    return;
+                }
+
+                if (phone != '') {
+                    phone = phone + '-' + $("#tel2").val() + '-' + $("#tel3").val();
+                    if ( isCellPhone(phone) == false) {
+                        $("#tel2").focus();
+                        alert('유효한 휴대 전화 번호를 입력 해 주세요.');
+                        return;
+                    }
+                }
+
+                saveInfo('문자발송');
+
+            });
+            $('#sendInfo').click(function () {
+
+                var pid = $("#pid").val();
+                var phone = $("select[name='tel1'] option:selected").val();
+                if (phone == '') {
+                    $("#tel2").focus();
+                    alert('발송할 휴대 전화 번호를 입력 해 주세요.');
+                    return;
+                }
+
+                if (phone != '') {
+                    phone = phone + '-' + $("#tel2").val() + '-' + $("#tel3").val();
+                    if ( isCellPhone(phone) == false) {
+                        $("#tel2").focus();
+                        alert('유효한 휴대 전화 번호를 입력 해 주세요.');
+                        return;
+                    }
+                }
+
+                $.post("./sendInfo", {
+                    "pid": pid, "phone":phone
+                }, function (result) {
+                    if (result != '')
+                    {
+                        alert(result);
+
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+
+            });
+            $('#contact').click(function () {
+                if('@Model.최종진행상태' == '완료')
+                {
+                    alert('설문을 완료하였습니다.\r\n접촉일지를 작성 할 수 없습니다.')
+                    return;
+                }
+
+
+                window.location.href = './Contact?pid=@(Model.PID)';
+            });
+
+
+
+            $('#exit').click(function () {
+                window.location.href = './List';
+            });
+
+
+            $(":radio[name='IsNewAddress']").change(function () {
+                setDisabled();
+            });
+
+
+
+
+            $(document).on('keypress keyup blur focusout', 'input[type=tel]', function () {
+                $(this).val($(this).val().replace(/[^0-9]/g, ''));
+            });
+
+            setDisabled();
+        });
+
+
+        function sendSurvey(stype)
+        {
+            if('@Model.최종진행상태' == '완료')
+            {
+                alert('이미 설문을 완료하였습니다.')
+                return;
+            }
+
+
+            var pid = $("#pid").val();
+            var phone = $("select[name='tel1'] option:selected").val();
+            if (phone == '') {
+                $("#tel2").focus();
+                alert('발송할 휴대 전화 번호를 입력 해 주세요.');
+                return;
+            }
+
+            if (phone != '') {
+                phone = phone + '-' + $("#tel2").val() + '-' + $("#tel3").val();
+                if ( isCellPhone(phone) == false) {
+                    $("#tel2").focus();
+                    alert('유효한 휴대 전화 번호를 입력 해 주세요.');
+                    return;
+                }
+            }
+
+            $.post("./sendSurvey", {
+                "pid": pid, "phone":phone, "surveyType":stype
+            }, function (result) {
+                if (result != '')
+                {
+                    alert(result);
+                }
+                else
+                {
+                    if(result== '설문 발송')
+                    {
+                        alert("종이 설문 발송 되었습니다.");
+                    }
+                    else if(result== '발송 실패')
+                    {
+                        alert("축종, 품종 확인 후 발송해 주세요.");
+                    }
+                }
+            }).error(function (jqXHR, status, error) {
+                alert(status);
+                alert(error);
+            });
+
+        }
+        function saveInfo(stype)
+        {
+            if('@Model.최종진행상태' == '완료')
+            {
+                alert('이미 설문을 완료하였습니다.')
+                return;
+            }
+
+
+
+            var pid = $("#pid").val();
+            var fName = $("#farmName").val();
+            var name = $("#name").val();
+            var fStatus = $(":radio[name='farmStatus']:checked").val();
+            if (fStatus == undefined || fStatus == '')
+            {
+                alert("'운영상태'를 선택해 주세요.");
+                return;
+            }
+
+            var IsNewAddress = $(":radio[name='IsNewAddress']:checked").val();
+            var jibunAddr = $("#jibunAddr").val();
+            var roadAddrPart1 = $("#roadAddrPart1").val();
+            var siNm = $("#siNm").val();
+            var sggNm = $("#sggNm").val();
+            var emdNm = $('#emdNm').val();
+            var sebuAddr = $("#sebuAddr").val();
+
+
+            if (IsNewAddress == undefined || IsNewAddress == '') {
+                alert("'주소'가 맞는지 확인해 주세요.");
+                return;
+            }
+
+            if (IsNewAddress == '주소 틀림' && jibunAddr == '') {
+                alert('주소를 입력해 주세요.');
+                return;
+            }
+
+            var memo = $("#memo").val();
+
+            var phone = $("select[name='phone1'] option:selected").val();
+            if (phone == '' || $("#phone2").val() == '' || $("#phone3").val() == '') {
+                $("#phone2").focus();
+                alert("'농장주 연락처'를 입력 해 주세요.");
+                return;
+            }
+            if (phone != '') {
+
+                phone = phone + '-' + $("#phone2").val() + '-' + $("#phone3").val();
+                //if ( isCellPhone(phone) == false) {
+                //    $("#phone2").focus();
+                //    alert('유효한 휴대 전화 번호를 입력 해 주세요.');
+                //    return;
+                //}
+            }
+
+            var sendPhone ='';
+            if(stype == '문자발송')
+            {
+                sendPhone = $("select[name='tel1'] option:selected").val();
+                sendPhone = sendPhone + '-' + $("#tel2").val() + '-' + $("#tel3").val();
+
+            }
+
+            $.post("./SaveInfo", {
+                "pid": pid, "fName": fName, "name": name, "fStatus": fStatus, "IsNewAddress": IsNewAddress, "jibunAddr": jibunAddr, "roadAddrPart1": roadAddrPart1, "siNm": siNm, "sggNm": sggNm, "emdNm": emdNm, "sebuAddr": sebuAddr, "phone": phone, "memo": memo,"sendPhone":sendPhone
+            }, function (result) {
+                    if (result != '')
+                    {
+                        alert(result);
+                    }
+                    else
+                    {
+                        if (stype == '저장') {
+                            alert("저장되었습니다.");
+                        }
+                        else if(stype== '문자발송')
+                        {
+                            alert("문자 발송되었습니다.");
+                        }
+                        else if(stype=='설문')
+                        {
+                            window.location.href = './Survey?pid='+@(Model.PID);
+                        }
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+        }
+
+        function isTelePhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^(0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]|70|505))[1-9]+[0-9]{6,7}$/;
+
+            return regPhone.test(p);
+        }
+
+        function isCellPhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/;
+
+            return regPhone.test(p);
+        }
+
+        function setDisabled()
+        {
+            var IsNewAddress = $(":radio[name='IsNewAddress']:checked").val();
+
+
+            if (IsNewAddress == '주소 틀림') {
+
+                $("#searchJusoButton").removeAttr('disabled');
+                $("#roadAddrPart1").removeAttr('disabled');
+                $("#jibunAddr").removeAttr('disabled');
+                $("#sebuAddr").removeAttr('disabled');
+            }
+            else {
+                $("#searchJusoButton").attr('disabled', 'disabled');
+                $("#roadAddrPart1").val("").attr('disabled', 'disabled');
+                $("#jibunAddr").val("").attr('disabled', 'disabled');
+                $("#sebuAddr").val("").attr('disabled', 'disabled');
+            }
+
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/q200494/PanelInfo.css?version=5")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    @Html.Partial("CommonAddressSearchScript")
+
+    <div id="main" style="width:100%;">    
+        <table class="infoTable">
+            <tr>                
+                <td class="tdValue" style="width:17%;">
+                    PID
+                </td>
+                <td class="tdValue3" style="width:71%;">
+                    <input class="textbox" type="text" id="pid" style="width:50%" value="@(Model.PID)" disabled="disabled">                    
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    농장명
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" type="text" id="farmName" style="width:50%" value="@(Model.농장명)" >
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    농장주 이름
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" type="text" id="name" style="width:50%" value="@(Model.농장주)">                    
+                </td>                
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    운영 상태
+                </td>
+                <td class="tdValue3" colspan="3" bgcolor="#ffea78">
+                    <input type="radio" name="farmStatus" id="farmStatus_1" value="정상운영" /><label for="farmStatus_1">1. 정상운영 </label><br />
+                    <input type="radio" name="farmStatus" id="farmStatus_2" value="휴업" /><label for="farmStatus_2">2. 휴업(1년 이상 사육하지 않을 경우)</label><br />
+                    <input type="radio" name="farmStatus" id="farmStatus_3" value="폐업" /><label for="farmStatus_3">3. 폐업</label>
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    법정동 주소
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" type="text" id="addr" style="width:50%" value="@(Model.법정동주소)" disabled="disabled">                                        
+                </td>
+            </tr>
+            <tr >
+                <td class="tdValue" >
+                    주소 확인
+                </td>
+                <td class="tdValue3" colspan="3" bgcolor="#ffea78">
+                    <input type="radio" name="IsNewAddress" id="IsNewAddress_1" value="주소 맞음" /><label for="IsNewAddress_1">1. 주소 맞음 </label> &nbsp; &nbsp;
+                    <input type="radio" name="IsNewAddress" id="IsNewAddress_2" value="주소 틀림" /><label for="IsNewAddress_2">2. 주소 틀림</label>
+                  
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    주소검색
+                </td>
+                <td class="tdValue3" colspan="3" style="padding:10px 0px 10px 10px;">
+                    <input type="button" class="infoButton" value="주소검색" onclick="jusoPopUp();" style=" cursor pointer;" id="searchJusoButton"> ◀ 주소검색버튼을 클릭하세요.<br />
+                    <input class="textbox" type="text" id="jibunAddr" placeholder="" readonly="readonly" title="주소" style="width:90%">
+                    <input type="hidden" id="siNm" title="시도">
+                    <input type="hidden" id="sggNm" title="시군구">
+                    <input type="hidden" id="emdNm" title="읍면동">
+                    <input type="hidden" id="roadAddrPart1" title="도로명주소">
+                    
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    세부주소<br />(층,동,호수 등)
+                </td>
+                <td class="tdValue3" colspan="3">
+                    <input class="textbox" type="text" id="sebuAddr" maxlength="50" placeholder="상세주소 예)105동 123호" title="상세주소" style="width:90%">
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="tdValue">
+                    핸드폰 번호
+                </td>
+                <td class="tdValue3" >
+
+                    <select id="phone1" name="phone1" class="tel_select2">
+                        <option></option>
+                        <option value='010'>010</option>
+                        <option value='011'>011</option>
+                        <option value='016'>016</option>
+                        <option value='017'>017</option>
+                        <option value='018'>018</option>
+                        <option value='019'>019</option>
+                        <option value='02'>서울 02</option>
+                        <option value='051'>부산 051</option>
+                        <option value='053'>대구 053</option>
+                        <option value='032'>인천 032</option>
+                        <option value='062'>광주 062</option>
+                        <option value='042'>대전 042</option>
+                        <option value='052'>울산 052</option>
+                        <option value='044'>세종 044</option>
+                        <option value='031'>경기 031</option>
+                        <option value='033'>강원 033</option>
+                        <option value='043'>충북 043</option>
+                        <option value='041'>충남 041</option>
+                        <option value='063'>전북 063</option>
+                        <option value='061'>전남 061</option>
+                        <option value='054'>경북 054</option>
+                        <option value='055'>경남 055</option>
+                        <option value='064'>제주 064</option>
+                        <option value='070'>인터넷전화 070</option>
+                    </select>
+                    - <input class="textbox" id="phone2" rows="1" size="4" type="tel" value="@(phone.Length <= 1 ? "" : phone[1])" maxlength="4">
+                    - <input class="textbox" id="phone3" rows="1" size="4" type="tel" value="@(phone.Length <= 1 ? "" : phone[2])" maxlength="4">           
+                </td>
+            </tr>   
+            <tr>
+                <td class="tdValue">
+                    조사 링크 
+                </td>
+                <td class="tdValue3">
+                    <input type="button" id="survey" class="infoButtonRed" style="margin-right: 10px;" value="조사하기" />               
+                </td>
+            </tr>             
+          
+           
+          
+            <tr>
+                <td class="tdValue">
+                   CAMI  발송
+                </td>
+                <td class="tdValue3">
+                    
+
+                    <select id="tel1" name="tel1" class="tel_select2">
+                        <option></option>
+                        <option value='010'>010</option>
+                        <option value='011'>011</option>
+                        <option value='016'>016</option>
+                        <option value='017'>017</option>
+                        <option value='018'>018</option>
+                        <option value='019'>019</option>                      
+                    </select>
+                    - <input class="textbox" id="tel2" rows="1" size="4" type="tel" value="@(phone.Length <= 1 ? "" : tel[1])" maxlength="4">
+                    - <input class="textbox" id="tel3" rows="1" size="4" type="tel" value="@(phone.Length <= 1 ? "" : tel[2])" maxlength="4">   
+                    
+                    <input type="button" id="sendMsg" class="infoButtonBlue" style="margin-right: 10px;" value="조사 링크 발송" /> 
+                    <input type="button" id="sendInfo" class="infoButtonPurple" style="margin-right: 10px;" value="공문 발송" />
+                    
+                </td>
+            </tr>         
+            <tr>
+                <td class="tdValue">
+                    설문지 발송
+                </td>
+                <td class="tdValue3">
+                    <input type="button" id="sendSurvey" class="infoButtonOrange" style="margin-right: 5px;" value="한우육우" onclick="sendSurvey(1);" />
+                    <input type="button" id="sendSurvey" class="infoButtonOrange" style="margin-right: 5px;" value="젖소" onclick="sendSurvey(2);" />
+                    <input type="button" id="sendSurvey" class="infoButtonOrange" style="margin-right: 5px;" value="돼지" onclick="sendSurvey(3);" />
+                    <input type="button" id="sendSurvey" class="infoButtonOrange" style="margin-right: 5px;" value="닭" onclick="sendSurvey(4);" />
+                    <input type="button" id="sendSurvey" class="infoButtonOrange" style="margin-right: 5px;" value="오리" onclick="sendSurvey(5);" />
+
+
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    조사 진행 상태
+                </td>
+                <td class="tdValue3">
+                    @Model.진행상태
+
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    최종 진행 상태
+                </td>
+                <td class="tdValue3">
+                    @Model.최종진행상태
+
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    방문일자 기록
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" type="text" id="memo" style="width:80%" value="@(Model.방문일자)">
+                </td>
+            </tr>
+               
+        </table><br />
+        
+        <div class="buttonDiv">
+            <div style="float:right">
+                <input type="button" id="contact" class="infoButtonRed" style="margin-right: 10px;" value="접촉 일지" />
+            </div>
+            <center>                
+                <input type="button" id="save" class="infoButtonBlue" style="margin-right: 10px;" value="저장" />
+                <input type="button" id="exit" class="infoButton" style="margin-right: 10px;" value="닫기" />
+            </center>
+        </div>
+    </div>
+</body>
+</html>

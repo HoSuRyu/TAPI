@@ -1,0 +1,321 @@
+﻿@model List<TAPI_Interviewer.Models.HOUSE2022_Contact>
+  <script type="text/javascript">
+        $(document).ready(function () {
+
+
+
+            $("select[name='contactMonth']").val("@ViewBag.contactMonth").attr("selected", "selected");
+            $("select[name='contactDay']").val("@ViewBag.contactDay").attr("selected", "selected");
+
+
+
+            $('#cancel').click(function () {
+                window.location.href = './HouseListAPT?keyid='+@ViewBag.HRC일련번호;
+            });
+
+            $('#save').click(function () {
+
+
+                console.log*('check');
+
+                var ranking = $(":hidden[name='ranking']").val();
+                var contactMonth = $("select[name='contactMonth'] option:selected").text();
+                var contactDay = $("select[name='contactDay'] option:selected").text();
+                var contactTime = $("select[name='contactTime'] option:selected").text();
+
+                var contact = $(":radio[name='contact']:checked").val();
+
+
+
+                if (contact == undefined || contact == '') {
+                    alert("비성공 사유를 선택해 주세요.")
+                    return;
+                }
+
+
+                $.post("./ContactAPTOK", {
+                    "hid": '@ViewBag.가구일련번호', "ranking": ranking, "contact": contact, "contactMonth": contactMonth, "contactDay": contactDay, "contactTime": contactTime
+                }, function (result) {
+
+
+                    if (result == '저장') {
+                        alert('저장 되었습니다.');
+                        window.location.href = './HouseListAPT?keyid='+@ViewBag.HRC일련번호;
+                    }
+                    else{
+                        alert(result);
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+
+
+        });
+
+</script>
+
+
+@Html.Partial("header")
+<div id="contwrap">
+    <div class="contentbox">
+        <div class="boardbox">
+            <div class="bd_titbox">
+                <h3>접촉 일지</h3>
+            </div>
+            <div class="bd_contbox">
+                <div class="tablebox">
+                    <table class="tbl_sty02" cellpadding="0" cellspacing="0" border="0" style="width:100%;">
+                        <tbody>
+                            <tr>
+                                <td class="td_th" style="width:200px;">가구일련번호</td>
+                                <td>@ViewBag.가구일련번호</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th">주소</td>
+                                <td>@ViewBag.주소</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th">단지명</td>
+                                <td>@ViewBag.단지명</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th">동</td>
+                                <td>@ViewBag.동</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th">호수</td>
+                                <td>@ViewBag.호수</td>
+                            </tr>
+                    </table>
+
+                    @Html.DevExpress().GridView(
+                    settings =>
+                    {
+                        settings.Name = "방문리스트";
+                        settings.KeyFieldName = "방문 리스트";
+                        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+
+                        settings.Columns.Add(column =>
+                        {
+                            column.FieldName = "방문횟수";
+                            column.Caption = "방문 횟수";
+                            column.Width = System.Web.UI.WebControls.Unit.Pixel(100);
+                        });
+                        settings.Columns.Add(column =>
+                        {
+                            column.FieldName = "방문일자";
+                            column.Caption = "방문 일자";
+                            column.Width = System.Web.UI.WebControls.Unit.Pixel(130);
+                        });
+                        settings.Columns.Add(column =>
+                        {
+                            column.FieldName = "방문시간";
+                            column.Caption = "방문 시간";
+                            column.Width = System.Web.UI.WebControls.Unit.Pixel(200);
+                        });
+
+                        settings.Columns.Add(column =>
+                        {
+                            column.FieldName = "비성공사유";
+                            column.Caption = "비성공 사유";
+                            column.CellStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Left;
+                            column.Width = System.Web.UI.WebControls.Unit.Pixel(400);
+                        });
+
+                        settings.Styles.Cell.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+
+                        settings.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+
+                        settings.Settings.ShowFilterRow = false;
+                        settings.Settings.ShowFilterRowMenu = false;
+                        settings.Settings.VerticalScrollableHeight = 150;
+                        settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
+                        settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+                    }).Bind(Model).GetHtml()
+
+                    <table class="tbl_sty02" cellpadding="0" cellspacing="0" border="0" style="width:100%;">
+                        <tbody>
+                            <tr>
+                                <td class="td_th">방문횟수</td>
+                                <td><b>@ViewBag.Ranking</b> 회<input type="hidden" name="ranking" value="@ViewBag.Ranking" /></td>
+                                <td class="td_th">방문일자</td>
+                                <td>
+                                    <select class="form_ctrl" style="width:60px;" id="contactMonth" name="contactMonth">
+                                        <option value="01">01</option>
+                                        <option value="02">02</option>
+                                        <option value="03">03</option>
+                                        <option value="04">04</option>
+                                        <option value="05">05</option>
+                                        <option value="06">06</option>
+                                        <option value="07">07</option>
+                                        <option value="08">08</option>
+                                        <option value="09">09</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                    </select>
+                                    월&nbsp;
+                                    <select class="form_ctrl" style="width:60px;" id="contactDay" name="contactDay">
+                                        <option value="01">01</option>
+                                        <option value="02">02</option>
+                                        <option value="03">03</option>
+                                        <option value="04">04</option>
+                                        <option value="05">05</option>
+                                        <option value="06">06</option>
+                                        <option value="07">07</option>
+                                        <option value="08">08</option>
+                                        <option value="09">09</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                        <option value="13">13</option>
+                                        <option value="14">14</option>
+                                        <option value="15">15</option>
+                                        <option value="16">16</option>
+                                        <option value="17">17</option>
+                                        <option value="18">18</option>
+                                        <option value="19">19</option>
+                                        <option value="20">20</option>
+                                        <option value="21">21</option>
+                                        <option value="22">22</option>
+                                        <option value="23">23</option>
+                                        <option value="24">24</option>
+                                        <option value="25">25</option>
+                                        <option value="26">26</option>
+                                        <option value="27">27</option>
+                                        <option value="28">28</option>
+                                        <option value="29">29</option>
+                                        <option value="30">30</option>
+                                        <option value="31">31</option>
+                                    </select>
+                                    일
+                                </td>
+                                <td class="td_th">방문시간</td>
+                                <td>
+                                    <select class="form_ctrl" style="width:300px;" id="contactTime" name="contactTime">
+                                        <option value="오전 9시~11시 이전"> 오전 9시~11시 이전</option>
+                                        <option value="오전 11시~오후 1시 이전"> 오전 11시~오후 1시 이전</option>
+                                        <option value="오후 1시~3시 이전"> 오후 1시~3시 이전</option>
+                                        <option value="오후 3시~5시 이전"> 오후 3시~5시 이전</option>
+                                        <option value="오후 5시~7시 이전"> 오후 5시~7시 이전</option>
+                                        <option value="오후 7시~9시 이전"> 오후 7시~9시 이전</option>
+                                        <option value="오후 9시 이후"> 오후 9시 이후</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td_th" colspan="6">비성공 사유</td>
+                            </tr>
+                            <tr>
+                                <td colspan="6">
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" id="contact_1" value="조사성공" disabled="disabled">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 1. 조사성공</span>
+                                    </label>
+                                    <br>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" id="contact_2" value="부재">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 2. 부재</span>
+                                    </label>
+                                    <br>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" id="contact_3" value="조사대상자 부재(가구주/가구주 배우자)">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 3. 조사대상자 부재(가구주/가구주 배우자)</span>
+                                    </label>
+                                    <br>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" id="contact_4" value="약속">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 4. 약속</span>
+                                    </label>
+                                    <br>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" id="contact_5" value="거절">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 5. 거절</span>
+                                    </label>
+                                    <br>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" id="contact_6" value="조사불능 가구(외국인가구, 기숙사, 집단가구 등)">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 6. 조사불능 가구(외국인가구, 기숙사, 집단가구 등)</span>
+                                    </label>
+                                    <br>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" id="contact_7" value="빈집">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 7. 빈집</span>
+                                    </label>
+                                    <br>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" id="contact_8" value="거주하는 사람 없음(상가, 공장 등)">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 8. 거주하는 사람 없음(상가, 공장 등)</span>
+                                    </label>
+                                    <br>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" id="contact_9" value="거처 없어짐(명부 상의 건물이 없어짐)">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 9. 거처 없어짐(명부 상의 건물이 없어짐)</span>
+                                    </label>
+                                    <br>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" id="contact_10" value="건물 출입 불가">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 10. 건물 출입 불가</span>
+                                    </label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="bot_btnbox">
+                    <button type="button" class="btnsty01" id="save">저장 후 종료</button>
+                    <button type="button" class="btnsty03" id="cancel">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("footer")
+</div>
+</body>
+</html>
+

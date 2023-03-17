@@ -1,0 +1,353 @@
+﻿@model TAPI_Interviewer.Models.SP_q220486_GETLISTResult
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "아동보호통합패널조사";
+
+        
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#contact').click(function () {
+
+                window.location.href = './Contact?pid=' + @Model.PID;
+            });
+
+            $('#cancel').click(function () {
+                window.location.href = './List';
+            });
+
+            $('#saveETC').click(function () {
+                var etc = $("#etc").val();
+                
+                $.post("./SaveEtc", {
+                    "pid": '@Model.PID', "etc": etc
+                }, function (result) {
+
+                    if (result == '저장') {
+                        alert('저장 되었습니다.');
+                        window.location.reload();
+                    }
+                    else{
+                        alert(result);
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+        });
+
+        function Survey(pid, type, status)
+        {
+            if (status == '대체요청') {
+                alert('대체요청 하셨습니다.');
+                return;
+            }
+
+            if (status == '이관요청') {
+                alert('이관요청 하셨습니다.');
+                return;
+            }
+
+            window.location.href = './Survey?pid='+pid+'&type='+type;
+        }
+
+        function Send(pid, type, status)
+        {
+            if (status == '대체요청') {
+                alert('대체요청 하셨습니다.');
+                return;
+            }
+
+            if (status == '이관요청') {
+                alert('이관요청 하셨습니다.');
+                return;
+            }
+
+            window.location.href = './Survey?pid='+pid+'&type='+type+'&isSend=1';
+        }
+
+
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js" )"></script>
+</head>
+<body>
+    <div style="width : 100%;display: inline-block;">
+        <label id="title">@ViewBag.Title</label>
+        <table class="infoTable">
+
+            <tr>
+                <td class="tdValue" >PID</td>
+                <td>@(Model.PID)</td>
+
+                <td class="tdValue"  >조사 진행 상황</td>
+                <td colspan="3">@(Model.최종설문진행상태)</td>
+
+               
+            </tr>
+            <tr>
+                <td class="tdValue">아동 이름</td>
+                <td>@(Model.아동이름)</td>
+
+                <td class="tdValue">최종접촉일지<br />- 방문 횟수</td>
+                <td>@(Model.최종접촉횟수)</td>
+
+                <td class="tdValue">최종접촉일지<br />- 방문 결과</td>
+                <td>@(Model.최종접촉결과)</td>
+            </tr>
+            <tr>
+                <td class="tdValue">원/대체 구분</td>
+                <td>@(Model.원대체구분)</td>
+                <td class="tdValue">자격취득년도</td>
+                <td colspan="3">@(Model.자격취득년도)</td>
+
+            </tr>
+            <tr>
+                <td class="tdValue">아동 성별</td>
+                <td>@(Model.아동성별)</td>
+                <td class="tdValue">학년 구분</td>
+                <td colspan="3">@(Model.학년구분)</td>
+            </tr>
+            <tr>
+                <td class="tdValue">아동 생년 월일</td>
+                <td>@(Model.아동생년)년 @(Model.아동생월)월 @(Model.아동생일)일</td>
+                <td class="tdValue">아동만나이</td>
+                <td colspan="3">@(Model.아동만나이)</td>
+            </tr>
+            <tr>
+                <td class="tdValue">시도</td>
+                <td>@(Model.시도)</td>
+                <td colspan="4">&nbsp; </td>
+            </tr>
+            <tr>
+                <td class="tdValue">시군구</td>
+                <td>@(Model.시군구)</td>
+                <td colspan="4">&nbsp; </td>
+            </tr>
+            <tr>
+                <td class="tdValue">상세 주소</td>
+                <td colspan="5" style="text-align:left;">&nbsp; @(Model.상세주소)</td>
+                
+            </tr>
+            <tr>
+                <td class="tdValue">연락처1</td>
+                <td>@(Model.연락처1)</td>
+                <td class="tdValue">연락처1<br />아동과의 관계</td>
+                <td colspan="3">@(Model.연락처1아동과의관계)</td>
+            </tr>
+            <tr>
+                <td class="tdValue">연락처2</td>
+                <td>@(Model.연락처2)</td>
+                <td class="tdValue">연락처2<br />아동과의 관계</td>
+                <td colspan="3">@(Model.연락처2아동과의관계)</td>
+            </tr>
+            <tr>
+                <td class="tdValue">연락처3</td>
+                <td>@(Model.연락처3)</td>
+                <td class="tdValue">연락처3<br />아동과의 관계</td>
+                <td colspan="3">@(Model.연락처3아동과의관계)</td>
+            </tr>
+            <tr>
+                <td class="tdValue">특이사항</td>
+                <td colspan="5" style="text-align:left;">&nbsp; @(Model.특이사항)</td>
+            </tr>
+            <tr>
+                <td class="tdValue">면접원 특이사항</td>
+                <td colspan="5" style="text-align:left;">
+                    <input class="textbox" id="etc" name="etc" size="90" type="text" value="@Model.면접원특이사항" maxlength="500" />
+                    <input type="button" id="saveETC" class="infoButtonT2" style="margin-right: 10px;" value="저장" />
+                </td>
+            </tr> 
+            <tr>
+                <td class="tdValue">양육자 성명</td>
+                <td>@(Model.양육자성명)</td>
+                <td class="tdValue">양육자<br />아동과의 관계</td>
+                <td colspan="3">@(Model.양육자아동과의관계)</td>
+            </tr>
+            <tr>
+                <td class="tdValue">양육자 전화번호</td>
+                <td>@(Model.양육자전화번호)</td>
+                <td class="tdValue">문자발송 전화번호</td>
+                <td colspan="3">@(Model.사전안내발송연락처)</td>
+            </tr>
+        </table>
+        <div class="buttonDiv"  align="right" >
+          
+                <input type="button" id="contact" class="infoButton" value="접촉일지" />&nbsp; &nbsp; 
+          
+        </div>
+        <br /><br />
+    </div>
+
+
+    <table class="infoTable" align="center">
+        <tr>
+            <td style="background-color: #ebf1fb;">조사 구분</td>
+            <td style="background-color: #ebf1fb;">조사 시작</td>
+            <td style="background-color: #ebf1fb;">문자/메일 웹 발송</td>
+            <td style="background-color: #ebf1fb;">문자<br />발송 일시</td>
+            <td style="background-color: #ebf1fb;">메일<br />발송 일시</td>
+            <td style="background-color: #ebf1fb;">조사 진행 상태</td>
+        </tr>
+        @if (Model.설문유형 == "영유아")
+        {
+                <tr>
+                    <td>양육자 설문</td>
+                    <td class="tdValue3c" align="center">
+                        @if (Model.사전조사진행상태 != "완료")
+                        {
+                            <input type="button" id="personStart" class="infoButtonTdisabled2" style="margin-right: 10px;" value="진행하기" />
+                        }
+                        else
+                        {
+                            <input type="button" id="personDelete" class="infoButtonT2" style="margin-right: 10px;" value="진행하기" onclick="Survey(@(Model.PID),1, '@(Model.최종설문진행상태)' );" />
+                        }
+                    </td>
+
+                    <td>
+                        @if (Model.사전조사진행상태 != "완료" || @Model.양육자설문진행상태 == "완료")
+                        {
+                            <input type="button" id="personStart" class="infoButtonTdisabled2" style="margin-right: 10px;" value="웹발송" />
+                        }
+                        else
+                        {
+                            <input type="button" id="personDelete" class="infoButtonT2" style="margin-right: 10px;" value="웹발송" onclick="Send( @(Model.PID),1, '@(Model.최종설문진행상태)');" />
+                        }
+                    </td>
+                    <td>@Model.양육자설문문자발송일시</td>
+                    <td>@Model.양육자설문이메일발송일시</td>
+                    <td>@Model.양육자설문진행상태</td>
+                </tr>
+        }
+        else if (Model.설문유형 == "자립준비청년")
+        {
+                <tr>
+                    <td>아동 설문</td>
+                    <td class="tdValue3c" align="center">
+                        @if (Model.사전조사진행상태 != "완료" )
+                        {
+                            <input type="button" id="personStart" class="infoButtonTdisabled2" style="margin-right: 10px;" value="진행하기" />
+                        }
+                        else
+                        {
+                            <input type="button" id="personDelete" class="infoButtonT2" style="margin-right: 10px;" value="진행하기" onclick="Survey( @(Model.PID),3, '@(Model.최종설문진행상태)');" />
+                        }
+                    </td>
+                    <td>
+                        @if (Model.사전조사진행상태 != "완료" || Model.아동설문진행상태 == "완료")
+                        {
+                            <input type="button" id="personStart" class="infoButtonTdisabled2" style="margin-right: 10px;" value="웹발송" />
+                        }
+                        else
+                        {
+                            <input type="button" id="personDelete" class="infoButtonT2" style="margin-right: 10px;" value="웹발송" onclick="Send( @(Model.PID),3, '@(Model.최종설문진행상태)');" />
+                        }
+                    </td>
+                    <td>@Model.아동설문문자발송일시</td>
+                    <td>@Model.아동설문이메일발송일시</td>
+                    <td>@Model.아동설문진행상태</td>
+                </tr>
+        }
+        else
+        {
+            <tr>
+                <td>양육자 설문</td>
+                <td class="tdValue3c" align="center">
+                    @if (Model.사전조사진행상태 != "완료")
+                    {
+                        <input type="button" id="personStart" class="infoButtonTdisabled2" style="margin-right: 10px;" value="진행하기" />
+                    }
+                    else
+                    {
+                        <input type="button" id="personDelete" class="infoButtonT2" style="margin-right: 10px;" value="진행하기" onclick="Survey( @(Model.PID),1, '@(Model.최종설문진행상태)');" />
+                    }
+                </td>
+
+                <td>
+                    @if (Model.사전조사진행상태 != "완료" || @Model.양육자설문진행상태 == "완료")
+                    {
+                        <input type="button" id="personStart" class="infoButtonTdisabled2" style="margin-right: 10px;" value="웹발송" />
+                    }
+                    else
+                    {
+                        <input type="button" id="personDelete" class="infoButtonT2" style="margin-right: 10px;" value="웹발송" onclick="Send( @(Model.PID),1, '@(Model.최종설문진행상태)');" />
+                    }
+                </td>
+                <td>@Model.양육자설문문자발송일시</td>
+                <td>@Model.양육자설문이메일발송일시</td>
+                <td>@Model.양육자설문진행상태</td>
+                
+            </tr>
+            <tr>
+                <td>아동 설문</td>
+                <td class="tdValue3c" align="center">
+                    @if (Model.사전조사진행상태 != "완료")
+                    {
+                        <input type="button" id="personStart" class="infoButtonTdisabled2" style="margin-right: 10px;" value="진행하기" />
+                    }
+                    else
+                    {
+                        <input type="button" id="personDelete" class="infoButtonT2" style="margin-right: 10px;" value="진행하기" onclick="Survey( @(Model.PID),2, '@(Model.최종설문진행상태)');" />
+                    }
+                </td>
+                <td>
+                    @if (Model.사전조사진행상태 != "완료" || Model.아동설문진행상태 == "완료")
+                    {
+                        <input type="button" id="personStart" class="infoButtonTdisabled2" style="margin-right: 10px;" value="웹발송" />
+                    }
+                    else
+                    {
+                        <input type="button" id="personDelete" class="infoButtonT2" style="margin-right: 10px;" value="웹발송" onclick="Send( @(Model.PID),2, '@(Model.최종설문진행상태)');" />
+                    }
+                </td>
+                <td>@Model.아동설문문자발송일시</td>
+                <td>@Model.아동설문이메일발송일시</td>
+                <td>@Model.아동설문진행상태</td>
+            </tr>
+        }
+    </table>
+    <div class="buttonDiv" align="right">
+        <input type="button" id="cancel" class="infoButton" value="나가기" />&nbsp; &nbsp;
+
+    </div>
+</body>
+
+
+<style>
+    .infoButtonT2 {
+        background-color: #80a6e6;
+        display: inline-block;
+        cursor: pointer;
+        color: #ffffff;
+        font-family: 'Malgun Gothic';
+        font-size: 18px;
+        font-weight: bold;
+        text-decoration: none;
+        border: none;
+        width: 110px;
+        height: 35px;
+    }
+
+    .infoButtonTdisabled2 {
+        background-color: #d2d2d2;
+        display: inline-block;
+        cursor: pointer;
+        color: #ffffff;
+        font-family: 'Malgun Gothic';
+        font-size: 18px;
+        font-weight: bold;
+        text-decoration: none;
+        border: none;
+        width: 110px;
+        height: 35px;
+    }
+</style>
+
+</html>
+

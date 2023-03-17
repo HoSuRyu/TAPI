@@ -1,0 +1,275 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q221026_GETLISTResult>
+
+<script type="text/javascript">
+
+    function setAnswer(variable, val)
+    {
+        var options = "<option value=''></option>";
+        var v = String(variable);
+        if (v.indexOf("job") !== -1) {
+            if (val == "관리소장" || val=="주거서비스 코디네이터") {
+
+                $("#" + variable + " option").remove();
+                options += "<option value='관리소장'>관리소장</option>";
+                options += "<option value='AS담당자-1'>AS담당자-1</option>";
+                options += "<option value='AS담당자-2'>AS담당자-2</option>";
+                options += "<option value='경비원'>경비원</option>";
+                options += "<option value='주거서비스 코디네이터'>주거서비스 코디네이터</option>";
+                $("#" + variable).append(options);
+                $("#" + variable).attr("disabled", "disabled");
+            }
+            else {
+                $("#" + variable + " option").remove();
+
+                options += "<option value='AS담당자-1'>AS담당자-1</option>";
+                options += "<option value='AS담당자-2'>AS담당자-2</option>";
+                options += "<option value='경비원'>경비원</option>";
+                $("#" + variable).append(options);
+            }
+        }
+        console.log(variable + ", " + val);
+        $("select[name=" + variable + "]").val(val).attr("selected", "selected");
+    }
+    function exit() {
+        window.location.href = './List'
+    }
+
+    function goSurvey(pid, status) {
+
+        saveInfo(pid, false);
+
+    }
+
+    function saveInfo(pid,chk) {
+        var cap = $("#job_" + pid + " option:selected").text();
+        var name = $("#name_" + pid).val();
+        var num1 = $("#tel1_" + pid + " option:selected").text();
+        var num2 = $("#tel2_"+pid).val();
+        var num3 = $("#tel3_" + pid).val();
+
+        $.post("./SaveInfo", { "pid": pid, "cap": cap, "name": name, "num": num1 + "-" + num2 + "-" + num3 }, function (result) {
+                if (result != '')
+                {
+                    alert(result);
+                    location.reload();
+                }
+                else if (chk)
+                {
+                    alert("수정완료");
+                    location.reload();
+                }
+                else if (!chk)
+                {
+                    window.location.href = './Survey?pid=' + pid;
+                }
+                else
+                {
+                    location.reload();
+                }
+            }).error(function (jqXHR, status, error) {
+                alert(status);
+                alert(error);
+            });
+        }
+
+
+
+    $(document).ready(function () {
+
+
+        @foreach (TAPI_Interviewer.Models.SP_q221026_GETLISTResult list in Model)
+        {
+
+            string[] tel = string.IsNullOrEmpty(list.연락처2) == true ? new string[] { "" } : list.연락처2.Trim().Split('-');
+
+            @:setAnswer('tel1_@(list.pid)', '@tel[0]');
+            @:setAnswer('job_@(list.pid)', '@list.직책2');
+        }
+
+
+    });
+
+    function chageLangSelect() {
+
+    }
+
+
+</script>
+
+<br />
+<input type="hidden" name="valueError" id="valueError" value="0"></input>
+<input type="hidden" name="isCapAnswer" id="valueError" value="0"></input>
+
+<input type="hidden" id="pid" name="pid" value="" /></input>
+<input type="hidden" id="name" name="name" value="" /></input>
+<input type="hidden" id="cap" name="cap" value="" /></input>
+<input type="hidden" id="htel" name="htel" value="" /></input>
+<input type="hidden" id="isAnswer" name="isAnswer" value="" /></input>
+<input type="hidden" id="noanswerText" name="noanswerText" value="" /></input>
+
+
+<table class="infoTable" style="width:1600px" >
+    <tr>
+        <td class="tdValue9">
+            관리자<br />PID
+        </td>
+        <td class="tdValue9">
+            단지코드
+        </td>
+        <td class="tdValue9">
+            단지명
+        </td>
+        <td class="tdValue9">
+            설문 진행하기
+        </td>
+        <td class="tdValue9">
+            진행상태
+        </td>
+        <td class="tdValue9">
+            직책
+        </td>
+        <td class="tdValue9">
+            이름
+        </td>
+        <td class="tdValue9">
+            연락처
+        </td>
+        <td class="tdValue9">
+            수정
+        </td>
+    </tr>
+    @{
+        int idx = 0;
+
+
+        foreach (TAPI_Interviewer.Models.SP_q221026_GETLISTResult list in Model)
+        {
+            idx++;
+
+            //string[] tel = string.IsNullOrEmpty(list.휴대전화) == true ? new string[] { "" } : list.휴대전화.Trim().Split('-');
+
+        <tr align="center">
+            <td class="tdValue3c" width="100px" align="center">
+                @(list.pid)
+            </td>
+            <td class="tdValue3c" width="100px" align="center">
+                @(list.단지코드)
+            </td>
+            <td class="tdValue3c" width="250px" align="center">
+                @(list.단지명)   
+            </td>
+            <td class="tdValue3c" width="200px" align="center">
+                <input type="button" id="personStart" class="infoButtonT2" style="margin-right: 10px;" value="진행하기" onclick="goSurvey(@(list.pid))" />
+            </td>
+            <td class="tdValue3c" width="200px" align="center">
+                @(list.진행상태)
+            </td>
+            <td class="tdValue3c" width="200px" align="center">
+                <select id="job_@(list.pid)" name="job_@(list.pid)" class="tel_select4" onchange="chageLangSelect()">
+                    @*<option value=''></option>
+                    <option value='관리소장'>관리소장</option>
+                    <option value='AS담당자-1'>AS담당자-1</option>
+                    <option value='AS담당자-2'>AS담당자-2</option>
+                    <option value='경비원'>경비원</option>*@
+                </select>
+            </td>
+            <td class="tdValue3c" width="100px" align="center">
+                <input class="textbox" id="name_@(list.pid)" name="name_@(list.pid)" rows="1" size="4" type="text" value="@(list.이름2)" maxlength="4">
+
+            </td>
+            <td class="tdValue3c" width="500px" align="center">
+                <select id="tel1_@(list.pid)" name="tel1_@(list.pid)" class="tel_select3">
+                    <option></option>
+                    <option value='010'>010</option>
+                    <option value='011'>011</option>
+                    <option value='016'>016</option>
+                    <option value='017'>017</option>
+                    <option value='018'>018</option>
+                    <option value='019'>019</option>
+                    <option value='02'>02</option>
+                    <option value='051'>051</option>
+                    <option value='053'>053</option>
+                    <option value='032'>032</option>
+                    <option value='062'>062</option>
+                    <option value='042'>042</option>
+                    <option value='052'>052</option>
+                    <option value='044'>044</option>
+                    <option value='031'>031</option>
+                    <option value='033'>033</option>
+                    <option value='043'>043</option>
+                    <option value='041'>041</option>
+                    <option value='063'>063</option>
+                    <option value='061'>061</option>
+                    <option value='054'>054</option>
+                    <option value='055'>055</option>
+                    <option value='064'>064</option>
+                    <option value='070'>070</option>
+                </select>
+
+        -<input class="textbox" id="tel2_@(list.pid)" name="tel2_@(list.pid)" rows="1" size="4" type="text" value="@(list.연락처2=="" ? "" : list.연락처2.Split('-')[1])" maxlength="4">
+        -<input class="textbox" id="tel3_@(list.pid)" name="tel3_@(list.pid)" rows="1" size="4" type="text" value="@(list.연락처2==""? "" : list.연락처2.Split('-')[2])" maxlength="4">
+
+            </td>
+            <td class="tdValue3c" width="200px" align="center">
+                <input type="button" id="SaveInfo" class="infoButtonT2" style="margin-right: 10px;" value="수정하기" onclick="saveInfo(@(list.pid),true);" />
+
+            </td>
+
+        </tr>
+            }
+        }
+
+</table>
+<br />
+<div class="buttonDiv">
+    <center>
+        @*<input type="button" id="createPerson" class="infoButton" style="margin-right: 60px;" value="수정사항 저장" />*@
+        <input type="button" id="exit" class="infoButton" style="margin-right: 60px;" value="나가기" onclick="exit()" />
+    </center>
+</div>
+<style>
+    .infoButtonT2 {
+        background-color: #80a6e6;
+        display: inline-block;
+        cursor: pointer;
+        color: #ffffff;
+        font-family: 'Malgun Gothic';
+        font-size: 18px;
+        font-weight: bold;
+        text-decoration: none;
+        border: none;
+        width: 90px;
+        height: 35px;
+    }
+
+    .infoButtonTdisabled2 {
+        background-color: #d2d2d2;
+        display: inline-block;
+        cursor: pointer;
+        color: #ffffff;
+        font-family: 'Malgun Gothic';
+        font-size: 18px;
+        font-weight: bold;
+        text-decoration: none;
+        border: none;
+        width: 90px;
+        height: 35px;
+    }
+
+    .tel_select4
+{
+    color: black;
+    font-family: "Malgun Gothic";
+	font-size: 20px;
+	width:180px;
+}
+
+        .tel_select5
+{
+    color: black;
+    font-family: "Malgun Gothic";
+	font-size: 20px;
+	width:200px;
+}
+
+    </style>

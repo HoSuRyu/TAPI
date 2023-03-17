@@ -1,0 +1,445 @@
+﻿@model TAPI_Interviewer.Models.q220614_PersonList
+           
+<html>
+<head>
+    @{  
+        ViewBag.Title = "가구 접촉일지";
+        string[] phone = string.IsNullOrEmpty(Model.휴대폰번호) == true ? new string[] { "" } : Model.휴대폰번호.Trim().Split('-');
+
+    
+    }
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.form.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("select[name='phone1']").val("@(phone[0])").attr("selected", "selected");
+
+            $("select[name='ftype']").val("@ViewBag.ptype").attr("selected", "selected");
+            $("select[name='gender']").val("@Model.성별").attr("selected", "selected");
+
+            $("input:radio[name ='contact']:input[value='@Model.접촉결과']").attr("checked", true);
+            if('@Model.가구주와의관계코드' == '9' )
+            {
+                $("#fTypeEtc").prop('disabled', false);
+                $("#fTypeEtc").val('@Model.가구주와의관계기타');
+            }
+
+
+            $("#ftype").on('change',function () {
+                var ftype = $("select[name='ftype'] option:selected").val();
+                if(ftype=='9.기타')
+                {
+                    $("#fTypeEtc").prop('disabled', false);
+                }
+                else
+                {
+                    $("#fTypeEtc").val('');
+                    $("#fTypeEtc").prop('disabled', true);
+                }
+            });
+
+
+            $('#close').click(function () {
+                window.location.href = './PersonList?keyid='+@ViewBag.HRC일련번호+'&hid='+@ViewBag.가구일련번호;
+            });
+
+            $('#survey').click(function () {
+
+                if('@Model.조사대상여부' != '적격')
+                {
+                    alert('조사 대상이 아닙니다.');
+                    return;
+                }
+
+                var ftype = $("select[name='ftype'] option:selected").val();
+                var fTypeEtc = $("#fTypeEtc").val();
+                if( ftype=='')
+                {
+                    alert('가구주와의 관계를 선택해 주세요.');
+                    $("#ftype").focus();
+                    return;
+                }
+                else if( ftype=='9.기타' && fTypeEtc=='')
+                {
+                    alert('가구주와의 관계 기타를 입력해 주세요.');
+                    $("#fTypeEtc").focus();
+                    return;
+                }
+
+                var name = $("#name").val();
+                if( name == '')
+                {
+                    alert('가구원 성명을 입력해 주세요.');
+                    $("#name").focus();
+                    return;
+                }
+
+                var gender = $("select[name='gender'] option:selected").val();
+                if( gender == '')
+                {
+                    alert('가구원 성별을 선택해 주세요.');
+                    $("#gender").focus();
+                    return;
+                }
+
+                var byear = $("#byear").val();
+                if( byear == '' )
+                {
+                    alert('가구원 출생년도를 입력해 주세요');
+                    return;
+                }
+                if( byear < 1900 || byear > 2022)
+                {
+                    alert('가구원 출생년도를 확인해 주세요');
+                    return;
+                }
+                else if( byear >= 2004 )
+                {
+                    alert('만19세 미만 비적격 가구원입니다. \n생년월일을 확인해주세요');
+                    return;
+                }
+
+                var phone1 = $("select[name='phone1'] option:selected").val();
+                var phone = phone1;
+
+                if (phone1 != '') {
+                    phone = phone1 + '-' + $("#phone2").val() + '-' + $("#phone3").val();
+                }
+
+                $.post("./PersonInfoOK", {
+                    "pid": '@Model.PID', "ftype": ftype, "fTypeEtc": fTypeEtc, "name": name, "gender": gender, "byear": byear, "contact":"","phone":phone, "hid":@ViewBag.가구일련번호
+                }, function (result) {
+                    if (result == '저장') {
+                        //alert('저장 되었습니다.');
+                        window.location.href = './Survey?keyid='+@(ViewBag.HRC일련번호)+'&hid='+@(ViewBag.가구일련번호)+'&pid='+@(ViewBag.가구원번호)+'&ftype='+ftype;
+                    }
+                    else{
+                        alert(result);
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+
+
+            });
+
+            $('#sendMsg').click(function(){
+
+                if('@Model.조사대상여부' != '적격')
+                {
+                    alert('조사 대상이 아닙니다.');
+                    return;
+                }
+
+                var phone1 = $("select[name='phone1'] option:selected").val();
+                var phone = phone1;
+
+                if(phone1 == '')
+                {
+                    alert('휴대전화 번호를 입력 해 주세요.');
+                    return;
+                }
+
+                if (phone1 != '') {
+                    phone = phone1 + '-' + $("#phone2").val() + '-' + $("#phone3").val();
+
+                    if (isCellPhone(phone) == false) {
+                        $("#phone2").focus();
+                        alert('유효한 휴대전화 번호를 입력 해 주세요.');
+                        return;
+                    }
+                }
+
+                var ftype = $("select[name='ftype'] option:selected").val();
+                var fTypeEtc = $("#fTypeEtc").val();
+                if( ftype=='')
+                {
+                    alert('가구주와의 관계를 선택해 주세요.');
+                    $("#ftype").focus();
+                    return;
+                }
+                else if( ftype=='9.기타' && fTypeEtc=='')
+                {
+                    alert('가구주와의 관계 기타를 입력해 주세요.');
+                    $("#fTypeEtc").focus();
+                    return;
+                }
+
+                var name = $("#name").val();
+                if( name == '')
+                {
+                    alert('가구원 성명을 입력해 주세요.');
+                    $("#name").focus();
+                    return;
+                }
+
+                var gender = $("select[name='gender'] option:selected").val();
+                if( gender == '')
+                {
+                    alert('가구원 성별을 선택해 주세요.');
+                    $("#gender").focus();
+                    return;
+                }
+
+                var byear = $("#byear").val();
+                if( byear == '' )
+                {
+                    alert('가구원 출생년도를 입력해 주세요');
+                    return;
+                }
+                if( byear < 1900 || byear > 2022)
+                {
+                    alert('가구원 출생년도를 확인해 주세요');
+                    return;
+                }
+                else if( byear >= 2004 )
+                {
+                    alert('만18세 미만 비적격 가구원입니다. \n생년월일을 확인해주세요');
+                    return;
+                }
+
+                $.post("./SendMSG", {
+                    "pid": '@Model.PID', "phone": phone, "ftype":ftype,  "fTypeEtc": fTypeEtc, "name": name, "gender": gender, "byear": byear, "hid":@ViewBag.가구일련번호
+                }, function (result) {
+
+
+                    if (result == '성공') {
+                        alert('문자 발송 완료');
+                        window.location.href = './PersonInfo?keyid='+@(ViewBag.HRC일련번호)+'&hid='+@(ViewBag.가구일련번호)+'&pid='+@(ViewBag.가구원번호);
+                    }
+                    else{
+                        alert(result);
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+            $('#save').click(function () {
+
+                var ftype = $("select[name='ftype'] option:selected").val();
+                var fTypeEtc = $("#fTypeEtc").val();
+                if( ftype=='')
+                {
+                    alert('가구주와의 관계를 선택해 주세요.');
+                    $("#ftype").focus();
+                    return;
+                }
+                else if( ftype=='9.기타' && fTypeEtc=='')
+                {
+                    alert('가구주와의 관계 기타를 입력해 주세요.');
+                    $("#fTypeEtc").focus();
+                    return;
+                }
+
+                var name = $("#name").val();
+                if( name == '')
+                {
+                    alert('가구원 성명을 입력해 주세요.');
+                    $("#name").focus();
+                    return;
+                }
+
+                var gender = $("select[name='gender'] option:selected").val();
+                if( gender == '')
+                {
+                    alert('가구원 성별을 선택해 주세요.');
+                    $("#gender").focus();
+                    return;
+                }
+
+                var byear = $("#byear").val();
+                if( byear == '' )
+                {
+                    alert('가구원 출생년도를 입력해 주세요');
+                    return;
+                }
+                if( byear < 1900 || byear > 2022)
+                {
+                    alert('가구원 출생년도를 확인해 주세요');
+                    return;
+                }
+
+                var contact = $('input:radio[name="contact"]:checked').val();
+                var phone1 = $("select[name='phone1'] option:selected").val();
+                var phone = phone1;
+
+                if (phone1 != '') {
+                    phone = phone1 + '-' + $("#phone2").val() + '-' + $("#phone3").val();
+
+                    if (isCellPhone(phone) == false) {
+                        $("#phone2").focus();
+                        alert('유효한 휴대전화 번호를 입력 해 주세요.');
+                        return;
+                    }
+                }
+
+
+                $.post("./PersonInfoOK", {
+                    "pid": '@Model.PID', "ftype": ftype, "fTypeEtc": fTypeEtc, "name": name, "gender": gender, "byear": byear, "contact":contact,"phone":phone, "hid":@ViewBag.가구일련번호
+                }, function (result) {
+
+
+                    if (result == '저장') {
+                        alert('저장 되었습니다.');
+                        window.location.href = './PersonList?keyid='+@ViewBag.HRC일련번호+'&hid='+@ViewBag.가구일련번호;
+                    }
+                    else{
+                        alert(result);
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+
+
+        });
+
+        function isCellPhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/;
+
+            return regPhone.test(p);
+        }
+
+
+    </script>
+    <link href="@Url.Content("../../Content/q210801/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/jquery.chained.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    <table class="infoTable">
+        <tr>
+            <td class="tdValue" colspan="2">
+                가구원 정보
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue">
+                가구주와의 관계
+            </td>
+            <td class="tdValue3">
+                <select id="ftype" name="ftype" class="tel_select9">
+                    <option></option>
+                    <option value='1.가구주'>가구주</option>
+                    <option value='2.가구주의 배우자'>가구주의 배우자</option>
+                    <option value='3.미혼자녀'>미혼자녀</option>
+                    <option value='4.기혼자녀(배우자의 기혼자녀 포함)'>기혼자녀(배우자의 기혼자녀 포함)</option>
+                    <option value='5.손자손녀(배우자의 손자손녀 포함)'>손자손녀(배우자의 손자손녀 포함)</option>
+                    <option value='6.부모(배우자의 부모 포함)'>부모(배우자의 부모 포함)</option>
+                    <option value='7.조부모(배우자의 조부모 포함)'>조부모(배우자의 조부모 포함)</option>
+                    <option value='8.형제자매(배우자의 형제자매 포함)'>형제·자매(배우자의 형제자매 포함)</option>
+                    <option value='9.기타'>기타</option>
+                </select>
+                기타 : <input class="textbox" id="fTypeEtc" rows="1" size="13" type="text" value="@Model.가구주와의관계기타"  disabled/>
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue">
+                성명
+            </td>
+            <td class="tdValue3">
+                <input class="textbox" id="name" rows="1" size="13" type="text" value="@Model.성명">
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue">
+                성별
+            </td>
+            <td class="tdValue3">
+                <select id="gender" name="gender" class="tel_select2">
+                    <option></option>
+                    <option value='남'>남</option>
+                    <option value='여'>여</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue">
+                출생년도
+            </td>
+            <td class="tdValue3">
+                <input class="textbox" id="byear" rows="1" size="8" type="text" value="@Model.생년">년
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue" colspan="2">
+                조사 하기
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue">
+                접촉결과
+            </td>
+            <td class="tdValue3">
+                <input id="contact_1" name="contact" type="radio" value="조사시작" disabled><label for="contact_1"> 1. 조사시작</label><br />
+                <input id="contact_2" name="contact" type="radio" value="강력거절"><label for="contact_2"> 2. 강력거절</label><br />
+                <input id="contact_3" name="contact" type="radio" value="장기부재"><label for="contact_3"> 3. 장기부재</label><br />
+                <input id="contact_4" name="contact" type="radio" value="조사불가"><label for="contact_4"> 4. 조사불가(인지적 장애/의사소통 불가능 등)</label><br />
+                <input id="contact_5" name="contact" type="radio" value="가구원 아님"><label for="contact_5"> 5. 가구원 아님</label><br />
+                <input id="contact_6" name="contact" type="radio" value="유치조사"><label for="contact_6"> 6. 유치조사</label><br />
+</td>
+        </tr>
+        <tr>
+            <td class="tdValue">
+                TAPI 조사하기
+            </td>
+            <td class="tdValue3">
+                <input type="button" id="survey" class="infoButtonT" style="margin-right: 10px;" value="조사 시작"  />
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue">
+                모바일 조사 발송하기
+            </td>
+            <td class="tdValue3">        
+                <input type="submit" id="sendMsg" class="infoButtonT" style="margin-right: 10px;" value="문자 발송" />
+        
+                <select id="phone1" name="phone1" class="tel_select2">
+                    <option></option>
+                    <option value='010'>010</option>
+                    <option value='011'>011</option>
+                    <option value='016'>016</option>
+                    <option value='017'>017</option>
+                    <option value='018'>018</option>
+                    <option value='019'>019</option>
+                </select>
+                - <input class="textbox" id="phone2" rows="1" size="4" type="tel" value="@(phone.Length <= 1 ? "" : phone[1])" maxlength="4">
+                - <input class="textbox" id="phone3" rows="1" size="4" type="tel" value="@(phone.Length <= 1 ? "" : phone[2])" maxlength="4">
+
+                @*휴대폰 번호 : <input class="textbox" id="phone" rows="1" size="15" type="text" value="@Model.휴대폰번호">*@
+
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue">
+                진행 상태
+            </td>
+            <td class="tdValue3">
+                @Model.진행상태
+            </td>
+        </tr>
+    </table>
+        
+    <br />
+    <table width="100%">
+        <tr>
+            <td align="center" width="50%">
+                <input type="button" id="save" class="infoButton" value="저장 후 종료" />
+                &nbsp; 
+                <input type="button" id="close" class="infoButton" value="닫기" />
+            </td>
+        </tr>
+    </table>
+        
+</body>
+</html>

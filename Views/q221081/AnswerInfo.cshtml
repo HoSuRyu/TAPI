@@ -1,0 +1,493 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q221081_GETHOUSELISTResult>
+           
+<html>
+<head>
+    @{
+        ViewBag.Title = "고령화 패널 - 기본정보입력";
+
+        string[] tel = string.IsNullOrEmpty(ViewBag.집전화) == true ? new string[] { "" } : ViewBag.집전화.Trim().Split('-');
+        string[] phone = string.IsNullOrEmpty(ViewBag.휴대전화) == true ? new string[] { "" } : ViewBag.휴대전화.Trim().Split('-');
+    }
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+
+            $('#cancel').click(function () {
+                window.location.href = './List?pid='+@ViewBag.PID;
+            });
+
+
+            $('input:radio[value="@ViewBag.주소확인"]').prop('checked', true);
+
+            @foreach (TAPI_Interviewer.Models.SP_q221081_GETHOUSELISTResult list in Model)
+            {
+                @:setAnswer('selected', 'ftype_@(list.PID)', '@list.가구대표여부');
+                            if(list.가구대표여부 == "응답자 대표" && list.진행상태=="설문완료")
+                {
+                    @:setDisabled('selected', 'ftype_@(list.PID)');
+                            }
+                @:setAnswer('hidden', 'pid_@(list.PID)', '@list.PID');
+
+            }
+            $("select[name='tel1']").val("@(tel[0])").attr("selected", "selected");
+            $("select[name='phone1']").val("@(phone[0])").attr("selected", "selected");
+
+            $('input:text[name="ftype"]').val('@ViewBag.가구대표여부');
+        });
+
+        function setAnswer(vtype, variable, val) {
+
+            if (vtype == 'selected') {
+                $("select[name=" + variable + "]").val(val).attr("selected", "selected");
+            }
+            if (vtype == 'hidden') {
+                $("input:hidden[name=" + variable + "]").val(val);
+            }
+        }
+
+        function setDisabled(vtype, variable) {
+
+            if (vtype == 'selected') {
+                $("select[name=" + variable + "]").prop('disabled', true);
+            }
+        }
+
+        function chagefType(pid) {
+
+            if( pid == '@ViewBag.PID')
+            {
+                var cap = $("#ftype_" + pid + " option:selected").text();
+                $('input:text[name="ftype"]').val(cap);
+            }
+
+        }
+
+
+        function checkVal(variable, type, valc) {
+            var errorCount = $('#valueError').val();
+
+            var isAnswer = $("select[name=" + valc + "]").val();
+            if (isAnswer == '응답자 대표')
+                errorCount++;
+
+            var val = '';
+            if (type == 'text') {
+                val = $("input:text[name=" + variable + "]").val();
+            }
+            if (type == 'selected') {
+                val = $("select[name=" + variable + "]").val();
+            }
+            if (type == 'radio') {
+                val = $("radio[name=" + variable + "]").val();
+            }
+
+
+            if (val == undefined || val == '') {
+                $('#valueError').val(99);
+                return;
+            }
+            else {
+                $('#valueError').val(errorCount);
+            }
+        }
+
+        function saveVal(variable, type, name) {
+
+            var val = '';
+            if (type == 'text') {
+                val = $("input:text[name=" + variable + "]").val();
+            }
+            if (type == 'selected') {
+                val = $("select[name=" + variable + "]").val();
+
+            }
+            if (type == 'radio') {
+                val = $("radio[name=" + variable + "]").val();
+            }
+            if (type == 'hidden') {
+                val = $("input:hidden[name=" + variable + "]").val();
+            }
+
+            var hiddenVal = $("input:hidden[name=" + name + "]").val();
+            $("input:hidden[name=" + name + "]").val(hiddenVal + '|' + val);
+
+        }
+
+        function saveInfo(goType) {
+
+            $('#valueError').val(0);
+            @foreach (TAPI_Interviewer.Models.SP_q221081_GETHOUSELISTResult list in Model)
+            {
+                @:checkVal('ftype_@list.PID', 'selected', 'ftype_@list.PID');
+                           }
+
+            if ($('#valueError').val() == 99) {
+                alert('응답자 대표 여부를 모두 선택해 주세요.');
+                return;
+            }
+            else if ($('#valueError').val() > 1) {
+                alert('가구 대표를 한 명만 선택해 주세요.');
+                return;
+            }
+            else if ($('#valueError').val() == 0) {
+                alert('가구 대표를 선택해 주세요.');
+                return;
+            }
+
+
+            var tel = '';
+            var phone = '';
+            var tel = $("select[name='tel1'] option:selected").val();
+            if (tel != '' && tel != '없음') {
+                tel = tel + '-' + $("#tel2").val() + '-' + $("#tel3").val();
+
+                if (isTelePhone(tel) == false) {
+                    $("#tel2").focus();
+                    alert('유효한 집전화 번호를 입력 해 주세요.');
+                    return;
+                }
+            }
+            var phone = $("select[name='phone1'] option:selected").val();
+            if (phone != '' && phone != '없음') {
+                phone = phone + '-' + $("#phone2").val() + '-' + $("#phone3").val();
+
+                if (isCellPhone(phone) == false) {
+                    $("#phone2").focus();
+                    alert('유효한 휴대전화 번호를 입력 해 주세요.');
+                    return;
+                }
+            }
+
+            if (tel == '' || phone == '' ) {
+                alert('집전화, 휴대전화 번호를 입력 해 주세요.\r\n없는 경우 없음을 선택 해 주세요');
+                return;
+            }
+
+            if (tel == '없음' && phone == '없음' ) {
+                alert('집전화 혹은 휴대전화 번호를 입력 해 주세요.');
+                return;
+            }
+
+            var IsNewAddress = $(":radio[name='IsNewAddress']:checked").val();
+            var jibunAddr = $("#jibunAddr").val();
+            var roadAddrPart1 = $("#roadAddrPart1").val();
+            var siNm = $("#siNm").val();
+            var sggNm = $("#sggNm").val();
+            var emdNm = $('#emdNm').val();
+            var sebuAddr = $("#sebuAddr").val();
+
+            //siNm = '서울특별시';
+            //sggNm = '강남구';
+            //emdNm = '';
+            //roadAddrPart1 = '서울특별시 강남구 강남대로 358';
+            if (IsNewAddress == undefined || IsNewAddress == '') {
+                alert("'주소'가 맞는지 확인해 주세요.");
+                return;
+            }
+
+            if (IsNewAddress == '주소 틀림' && roadAddrPart1 == '') {
+                alert('주소를 입력해 주세요.');
+                return;
+            }
+
+            var pidArr = '';
+            @foreach (TAPI_Interviewer.Models.SP_q221081_GETHOUSELISTResult list in Model)
+            {
+                @:saveVal('ftype_@list.PID', 'selected', 'ftypeArr');
+                            @:saveVal('pid_@list.PID', 'hidden', 'pidArr');
+
+
+            }
+            var ftypeArr = $("input:hidden[name=ftypeArr]").val();
+            var pidArr = $("input:hidden[name=pidArr]").val();
+
+            $.post("./SaveInfo", {
+                "pid": '@ViewBag.PID', "familyPIO": pidArr, "familyInfo": ftypeArr, "tel": tel, "phone": phone, "IsNewAddress":IsNewAddress, "siNm":siNm, "sggNm":sggNm, "emdNm":emdNm, "roadAddrPart1":roadAddrPart1,"sebuAddr":sebuAddr
+            }, function (result) {
+
+                if(result != '')
+                {
+                    alert(result);
+                }
+                else
+                {
+                    if( goType == 'save')
+                    {
+                        alert('저장 되었습니다.');
+                        location.reload();
+                    }
+                    else{
+                        window.location.href = './Survey?pid=@(ViewBag.PID)';
+                    }
+                }
+
+
+
+            }).error(function (jqXHR, status, error) {
+                alert(status);
+                alert(error);
+            });
+
+
+        }
+
+        function isCellPhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/;
+
+            return regPhone.test(p);
+        }
+
+        function isTelePhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^(0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]|70|505))[1-9]+[0-9]{6,7}$/;
+
+            return regPhone.test(p);
+        }
+
+        function setAddress()
+        {
+            var IsNewAddress = $(":radio[name='IsNewAddress']:checked").val();
+
+
+            if (IsNewAddress == '주소 틀림') {
+
+                $("#searchJusoButton").removeAttr('disabled');
+                $("#roadAddrPart1").removeAttr('disabled');
+                $("#jibunAddr").removeAttr('disabled');
+                $("#sebuAddr").removeAttr('disabled');
+            }
+            else {
+                $("#searchJusoButton").attr('disabled', 'disabled');
+                $("#roadAddrPart1").val("").attr('disabled', 'disabled');
+                $("#jibunAddr").val("").attr('disabled', 'disabled');
+                $("#sebuAddr").val("").attr('disabled', 'disabled');
+            }
+
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    
+    <link href="@Url.Content("../../Content/SHOUSE2017/Site.css?version=6")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("../../Content/q200494/Site.css?version=2")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/RPS_Script2.js"></script>
+</head>
+<body>
+    @Html.Partial("CommonAddressSearchScript")
+    <input type="hidden" name="valueError" id="valueError" value="0"></input>
+    <input type="hidden" id="pidArr" name="pidArr" value="" /></input>
+    <input type="hidden" id="ftypeArr" name="ftypeArr" value="" /></input>
+    <table class="infoTable">
+        <tr>
+            <td class="tdValue" colspan="3" >
+                * 가구설문에 응답할 가구대표를 확인해 주십시오. 가구대표를 변경해야 할 경우 수정 해 주세요.<br />
+                * 가구원 중 한명은 반드시 가구대표로 가구설문에 응답하여야 합니다.<br />
+
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue" width="30%">
+                HID
+            </td>
+            <td class="tdHeader" colspan="2" >
+                @ViewBag.HID
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue" width="30%">
+                패널 성명
+            </td>
+            <td class="tdValue" width="30%">
+                가구 대표 여부 
+            </td>
+            <td class="tdValue" width="30%">
+               설문 진행 상태
+            </td>
+        </tr>
+      
+        @{
+            foreach (TAPI_Interviewer.Models.SP_q221081_GETHOUSELISTResult list in Model)
+            {
+
+                <tr>
+                    <td class="tdHeader">
+                        @(list.성명)
+                    </td>
+                    <td class="tdHeader">
+                        <input type="hidden" id="pid_@(list.PID)" name="pid_@(list.PID)"></input>
+
+                        <select id="ftype_@(list.PID)" name="ftype_@(list.PID)" class="tel_select2" onchange="chagefType(@(list.PID))">
+                            <option value='응답자 대표'>응답자 대표</option>
+                            <option value='가구원'>가구원</option>
+                        </select>
+
+                    </td>
+                    <td class="tdHeader">
+                        @(list.진행상태)
+                    </td>
+                </tr>
+
+            }
+        }
+
+        <tr>
+            <td class="tdHeader" colspan="3">
+                &nbsp;<br />
+                <b>응답자 정보</b>
+            </td>
+        </tr>
+       
+        <tr>
+            <td class="tdValue" width="30%">
+                PID
+            </td>
+            <td class="tdHeader" colspan="2">
+                @ViewBag.PID
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue" width="30%">
+                패널 성명
+            </td>
+            <td class="tdHeader" colspan="2">
+                @ViewBag.성명
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue" width="30%">
+               응답자 대표 여부
+            </td>
+            <td class="tdHeader" colspan="2">
+                <input class="textbox" id="ftype" name="ftype" rows="1" size="60" type="text" value="" maxlength="100" readonly="readonly" />
+            </td>
+        </tr>
+        
+        
+        <tr>
+            <td class="tdValue">
+                집전화
+            </td>
+
+            <td class="tdHeader"  colspan="2">
+                <select id="tel1" name="tel1" class="tel_select2">
+                    <option></option>
+
+                    <option value="02">서울 02</option>
+                    <option value="051">부산 051</option>
+                    <option value="053">대구 053</option>
+                    <option value="032">인천 032</option>
+                    <option value="062">광주 062</option>
+                    <option value="042">대전 042</option>
+                    <option value="052">울산 052</option>
+                    <option value="044">세종 044</option>
+                    <option value="031">경기 031</option>
+                    <option value="033">강원 033</option>
+                    <option value="043">충북 043</option>
+                    <option value="041">충남 041</option>
+                    <option value="063">전북 063</option>
+                    <option value="061">전남 061</option>
+                    <option value="054">경북 054</option>
+                    <option value="055">경남 055</option>
+                    <option value="064">제주 064</option>
+                    <option value="070">인터넷전화 070</option>
+                    <option value="없음">없음</option>
+                </select>
+                - <input class="textbox" id="tel2" rows="1" size="4" type="tel" value="@(tel.Length <= 1 ? "" : tel[1])" maxlength="4">
+                - <input class="textbox" id="tel3" rows="1" size="4" type="tel" value="@(tel.Length <= 1 ? "" : tel[2])" maxlength="4">
+            </td>
+        </tr>
+
+        <tr>
+            <td class="tdValue">
+                휴대전화
+            </td>
+            <td class="tdHeader" colspan="2">
+                <select id="phone1" name="phone1" class="tel_select2">
+                    <option></option>
+                    <option value='010'>010</option>
+                    <option value='011'>011</option>
+                    <option value='016'>016</option>
+                    <option value='017'>017</option>
+                    <option value='018'>018</option>
+                    <option value='019'>019</option>
+                    <option value="없음">없음</option>
+                </select>
+                - <input class="textbox" id="phone2" rows="1" size="4" type="tel" value="@(phone.Length <= 1 ? "" : phone[1])" maxlength="4">
+                - <input class="textbox" id="phone3" rows="1" size="4" type="tel" value="@(phone.Length <= 1 ? "" : phone[2])" maxlength="4">
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue" width="30%">
+                주소
+            </td>
+            <td class="tdHeader" colspan="2">
+                @ViewBag.주소
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue">
+                주소확인
+            </td>
+            <td class="tdHeader" colspan="2">
+                <input type="radio" name="IsNewAddress" id="IsNewAddress_1" value="주소 맞음"   onchange="setAddress()"/><label for="IsNewAddress_1">1. 주소 맞음 </label> &nbsp; &nbsp;
+                <input type="radio" name="IsNewAddress" id="IsNewAddress_2" value="주소 틀림"   onchange="setAddress()"/><label for="IsNewAddress_2">2. 주소 틀림</label>
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue">
+                주소검색
+            </td>
+            <td class="tdHeader" colspan="2">
+                <input type="button" class="infoButton" value="주소검색" onclick="jusoPopUp();" style=" cursor pointer;" id="searchJusoButton"> ◀ 주소검색버튼을 클릭하세요.<br />
+                <input class="textbox" type="text" id="roadAddrPart1" placeholder="" readonly="readonly" title="주소" style="width:90%">
+                <input type="hidden" id="siNm" title="시도">
+                <input type="hidden" id="sggNm" title="시군구">
+                <input type="hidden" id="emdNm" title="읍면동">
+                <input type="hidden" id="jibunAddr" title="지번주소">
+                <br /><input class="textbox" type="text" id="sebuAddr" maxlength="50" placeholder="세부주소 예)105동 123호" title="세부주소" style="width:90%">
+            </td>
+        </tr>
+       
+        <tr>
+            <td class="tdValue">
+                설문 하기
+            </td>
+            <td class="tdHeader" colspan="2">
+                <input type="button" id="survey" class="infoButtonBlue" value="설문 하기" onclick="saveInfo('survey')" />
+                
+            </td>
+        </tr>
+
+    </table>
+    <br />
+    <div class="buttonDiv">
+        <center>
+            <input type="button" id="ok" class="infoButton" value="저장"  onclick="saveInfo('save')"/>
+            <input type="button" id="cancel" class="infoButton" value="나가기"/>
+        </center>
+    </div>
+
+</body>
+
+<style>
+    .tel_select2 {
+        color: black;
+        font-family: "Malgun Gothic";
+        font-size: 20px;
+        width: 200px;
+    }
+
+    .tdValuePick
+    {
+        background-color:#e4d99c;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+</style>
+
+</html >

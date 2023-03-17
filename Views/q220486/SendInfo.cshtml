@@ -1,0 +1,189 @@
+﻿@model TAPI_Interviewer.Models.q220486_List
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "사전조사 안내문자 발송  ";
+        string[] phone = string.IsNullOrEmpty(Model.사전안내발송연락처) == true ? new string[] { "" } : Model.사전안내발송연락처.Trim().Split('-');
+        string[] uphone = string.IsNullOrEmpty(Model.면접원연락처) == true ? new string[] { "" } : Model.면접원연락처.Trim().Split('-');
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(":select[name='uphone1']").change(function () {
+
+                if($("select[name='uphone1'] option:selected").val() == '선택안함')
+                {
+                    alert('test');
+                }
+            });
+
+            $("select[name='phone1']").val("@(phone[0])").attr("selected", "selected");
+           
+            $("select[name='uphone1']").val("@(uphone[0])").attr("selected", "selected");
+            if ('@(uphone[0])' == '') {
+                $("select[name='uphone1']").val("선택안함").attr("selected", "selected");
+            }
+            $('#cancel').click(function () {
+                window.location.href = './List';
+            });
+
+
+            $('#sendMsg').click(function(){
+
+                var phone1 = $("select[name='phone1'] option:selected").val();
+                var phone = phone1;
+
+                if (phone1 == '') {
+                    alert('휴대전화 번호를 입력 해 주세요.');
+                    return;
+                }
+
+                if (phone1 != '') {
+                    phone = phone1 + '-' + $("#phone2").val() + '-' + $("#phone3").val();
+
+                    if (isCellPhone(phone) == false) {
+                        $("#phone2").focus();
+                        alert('유효한 휴대전화 번호를 입력 해 주세요.');
+                        return;
+                    }
+                }
+
+                var uphone1 = $("select[name='uphone1'] option:selected").val();
+                var uphone = uphone1;
+
+                if (uphone1 != '선택안함') {
+                    uphone = uphone1 + '-' + $("#uphone2").val() + '-' + $("#uphone3").val();
+
+                    if (isCellPhone(uphone) == false) {
+                        $("#uphone2").focus();
+                        alert('유효한 휴대전화 번호를 입력 해 주세요.');
+                        return;
+                    }
+                }
+
+                $.post("./SendInfoMSG", {
+                    "pid": '@Model.PID', "phone": phone, "uTel": uphone
+                }, function (result) {
+
+                    if (result == '성공') {
+                        alert('문자 발송 완료');
+                        window.location.href = './List';
+                    }
+                    else{
+                        alert(result);
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+        });
+
+
+        function isCellPhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/;
+
+            return regPhone.test(p);
+        }
+
+        function isTelePhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^(0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]|70|505))[1-9]+[0-9]{6,7}$/;
+
+            return regPhone.test(p);
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("../../Content/q200494/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js" )"></script>
+</head>
+<body>
+    <div style="width : 100%;display: inline-block;">
+        <label id="title">사전조사 안내문구 발송 </label>
+        <br />
+        <table class="infoTable">
+            <tr>
+                <td colspan="2"><br />사전조사 진행 전 조사대상 아동 본인 또는 양육자에게 안내문자를 발송합니다.<br /><Br />
+<br />&nbsp;
+</td>
+                
+            </tr>
+            <tr>
+                <td class="tdValue">PID</td>
+                <td>@(Model.PID)</td>
+            </tr>
+            <tr>
+                <td class="tdValue">아동 이름</td>
+                <td>@(Model.아동이름)</td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp; </td>
+            </tr>
+            <tr>
+                <td class="tdValue">연락처1</td>
+                <td><input type="text" id="phone" value="@(Model.연락처1)" disabled="disabled"  style="font-size:20px;" size="30"/></td>
+            </tr>
+            <tr>
+                <td class="tdValue">연락처1 아동과의 관계</td>
+                <td><input type="text" value="@(Model.연락처1아동과의관계)" disabled="disabled"  style="font-size:20px;"  size="30" /></td>
+            </tr>
+
+            <tr>
+                <td colspan="2">&nbsp; </td>
+            </tr>
+            <tr>
+                <td class="tdValue">발송할 연락처</td>
+                <td>
+                    <select id="phone1" name="phone1" class="tel_select2">
+                        <option></option>
+                        <option value='010'>010</option>
+                        <option value='011'>011</option>
+                        <option value='016'>016</option>
+                        <option value='017'>017</option>
+                        <option value='018'>018</option>
+                        <option value='019'>019</option>
+                    </select>
+                    - <input class="textbox" id="phone2" rows="1" size="4" type="tel" value="@(phone.Length <= 1 ? "" : phone[1])" maxlength="4">
+                    - <input class="textbox" id="phone3" rows="1" size="4" type="tel" value="@(phone.Length <= 1 ? "" : phone[2])" maxlength="4">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp; </td>
+            </tr>
+            <tr>
+                <td class="tdValue">면접원 연락처 노출(선택)</td>
+                <td>
+                    <select id="uphone1" name="uphone1" class="tel_select2">
+                        <option value='선택안함'>선택안함</option>
+                        <option value='010'>010</option>
+                        <option value='011'>011</option>
+                        <option value='016'>016</option>
+                        <option value='017'>017</option>
+                        <option value='018'>018</option>
+                        <option value='019'>019</option>
+                    </select>
+                    - <input class="textbox" id="uphone2" rows="1" size="4" type="tel" value="@(uphone.Length <= 1 ? "" : uphone[1])" maxlength="4">
+                    - <input class="textbox" id="uphone3" rows="1" size="4" type="tel" value="@(uphone.Length <= 1 ? "" : uphone[2])" maxlength="4">
+                </td>
+            </tr>
+           
+            
+        </table>
+        <br />&nbsp;
+        <div class="buttonDiv">
+            <center>
+                <input type="button" id="cancel" class="infoButtonRed" value="취소" />&nbsp; 
+                <input type="button" id="sendMsg" class="infoButtonGreen" value="발송신청" />
+            </center>
+        </div>
+    </div>
+</body>
+</html>

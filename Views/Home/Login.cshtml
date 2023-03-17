@@ -1,0 +1,49 @@
+﻿<!--#include virtual = "/inc/head.asp"-->
+
+
+
+
+<div id="mainView">
+    <div class="mainwrap">
+@using (Html.BeginForm("Login", "Home", FormMethod.Post))
+{
+        <div class="mainlogin">
+            <div class="mainpbox">
+                <img src="/Content/Design/images/main_img.png" alt="TAPI 인터뷰어" class="mainimgbox">
+                <h1>TAPI 인터뷰어</h1>
+            </div>
+            <div class="loginform">
+                <form>
+                    <div class="loginipbox">
+                        <label for="id">아이디</label>
+                        <input type="text" class="form_ctrl" placeholder="아이디"  name="uid"  value="@ViewBag.Uid"  >
+                    </div>
+                    <div class="loginipbox">
+                        <label for="password">비밀번호</label>
+                        <input type="password" class="form_ctrl" placeholder="비밀번호"  name="password"  value="@ViewBag.Password" tabindex="2">
+                    </div>
+                    <div>
+                        <button type="submit" class="btnsty01" value="Login">로그인</button>
+                    </div>
+                </form>
+                @{
+                    string textHtml = "";
+                    if (@ViewBag.Error != null && string.IsNullOrEmpty(ViewBag.Error.ToString()) == false)
+                    {
+                        textHtml = "<div class='subtxtbox'>" + ViewBag.Error + "</div>";
+                    }
+                    @Html.Raw(textHtml)
+
+                }
+            </div>
+         
+            <div class="ftcontbox">
+                <img src="/Content/Design/images/hrclogo.png" alt="한국리서치 로고">
+            </div>
+        </div>
+    }
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,293 @@
+﻿@model List<TAPI_Interviewer.Models.q221228_Contact>
+           
+<html>
+<head>
+    @{  
+        ViewBag.Title = "연근해어업실태조사 - 접촉일지";
+    }
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            setDisabled();
+
+            $("select[name='contactMonth']").val("@ViewBag.contactMonth").attr("selected", "selected");
+            $("select[name='contactDay']").val("@ViewBag.contactDay").attr("selected", "selected");
+
+
+
+            $(":radio[name='contact']").change(function () {
+                setDisabled();
+            });
+
+
+            $('#cancel').click(function () {
+                window.location.href = './List?pid='+@ViewBag.PID;
+            });
+
+            $('#save').click(function () {
+
+                var ranking = $(":hidden[name='ranking']").val();
+                var contactMonth = $("select[name='contactMonth'] option:selected").text();
+                var contactDay = $("select[name='contactDay'] option:selected").text();
+                var contactTime = $("select[name='contactTime'] option:selected").text();
+
+                var contact = $(":radio[name='contact']:checked").val();
+
+
+
+                if (contact == undefined || contact == '') {
+                    alert("비성공 사유를 선택해 주세요.")
+                    return;
+                }
+                var etc = $("#etc").val();
+                if (contact == "6. 기타") {
+                    if (etc == "") {
+                        alert("기타 세부 사유를 입력해 주세요.")
+                        return;
+                    }
+                }
+
+
+
+                $.post("./ContactOK", {"pid": '@ViewBag.PID', "ranking": ranking, "contact": contact, "contactEtc": etc, "contactMonth": contactMonth, "contactDay": contactDay, "contactTime": contactTime
+                }, function (result) {
+
+
+                    if (result == '저장') {
+                        alert('저장 되었습니다.');
+                        location.reload();
+                    }
+                    else{
+                        alert(result);
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+
+
+        });
+
+        function setDisabled() {
+
+        }
+
+
+    </script>
+    <link href="@Url.Content("../../Content/q200494/Site.css?version=2")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/jquery.chained.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    <table class="infoTable">
+        <tr>
+            <td class="tdHeader">
+                응답자ID
+            </td>
+            <td class="tdValue">
+                @ViewBag.PID
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+               세부업종
+            </td>
+            <td class="tdValue">
+                @ViewBag.세부업종
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                시도
+            </td>
+            <td class="tdValue">
+                @ViewBag.시도
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                시군구
+            </td>
+            <td class="tdValue">
+                @ViewBag.시군구
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                주소
+            </td>
+            <td class="tdValue">
+                @ViewBag.주소
+            </td>
+        </tr>
+    </table>
+
+    @Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "방문리스트";
+        settings.KeyFieldName = "방문 리스트";
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "방문횟수";
+            column.Caption = "방문 횟수";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(100);
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "방문일자";
+            column.Caption = "방문 일자";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(130);
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "방문시간";
+            column.Caption = "방문 시간";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(180);
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "비성공사유";
+            column.Caption = "비성공사유";
+            column.CellStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Left;
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(400);
+        });
+
+
+        settings.Styles.Cell.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+
+        settings.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+
+        settings.Settings.ShowFilterRow = false;
+        settings.Settings.ShowFilterRowMenu = false;
+        settings.Settings.VerticalScrollableHeight = 150;
+        settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
+        settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+    }).Bind(Model).GetHtml()
+
+    <table class="infoTable">
+        <tr>
+            <td class="tdHeader">방문횟수</td>
+            <td class="tdValue"><b>@ViewBag.Ranking</b>  회<input type="hidden" name="ranking" value="@ViewBag.Ranking" /></td>        
+            <td class="tdHeader">
+                방문일자
+            </td>
+            <td class="tdValue">
+                <select id="contactMonth" name="contactMonth"  class="date_select">
+                    <option value="01">01</option>          
+                    <option value="02">02</option>          
+                    <option value="03">03</option>          
+                    <option value="04">04</option>          
+                    <option value="05">05</option>          
+                    <option value="06">06</option>          
+                    <option value="07">07</option>          
+                    <option value="08">08</option>          
+                    <option value="09">09</option>          
+                    <option value="10">10</option>          
+                    <option value="11">11</option>          
+                    <option value="12">12</option>          
+                </select>
+                &nbsp;월
+                <select id="contactDay" name="contactDay"  class="date_select">
+                    <option value="01">01</option>          
+                    <option value="02">02</option>          
+                    <option value="03">03</option>          
+                    <option value="04">04</option>          
+                    <option value="05">05</option>          
+                    <option value="06">06</option>          
+                    <option value="07">07</option>          
+                    <option value="08">08</option>          
+                    <option value="09">09</option>          
+                    <option value="10">10</option>          
+                    <option value="11">11</option>          
+                    <option value="12">12</option>          
+                    <option value="13">13</option>          
+                    <option value="14">14</option>          
+                    <option value="15">15</option>          
+                    <option value="16">16</option>          
+                    <option value="17">17</option>          
+                    <option value="18">18</option>          
+                    <option value="19">19</option>          
+                    <option value="20">20</option>          
+                    <option value="21">21</option>          
+                    <option value="22">22</option>          
+                    <option value="23">23</option>          
+                    <option value="24">24</option>          
+                    <option value="25">25</option>          
+                    <option value="26">26</option>          
+                    <option value="27">27</option>          
+                    <option value="28">28</option>          
+                    <option value="29">29</option>          
+                    <option value="30">30</option>          
+                    <option value="31">31</option>          
+                </select>
+                &nbsp;일
+            </td>        
+            <td class="tdHeader">
+                방문시간
+            </td>
+            <td class="tdValue">
+                <select id="contactTime" name="contactTime"  class="time_select2">
+                    <option value="오전 9시~11시 이전"> 오전 9시~11시 이전</option>
+                    <option value="오전 11시~오후 1시 이전"> 오전 11시~오후 1시 이전</option>
+                    <option value="오후 1시~3시 이전"> 오후 1시~3시 이전</option>
+                    <option value="오후 3시~5시 이전"> 오후 3시~5시 이전</option>
+                    <option value="오후 5시~7시 이전"> 오후 5시~7시 이전</option>
+                    <option value="오후 7시~9시 이전"> 오후 7시~9시 이전</option>
+                    <option value="오후 9시 이후"> 오후 9시 이후</option>     
+                </select>
+            </td>
+        </tr>      
+        <tr >
+            <td class="tdHeader" colspan="6">
+                비성공 사유
+            </td>
+       </tr>
+        <tr>
+            <td class="tdValue" colspan="6">
+                <input type='radio' name='contact' value='1. 조사성공' id='contact_01' disabled="disabled" /> <label for='contact_01'>1. 조사성공</label><br />
+                <input type='radio' name='contact' value='2. 약속' id='contact_02' /> <label for='contact_02'>2. 약속</label><br />
+                <input type='radio' name='contact' value='3. 부재' id='contact_03' /> <label for='contact_03'>3. 부재</label><br />
+                <input type='radio' name='contact' value='4. 거절' id='contact_04' /> <label for='contact_04'>4. 거절</label><br />
+                <input type='radio' name='contact' value='5. 조사대상자 아님' id='contact_05' /> <label for='contact_05'>5. 조사대상자 아님(2021년 연간 60일 이상 어업에 종사 및 21년 수산물 판매금액 총 120만원 이상)</label><br />
+                <input type='radio' name='contact' value='6. 기타' id='contact_06' /> <label for='contact_06'>6. 기타</label><br />
+
+            </td>
+        </tr>
+
+        <tr>
+            <td class="tdHeader" colspan="6">
+                기타 사유를 적어 주세요
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue" colspan="6">
+                <input class="textbox" id="etc" name="etc" rows="1" size="60" type="text" value="" maxlength="100" />
+            </td>
+        </tr>          
+         
+    </table>
+
+    <br />
+
+        
+    <table width="100%">
+        <tr>
+            <td align="center" width="50%">
+                <input type="button" id="save" class="infoButton" value="저장" />
+                <input type="button" id="cancel" class="infoButton" value="나가기" />
+            </td>
+        </tr>
+    </table>
+        
+</body>
+</html>

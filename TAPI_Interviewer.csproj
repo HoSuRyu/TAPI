@@ -1,0 +1,790 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B71CB14D-BEB4-4F2F-95F2-1F39169FEA6A}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TAPI_Interviewer</RootNamespace>
+    <AssemblyName>TAPI_Interviewer</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+    <MvcProjectUpgradeChecked>true</MvcProjectUpgradeChecked>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <TargetFrameworkProfile />
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AES256, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RPS_SurveyEngine\DLL\AES256.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Charts.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.PivotGrid.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.RichEdit.v21.1.Export, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Printing.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Office.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.RichEdit.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.SpellChecker.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.Desktop.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Web.ASPxHtmlEditor.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Web.ASPxPivotGrid.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Web.ASPxSpellChecker.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Web.ASPxThemes.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Web.Mvc5.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Web.Resources.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Web.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v21.1.Web, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPivotGrid.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.CodeParser.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v21.1.Web, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.CSharp">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\RPS_SurveyEngine\DLL\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DynamicData">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Entity">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.ApplicationServices">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Abstractions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Configuration">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Services">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.EnterpriseServices">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controllers\GangController.cs" />
+    <Compile Include="Controllers\q230285Controller.cs" />
+    <Compile Include="Controllers\KLIPS2022Controller.cs" />
+    <Compile Include="Controllers\q220001Controller.cs" />
+    <Compile Include="Controllers\q220674_11Controller.cs" />
+    <Compile Include="Controllers\q220674_10Controller.cs" />
+    <Compile Include="Controllers\q220755Controller.cs" />
+    <Compile Include="Controllers\q220002Controller.cs" />
+    <Compile Include="Controllers\q221599Controller.cs" />
+    <Compile Include="Controllers\q221764Controller.cs" />
+    <Compile Include="Controllers\q221268Controller.cs" />
+    <Compile Include="Controllers\q221657_3Controller.cs" />
+    <Compile Include="Controllers\q221411Controller.cs" />
+    <Compile Include="Controllers\q220486Controller.cs" />
+    <Compile Include="Controllers\q220674_9Controller.cs" />
+    <Compile Include="Controllers\q221264Controller.cs" />
+    <Compile Include="Controllers\q220807Controller.cs" />
+    <Compile Include="Controllers\q220846Controller.cs" />
+    <Compile Include="Controllers\q220674_8Controller.cs" />
+    <Compile Include="Controllers\q220810Controller.cs" />
+    <Compile Include="Controllers\q220674_7Controller.cs" />
+    <Compile Include="Controllers\q221579_3Controller.cs" />
+    <Compile Include="Controllers\q221643Controller.cs" />
+    <Compile Include="Controllers\q221454Controller.cs" />
+    <Compile Include="Controllers\q221150_1Controller.cs" />
+    <Compile Include="Controllers\q221228Controller.cs" />
+    <Compile Include="Controllers\q221081Controller.cs" />
+    <Compile Include="Controllers\q220850TController.cs" />
+    <Compile Include="Controllers\q220945Controller.cs" />
+    <Compile Include="Controllers\q220615Controller.cs" />
+    <Compile Include="Controllers\q220818Controller.cs" />
+    <Compile Include="Controllers\q220817Controller.cs" />
+    <Compile Include="Controllers\q220674_6Controller.cs" />
+    <Compile Include="Controllers\q220678Controller.cs" />
+    <Compile Include="Controllers\q220614Controller.cs" />
+    <Compile Include="Controllers\q220674_5Controller.cs" />
+    <Compile Include="Controllers\q220754Controller.cs" />
+    <Compile Include="Controllers\q220557Controller.cs" />
+    <Compile Include="Controllers\q220677Controller.cs" />
+    <Compile Include="Controllers\q220674_4Controller.cs" />
+    <Compile Include="Controllers\q220134Controller.cs" />
+    <Compile Include="Controllers\ManagerController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\q221024Controller.cs" />
+    <Compile Include="Controllers\q221026Controller.cs" />
+    <Compile Include="Controllers\ProjectController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\TripleDESCryptoService.cs" />
+    <Compile Include="Helpers\ZBase32Encoder.cs" />
+    <Compile Include="Languages\Languages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Languages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\Languages.en.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Languages.en.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\KLOWF\PanelInfo.cs" />
+    <Compile Include="Models\Manager\Info.cs" />
+    <Compile Include="Models\p171483\PanelInfo.cs" />
+    <Compile Include="Models\Home\TQuestionnaire.cs" />
+    <Compile Include="Models\Project\AnswerInfo.cs" />
+    <Compile Include="Models\Project\ProjectInfo.cs" />
+    <Compile Include="Models\SENDMASTER.cs">
+      <DependentUpon>SENDMASTER.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SENDMASTER.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SENDMASTER.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SURVEY.cs">
+      <DependentUpon>SURVEY.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SURVEY.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SURVEY.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SURVEYTOOL.cs">
+      <DependentUpon>SURVEYTOOL.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TAPI.cs">
+      <DependentUpon>TAPI.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TAPI.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TAPI.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SURVEYTOOL.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SURVEYTOOL.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Design\css\jquery-ui.min.css" />
+    <Content Include="Content\Design\css\notosanskr.css" />
+    <Content Include="Content\Design\css\style01.css" />
+    <Content Include="Content\Design\images\btn_contact.png" />
+    <Content Include="Content\Design\images\btn_info.png" />
+    <Content Include="Content\Design\images\btn_replace.png" />
+    <Content Include="Content\Design\images\btn_sendemail.png" />
+    <Content Include="Content\Design\images\btn_sendmessage.png" />
+    <Content Include="Content\Design\images\btn_start.png" />
+    <Content Include="Content\Design\images\btn_startsurvey.png" />
+    <Content Include="Content\Design\images\closebtn01_gr.png" />
+    <Content Include="Content\Design\images\hrclogo.png" />
+    <Content Include="Content\Design\images\hrclogo_gr.png" />
+    <Content Include="Content\Design\images\hrclogo_w.png" />
+    <Content Include="Content\Design\images\main_bg.jpg" />
+    <Content Include="Content\Design\images\main_img.png" />
+    <Content Include="Content\Design\images\selectbtn.png" />
+    <Content Include="Content\Design\images\togbtn.png" />
+    <Content Include="Content\layoutMemo.css" />
+    <Content Include="Content\q200494\PanelInfo.css" />
+    <Content Include="Content\q200494\Site.css" />
+    <Content Include="Content\q210801\PanelInfo.css" />
+    <Content Include="Content\KLIPS\PanelInfo.css" />
+    <Content Include="Content\KLIPS\Site.css" />
+    <Content Include="Content\layout.css" />
+    <Content Include="Content\Login.css" />
+    <Content Include="Content\Menu.css" />
+    <Content Include="Content\Project\common.css" />
+    <Content Include="Content\Project\style.css" />
+    <Content Include="Content\Project\tapi.css" />
+    <Content Include="Global.asax" />
+    <Content Include="images\emblemorange.png" />
+    <Content Include="images\logoorange.png" />
+    <Content Include="images\Project\bg.gif" />
+    <Content Include="images\Project\box_bg.png" />
+    <Content Include="images\Project\box_bgr.png" />
+    <Content Include="images\Project\box_bottom.gif" />
+    <Content Include="images\Project\box_bottomr.gif" />
+    <Content Include="images\Project\box_top.gif" />
+    <Content Include="images\Project\box_top_rbg.gif" />
+    <Content Include="images\Project\intro1.gif" />
+    <Content Include="images\Project\intro2.gif" />
+    <Content Include="images\Project\intro3.gif" />
+    <Content Include="images\Project\intro_option.gif" />
+    <Content Include="images\Project\logo1.png" />
+    <Content Include="images\Project\progress_tit.png" />
+    <Content Include="images\Project\qna1_ico.gif" />
+    <Content Include="images\Project\radio.gif" />
+    <Content Include="images\Project\tapi_ing.gif" />
+    <Content Include="images\Project\tapi_join_bottom.gif" />
+    <Content Include="images\Project\tapi_join_bottom_l.gif" />
+    <Content Include="images\Project\tapi_join_bottom_r.gif" />
+    <Content Include="images\Project\tapi_join_bt.gif" />
+    <Content Include="images\Project\tapi_join_tit.gif" />
+    <Content Include="images\Project\tapi_join_tit_l.gif" />
+    <Content Include="images\Project\tapi_join_tit_r.gif" />
+    <Content Include="images\Project\tapi_none.gif" />
+    <Content Include="images\Project\tapi_tit_l.gif" />
+    <Content Include="images\Project\tapi_tit_r.gif" />
+    <Content Include="images\Project\tapi_top.gif" />
+    <Content Include="images\Project\tapi_top_l.gif" />
+    <Content Include="images\Project\tapi_top_r.gif" />
+    <Content Include="js\common.js" />
+    <Content Include="js\jquery-3.4.1.min.js" />
+    <Content Include="js\jquery-ui.min.js" />
+    <Content Include="Scripts\jquery-1.11.2.js" />
+    <Content Include="Scripts\jquery.chained.min.js" />
+    <Content Include="Scripts\RPS_Script2.js" />
+    <Content Include="Scripts\RPS_Script.js" />
+    <Content Include="Views\q220001\AnswerInfo.cshtml" />
+    <Content Include="Views\q220001\Contact.cshtml" />
+    <Content Include="Views\q220001\EditSurvey.cshtml" />
+    <Content Include="Views\q220001\List.cshtml" />
+    <Content Include="Views\q220001\ListPartial.cshtml" />
+    <Content Include="Views\q220001\ProgressPartial.cshtml" />
+    <Content Include="Views\q220001\Replace.cshtml" />
+    <Content Include="Views\q221024\Contact.cshtml" />
+    <Content Include="Views\q221024\EditSurvey.cshtml" />
+    <Content Include="Views\q221024\List.cshtml" />
+    <Content Include="Views\q221024\ListPartial.cshtml" />
+    <Content Include="Views\q221024\ProgressPartial.cshtml" />
+    <Content Include="Views\q221026\PersonListPartial.cshtml" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Content\Site.css" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ADDRESS\" />
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Login.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\List.cshtml" />
+    <Content Include="Views\Home\ListPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Models\SENDMASTER.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>SENDMASTER.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Models\SURVEY.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>SURVEY1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\TAPI.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>TAPI.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\SURVEYTOOL.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>SURVEYTOOL.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Project\Index.cshtml" />
+    <Content Include="Views\Project\ListPartial.cshtml" />
+    <Content Include="Views\Project\Survey.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Project\EditSurvey.cshtml" />
+    <Content Include="Views\Home\Memo.cshtml" />
+    <Content Include="Views\Gang\List.cshtml" />
+    <Content Include="Views\Manager\Login.cshtml" />
+    <Content Include="Views\Manager\Interviewer.cshtml" />
+    <Content Include="Views\Manager\InterviewerPartial.cshtml" />
+    <Content Include="Views\Shared\CommonAddressSearchScript.cshtml" />
+    <Content Include="Views\Project\OpenProgress.cshtml" />
+    <Content Include="Views\SHOUSE2021\List.cshtml" />
+    <Content Include="Views\SHOUSE2021\ListPartial.cshtml" />
+    <Content Include="Views\SHOUSE2021\ProgressPartial.cshtml" />
+    <Content Include="Views\SHOUSE2021\Error.cshtml" />
+    <Content Include="Views\SHOUSE2021\EditSurvey.cshtml" />
+    <Content Include="Views\SHOUSE2021\Transfer.cshtml" />
+    <Content Include="Views\SHOUSE2021\PanelInfo.cshtml" />
+    <Content Include="Views\SHOUSE2021\HContact.cshtml" />
+    <Content Include="Views\SHOUSE2021\PContact.cshtml" />
+    <Content Include="Views\SHOUSE2021\NList.cshtml" />
+    <Content Include="Views\SHOUSE2021\NListPartial.cshtml" />
+    <Content Include="Views\SHOUSE2021\NPanelInfo.cshtml" />
+    <Content Include="Views\SHOUSE2021\NHContact.cshtml" />
+    <Content Include="Views\q220134\HouseList.cshtml" />
+    <Content Include="Views\q220134\HouseListPartial.cshtml" />
+    <Content Include="Views\q220134\Contact.cshtml" />
+    <Content Include="Views\q220134\PersonList.cshtml" />
+    <Content Include="Views\q220134\PersonListPartial.cshtml" />
+    <Content Include="Views\q220134\CreateHouse.cshtml" />
+    <Content Include="Views\q220134\EditSurvey.cshtml" />
+    <Content Include="Views\KLIPS2022\Agree.cshtml" />
+    <Content Include="Views\KLIPS2022\AnswerInfo.cshtml" />
+    <Content Include="Views\KLIPS2022\AnswerInfoPartial.cshtml" />
+    <Content Include="Views\KLIPS2022\Contact.cshtml" />
+    <Content Include="Views\KLIPS2022\EditSurvey.cshtml" />
+    <Content Include="Views\KLIPS2022\List.cshtml" />
+    <Content Include="Views\KLIPS2022\ListPartial.cshtml" />
+    <Content Include="Views\KLIPS2022\ProgressPartial.cshtml" />
+    <Content Include="Views\KLIPS2022\Select.cshtml" />
+    <Content Include="Views\KLIPS2022\Transfer.cshtml" />
+    <Content Include="Views\q220674_4\List.cshtml" />
+    <Content Include="Views\q220674_4\ListPartial.cshtml" />
+    <Content Include="Views\q220674_4\ProgressPartial.cshtml" />
+    <Content Include="Views\q220674_4\EditSurvey.cshtml" />
+    <Content Include="Views\q220677\AnswerInfo.cshtml" />
+    <Content Include="Views\q220677\Contact.cshtml" />
+    <Content Include="Views\q220677\EditSurvey.cshtml" />
+    <Content Include="Views\q220677\List.cshtml" />
+    <Content Include="Views\q220677\ListPartial.cshtml" />
+    <Content Include="Views\q220677\ProgressPartial.cshtml" />
+    <Content Include="Views\q220677\Select.cshtml" />
+    <Content Include="Views\q220677\Subsatitute.cshtml" />
+    <Content Include="Views\q220677\Transfer.cshtml" />
+    <Content Include="Views\q220557\List.cshtml" />
+    <Content Include="Views\q220557\ListPartial.cshtml" />
+    <Content Include="Views\q220557\ProgressPartial.cshtml" />
+    <Content Include="Views\q220557\AnswerInfo.cshtml" />
+    <Content Include="Views\q220557\EditSurvey.cshtml" />
+    <Content Include="Views\q220557\Contact.cshtml" />
+    <Content Include="Views\q220754\AnswerInfo.cshtml" />
+    <Content Include="Views\q220754\AnswerInfoAPT.cshtml" />
+    <Content Include="Views\q220754\AnswerInfoEtc.cshtml" />
+    <Content Include="Views\q220754\Contact.cshtml" />
+    <Content Include="Views\q220754\ContactAPT.cshtml" />
+    <Content Include="Views\q220754\EditSurvey.cshtml" />
+    <Content Include="Views\q220754\HouseList.cshtml" />
+    <Content Include="Views\q220754\HouseListAPT.cshtml" />
+    <Content Include="Views\q220754\HouseListAPTPartial.cshtml" />
+    <Content Include="Views\q220754\HouseListEtc.cshtml" />
+    <Content Include="Views\q220754\HouseListEtcPartial.cshtml" />
+    <Content Include="Views\q220754\HouseListPartial.cshtml" />
+    <Content Include="Views\q220754\List.cshtml" />
+    <Content Include="Views\q220754\ListAPT.cshtml" />
+    <Content Include="Views\q220754\ListAPTPartial.cshtml" />
+    <Content Include="Views\q220754\ListEtc.cshtml" />
+    <Content Include="Views\q220754\ListEtcPartial.cshtml" />
+    <Content Include="Views\q220754\ListPartial.cshtml" />
+    <Content Include="Views\q220754\ProgressPartial.cshtml" />
+    <Content Include="Views\q220754\Replace.cshtml" />
+    <Content Include="Views\q220754\ReplaceAPT.cshtml" />
+    <Content Include="Views\q220754\ReplaceEtc.cshtml" />
+    <Content Include="Views\q220614\Contact.cshtml" />
+    <Content Include="Views\q220614\EditSurvey.cshtml" />
+    <Content Include="Views\q220614\HouseList.cshtml" />
+    <Content Include="Views\q220614\List.cshtml" />
+    <Content Include="Views\q220614\HouseListPartial.cshtml" />
+    <Content Include="Views\q220614\ListPartial.cshtml" />
+    <Content Include="Views\q220614\PersonInfo.cshtml" />
+    <Content Include="Views\q220614\PersonList.cshtml" />
+    <Content Include="Views\q220614\PersonListPartial.cshtml" />
+    <Content Include="Views\q220614\ProgressPartial.cshtml" />
+    <Content Include="Views\q220614\Replace.cshtml" />
+    <Content Include="Views\q220674_5\EditSurvey.cshtml" />
+    <Content Include="Views\q220674_5\List.cshtml" />
+    <Content Include="Views\q220674_5\ListPartial.cshtml" />
+    <Content Include="Views\q220674_5\ProgressPartial.cshtml" />
+    <Content Include="Views\q220678\AnswerInfo.cshtml" />
+    <Content Include="Views\q220678\Contact.cshtml" />
+    <Content Include="Views\q220678\EditSurvey.cshtml" />
+    <Content Include="Views\q220678\List.cshtml" />
+    <Content Include="Views\q220678\ListPartial.cshtml" />
+    <Content Include="Views\q220678\ProgressPartial.cshtml" />
+    <Content Include="Views\q220678\Replace.cshtml" />
+    <Content Include="Views\q220678\Select.cshtml" />
+    <Content Include="Views\q220678\Transfer.cshtml" />
+    <Content Include="Views\q220674_6\EditSurvey.cshtml" />
+    <Content Include="Views\q220674_6\List.cshtml" />
+    <Content Include="Views\q220674_6\ListPartial.cshtml" />
+    <Content Include="Views\q220674_6\ProgressPartial.cshtml" />
+    <Content Include="Views\q220817\EditSurvey.cshtml" />
+    <Content Include="Views\q220817\List.cshtml" />
+    <Content Include="Views\q220817\ListPartial.cshtml" />
+    <Content Include="Views\q220817\PersonList.cshtml" />
+    <Content Include="Views\q220817\PersonListPartial.cshtml" />
+    <Content Include="Views\q220818\Contact.cshtml" />
+    <Content Include="Views\q220818\EditSurvey.cshtml" />
+    <Content Include="Views\q220818\List.cshtml" />
+    <Content Include="Views\q220818\ListPartial.cshtml" />
+    <Content Include="Views\q220818\ProgressPartial.cshtml" />
+    <Content Include="Views\q220615\Contact.cshtml" />
+    <Content Include="Views\q220615\EditSurvey.cshtml" />
+    <Content Include="Views\q220615\HouseList.cshtml" />
+    <Content Include="Views\q220615\HouseListPartial.cshtml" />
+    <Content Include="Views\q220615\List.cshtml" />
+    <Content Include="Views\q220615\ListPartial.cshtml" />
+    <Content Include="Views\q220615\PersonList.cshtml" />
+    <Content Include="Views\q220615\PersonListPartial.cshtml" />
+    <Content Include="Views\q220615\ProgressPartial.cshtml" />
+    <Content Include="Views\q220615\Replace.cshtml" />
+    <Content Include="Views\q220945\Contact.cshtml" />
+    <Content Include="Views\q220945\EditSurvey.cshtml" />
+    <Content Include="Views\q220945\HouseContact.cshtml" />
+    <Content Include="Views\q220945\HouseList.cshtml" />
+    <Content Include="Views\q220945\HouseListPartial.cshtml" />
+    <Content Include="Views\q220945\List.cshtml" />
+    <Content Include="Views\q220945\ListPartial.cshtml" />
+    <Content Include="Views\q220945\PersonInfo.cshtml" />
+    <Content Include="Views\q220945\PersonList.cshtml" />
+    <Content Include="Views\q220945\PersonListPartial.cshtml" />
+    <Content Include="Views\q220945\ProgressPartial.cshtml" />
+    <Content Include="Views\q220945\Replace.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Design\fonts\notosanskr\notosanskr-bold.woff" />
+    <Content Include="Content\Design\fonts\notosanskr\notosanskr-bold.woff2" />
+    <Content Include="Content\Design\fonts\notosanskr\notosanskr-regular.woff" />
+    <Content Include="Content\Design\fonts\notosanskr\notosanskr-regular.woff2" />
+    <None Include="Models\SURVEYTOOL.dbml.layout">
+      <DependentUpon>SURVEYTOOL.dbml</DependentUpon>
+    </None>
+    <Content Include="Views\q220850T\List.cshtml" />
+    <Content Include="Views\q220850T\ListPartial.cshtml" />
+    <Content Include="Views\q220850T\PersonList.cshtml" />
+    <Content Include="Views\q220850T\PersonListPartial.cshtml" />
+    <Content Include="Views\q220850T\ProgressPartial.cshtml" />
+    <Content Include="Views\q220850T\EditSurvey.cshtml" />
+    <Content Include="Views\q220850T\Covid19.cshtml" />
+    <Content Include="Views\q220674_7\EditSurvey.cshtml" />
+    <Content Include="Views\q220674_7\List.cshtml" />
+    <Content Include="Views\q220674_7\ListPartial.cshtml" />
+    <Content Include="Views\q220674_7\ProgressPartial.cshtml" />
+    <Content Include="Views\q221026\HouseList.cshtml" />
+    <Content Include="Views\q221026\HouseListPartial.cshtml" />
+    <Content Include="Views\q221026\ProgressPartial.cshtml" />
+    <Content Include="Views\q221026\EditSurvey.cshtml" />
+    <Content Include="Views\q221026\PersonList.cshtml" />
+    <Content Include="Views\q221081\List.cshtml" />
+    <Content Include="Views\q221081\ListPartial.cshtml" />
+    <Content Include="Views\q221081\ProgressPartial.cshtml" />
+    <Content Include="Views\q221081\Contact.cshtml" />
+    <Content Include="Views\q221081\Transfer.cshtml" />
+    <Content Include="Views\q221081\AnswerInfo.cshtml" />
+    <Content Include="Views\q220810\List.cshtml" />
+    <Content Include="Views\q220810\ListPartial.cshtml" />
+    <Content Include="Views\q220810\ProgressPartial.cshtml" />
+    <Content Include="Views\q220810\Contact.cshtml" />
+    <Content Include="Views\q220846\List.cshtml" />
+    <Content Include="Views\q220846\ListPartial.cshtml" />
+    <Content Include="Views\q220846\ProgressPartial.cshtml" />
+    <Content Include="Views\q220846\Contact.cshtml" />
+    <Content Include="Views\q220846\Replace.cshtml" />
+    <Content Include="Views\q220846\EditSurvey.cshtml" />
+    <Content Include="Views\q220846\HouseList.cshtml" />
+    <Content Include="Views\q220846\HouseListPartial.cshtml" />
+    <Content Include="Views\q220846\AnswerInfo.cshtml" />
+    <Content Include="Views\q220674_8\EditSurvey.cshtml" />
+    <Content Include="Views\q220674_8\List.cshtml" />
+    <Content Include="Views\q220674_8\ListPartial.cshtml" />
+    <Content Include="Views\q220674_8\ProgressPartial.cshtml" />
+    <Content Include="Views\q221228\List.cshtml" />
+    <Content Include="Views\q221228\ListPartial.cshtml" />
+    <Content Include="Views\q221228\Contact.cshtml" />
+    <Content Include="Views\q221228\ProgressPartial.cshtml" />
+    <Content Include="Views\q221228\AnswerInfo.cshtml" />
+    <Content Include="Views\q221228\Quota.cshtml" />
+    <Content Include="Views\q221228\EditSurvey.cshtml" />
+    <Content Include="Views\q220807\List.cshtml" />
+    <Content Include="Views\q220807\ListPartial.cshtml" />
+    <Content Include="Views\q220807\ProgressPartial.cshtml" />
+    <Content Include="Views\q220807\EditSurvey.cshtml" />
+    <Content Include="Views\q221150_1\List.cshtml" />
+    <Content Include="Views\q221150_1\ListPartial.cshtml" />
+    <Content Include="Views\q221150_1\ProgressPartial.cshtml" />
+    <Content Include="Views\q221150_1\HouseList.cshtml" />
+    <Content Include="Views\q221150_1\HouseListPartial.cshtml" />
+    <Content Include="Views\q221150_1\Contact.cshtml" />
+    <Content Include="Views\q221150_1\Replace.cshtml" />
+    <Content Include="Views\q221150_1\AnswerInfo.cshtml" />
+    <Content Include="Views\q221150_1\PersonList.cshtml" />
+    <Content Include="Views\q221150_1\PersonListPartial.cshtml" />
+    <Content Include="Views\q221081\NewEditSurvey.cshtml" />
+    <Content Include="Views\q220486\SendSurvey.cshtml" />
+    <Content Include="Views\q220486\ProgressPartial.cshtml" />
+    <Content Include="Views\q220486\List.cshtml" />
+    <Content Include="Views\q220486\ListPartial.cshtml" />
+    <Content Include="Views\q220486\AnswerInfo.cshtml" />
+    <Content Include="Views\q220486\SendInfo.cshtml" />
+    <Content Include="Views\q220486\Contact.cshtml" />
+    <Content Include="Views\q220486\EditSurvey.cshtml" />
+    <Content Include="Views\q220486\Transfer.cshtml" />
+    <Content Include="Views\q220486\Replace.cshtml" />
+    <Content Include="Views\q220486\SendSurveyCheck.cshtml" />
+    <Content Include="Views\q220674_9\EditSurvey.cshtml" />
+    <Content Include="Views\q220674_9\List.cshtml" />
+    <Content Include="Views\q220674_9\ListPartial.cshtml" />
+    <Content Include="Views\q220674_9\ProgressPartial.cshtml" />
+    <Content Include="Views\q221454\List.cshtml" />
+    <Content Include="Views\q221454\ListPartial.cshtml" />
+    <Content Include="Views\q221454\EditSurvey.cshtml" />
+    <Content Include="Views\q221454\Replace.cshtml" />
+    <Content Include="Views\q221454\PersonList.cshtml" />
+    <Content Include="Views\q221454\PersonListPartial.cshtml" />
+    <Content Include="Views\q221264\AnswerInfo.cshtml" />
+    <Content Include="Views\q221264\Contact.cshtml" />
+    <Content Include="Views\q221264\EditSurvey.cshtml" />
+    <Content Include="Views\q221264\List.cshtml" />
+    <Content Include="Views\q221264\ListPartial.cshtml" />
+    <Content Include="Views\q221264\ProgressPartial.cshtml" />
+    <Content Include="Views\q221264\Select.cshtml" />
+    <Content Include="Views\q221264\Subsatitute.cshtml" />
+    <Content Include="Views\q221264\Transfer.cshtml" />
+    <Content Include="Views\q221643\List.cshtml" />
+    <Content Include="Views\q221643\ListPartial.cshtml" />
+    <Content Include="Views\q221643\EditSurvey.cshtml" />
+    <Content Include="Views\q221643\PersonList.cshtml" />
+    <Content Include="Views\q221643\PersonListPartial.cshtml" />
+    <Content Include="Views\q221579_3\List.cshtml" />
+    <Content Include="Views\q221579_3\ListPartial.cshtml" />
+    <Content Include="Views\q221579_3\ProgressPartial.cshtml" />
+    <Content Include="Views\q221579_3\PersonList.cshtml" />
+    <Content Include="Views\q221579_3\PersonListPartial.cshtml" />
+    <Content Include="Views\q221579_3\Replace.cshtml" />
+    <Content Include="Views\q221579_3\Contact.cshtml" />
+    <Content Include="Views\q221579_3\EditSurvey.cshtml" />
+    <Content Include="Views\q221411\Agree.cshtml" />
+    <Content Include="Views\q221411\CheckOPID.cshtml" />
+    <Content Include="Views\q221411\Contact.cshtml" />
+    <Content Include="Views\q221411\EditHouseSurvey.cshtml" />
+    <Content Include="Views\q221411\EditPersonSurvey.cshtml" />
+    <Content Include="Views\q221411\List.cshtml" />
+    <Content Include="Views\q221411\ListPartial.cshtml" />
+    <Content Include="Views\q221411\NewCode6Person.cshtml" />
+    <Content Include="Views\q221411\PanelInfo.cshtml" />
+    <Content Include="Views\q221411\ProgressPartial.cshtml" />
+    <Content Include="Views\q221411\Transfer.cshtml" />
+    <Content Include="Views\q221657_3\List.cshtml" />
+    <Content Include="Views\q221657_3\ListPartial.cshtml" />
+    <Content Include="Views\q221657_3\ProgressPartial.cshtml" />
+    <Content Include="Views\q221657_3\CompanyList.cshtml" />
+    <Content Include="Views\q221657_3\CompanyListPartial.cshtml" />
+    <Content Include="Views\q221657_3\AnswerInfo.cshtml" />
+    <Content Include="Views\q221657_3\EditSurvey.cshtml" />
+    <Content Include="Views\q221657_3\Contact.cshtml" />
+    <Content Include="Views\q221657_3\Replace.cshtml" />
+    <Content Include="Views\q220674_10\EditSurvey.cshtml" />
+    <Content Include="Views\q220674_10\List.cshtml" />
+    <Content Include="Views\q220674_10\ListPartial.cshtml" />
+    <Content Include="Views\q220674_10\ProgressPartial.cshtml" />
+    <Content Include="Views\q221657_3\ProgressPartial2.cshtml" />
+    <Content Include="Views\q221268\List.cshtml" />
+    <Content Include="Views\q221268\ListPartial.cshtml" />
+    <Content Include="Views\q221268\ProgressPartial.cshtml" />
+    <Content Include="Views\q221268\AnswerInfo.cshtml" />
+    <Content Include="Views\q221764\List.cshtml" />
+    <Content Include="Views\q221764\ListPartial.cshtml" />
+    <Content Include="Views\q221764\PersonList.cshtml" />
+    <Content Include="Views\q221764\PersonListPartial.cshtml" />
+    <Content Include="Views\q221764\Contact.cshtml" />
+    <Content Include="Views\q221764\EditSurvey.cshtml" />
+    <Content Include="Views\q220674_11\EditSurvey.cshtml" />
+    <Content Include="Views\q220674_11\List.cshtml" />
+    <Content Include="Views\q220674_11\ListPartial.cshtml" />
+    <Content Include="Views\q220674_11\ProgressPartial.cshtml" />
+    <Content Include="Views\q220755\List.cshtml" />
+    <Content Include="Views\q220755\ListPartial.cshtml" />
+    <Content Include="Views\q220755\HouseList.cshtml" />
+    <Content Include="Views\q220755\HouseListPartial.cshtml" />
+    <Content Include="Views\q220755\ProgressPartial.cshtml" />
+    <Content Include="Views\q220755\AnswerInfo.cshtml" />
+    <Content Include="Views\q220755\EditSurvey.cshtml" />
+    <Content Include="Views\q220755\Contact.cshtml" />
+    <Content Include="Views\q220755\Replace.cshtml" />
+    <Content Include="Views\q221599\AnswerInfo.cshtml" />
+    <Content Include="Views\q221599\Contact.cshtml" />
+    <Content Include="Views\q221599\CreateList.cshtml" />
+    <Content Include="Views\q221599\EditSurvey.cshtml" />
+    <Content Include="Views\q221599\List.cshtml" />
+    <Content Include="Views\q221599\ListPartial.cshtml" />
+    <Content Include="Views\q221599\ProgressPartial.cshtml" />
+    <Content Include="Views\q220002\AnswerInfo.cshtml" />
+    <Content Include="Views\q220002\Contact.cshtml" />
+    <Content Include="Views\q220002\EditSurvey.cshtml" />
+    <Content Include="Views\q220002\HouseList.cshtml" />
+    <Content Include="Views\q220002\HouseListPartial.cshtml" />
+    <Content Include="Views\q220002\List.cshtml" />
+    <Content Include="Views\q220002\ListPartial.cshtml" />
+    <Content Include="Views\q220002\ProgressPartial.cshtml" />
+    <Content Include="Views\q220002\Replace.cshtml" />
+    <Content Include="Views\Shared\header.cshtml" />
+    <Content Include="Views\Shared\footer.cshtml" />
+    <Content Include="Views\Shared\AddressSearchScript.cshtml" />
+    <Content Include="Views\q230285\Agree.cshtml" />
+    <Content Include="Views\q230285\AnswerInfo.cshtml" />
+    <Content Include="Views\q230285\AnswerInfoPartial.cshtml" />
+    <Content Include="Views\q230285\Contact.cshtml" />
+    <Content Include="Views\q230285\EditSurvey.cshtml" />
+    <Content Include="Views\q230285\List.cshtml" />
+    <Content Include="Views\q230285\ListPartial.cshtml" />
+    <Content Include="Views\q230285\ProgressPartial.cshtml" />
+    <Content Include="Views\q230285\Select.cshtml" />
+    <Content Include="Views\q230285\Transfer.cshtml" />
+    <Content Include="Views\q230285\InfoSheet.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Models\TAPI.dbml.layout">
+      <DependentUpon>TAPI.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Models\SURVEY.dbml.layout">
+      <DependentUpon>SURVEY.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Models\SENDMASTER.dbml.layout">
+      <DependentUpon>SENDMASTER.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Languages\Languages.ar.resx" />
+    <EmbeddedResource Include="Languages\Languages.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Languages.en.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\Languages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Languages.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>2958</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

@@ -1,0 +1,105 @@
+﻿@model TAPI_Interviewer.Models.KLOWF.HouseInfo
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        if (Model == null)
+        {
+            if (string.IsNullOrEmpty(ViewBag.C) == true)
+            {
+                ViewBag.Title = "오류";
+            }
+            else
+            {
+                ViewBag.Title = "설문정보 가져오는 중";
+            }
+        }
+        else
+        {
+            ViewBag.Title = "2022년 9차 여성가족패널조사";
+        }
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ('@ViewBag.C' != '') {
+                $("#main").empty();
+                window.location.href = '@ViewBag.C';
+            }
+            else {
+                $('#run').click(function () {
+                    window.location.href = './HouseSurvey?hid=@(Model == null ? "" : Model.hid)';
+                });
+
+                $(":button[id^='runPerson'],:button[id^='runPSurvey']").click(function () {
+                    window.location.href = $(this).attr('url');
+                });
+
+                $('#email').click(function () {
+                    alert("입력테스트");
+                });
+
+                $('#exit').click(function () {
+                    window.location.href = './List';
+                });
+            }
+        });
+    </script>
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/jquery.chained.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    <div id="main" style="width:1350px;">    
+        <table class="infoTable">
+            <tr>
+                <td colspan="5">가구용 설문</td>
+            </tr>
+            <tr>
+                <td class="tdValue">HID</td>
+                <td class="tdValue">가구주</td>
+                <td class="tdValue">응답자</td>
+                <td class="tdValue">진행상태</td>
+                <td class="tdValue">설문실행</td>
+            </tr>
+            <tr>
+                <td>@(Model == null ? "" : Model.hid)</td>
+                <td>@(Model == null ? "" : Model.hname)</td>
+                <td>@(Model == null ? "" : Model.iname)</td>
+                <td>@(Model == null ? "" : Model.houseStatus)</td>
+                <td><input type="button" id="run" class="infoButton" value="설문실행" /></td>
+            </tr>
+        </table>
+        <br />
+        <table class="infoTable">
+            <tr>
+                <td colspan="10">개인용 설문<br /><font size="3" color="red">*가구용 설문을 완료해야 개인용 설문을 시작할 수 있습니다.</font></td>
+            </tr>
+            <tr>
+                <td class="tdValue">PID</td>
+                <td class="tdValue">이름</td>
+                <td class="tdValue">나이</td>
+                <td class="tdValue">설문유형</td>
+                <td class="tdValue">진행상태</td>
+                <td class="tdValue">설문실행</td>
+            </tr>
+            @if (Model != null)
+            {
+                foreach (TAPI_Interviewer.Models.KLOWF.PersonInfo p in Model.PersonList)
+                {
+            <tr>
+                <td>@p.pid</td>
+                <td>@p.pname</td>
+                <td>@p.age</td>
+                <td>@p.type</td>
+                <td>@p.personStatus</td>
+                <td><input type="button" id="runPerson@(p.pid)" class="infoButton" value="설문실행" url="@p.personURL" /></td>
+            </tr>
+                }
+            }
+        </table>
+        <input type="button" id="exit" class="exitButton" value="나가기" />
+    </div>
+</body>
+</html>

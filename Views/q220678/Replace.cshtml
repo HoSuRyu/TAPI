@@ -1,0 +1,83 @@
+﻿@model TAPI_Interviewer.Models.SP_q220678_GETLISTResult
+           
+<html>
+<head>
+    @{
+        ViewBag.Title = "대체요청";
+    }
+    <script type="text/javascript">
+        $(document).on('keypress keyup blur', 'input[name="numberBox"]', function () {
+            var maxlength = $(this).attr("maxLength");
+            var inputLength = $(this).val().length;
+
+            if (inputLength >= maxlength) {
+                event.preventDefault();
+                return false;
+            }
+        });
+
+        $(document).ready(function () {
+
+
+            $("#ok").click(function () {
+
+                var etc = $(":text[name='etc']").val();
+               
+
+                if (etc == '') {
+                    alert('대체 사유를 입력해 주세요');
+                    return;
+                }
+
+
+                $.post("./ReplaceOK", {
+                    "pid": '@ViewBag.pid', "ranking": '@ViewBag.ranking', "contact": '@ViewBag.contact', "contactMonth": '@ViewBag.contactMonth', "contactDay": '@ViewBag.contactDay', "contactTime": '@ViewBag.contactTime'
+                    , "etc": etc
+                }, function (result) {
+
+                    alert('대체 요청 되었습니다.');
+                    window.location.href = './List';
+
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+
+            });
+
+            $("#cancel").click(function () {
+                window.location.href = "./List";
+            });
+        });
+
+      
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/SHOUSE2017/Site.css?version=6")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+    <table class="infoTable">
+        <tr>
+            <td class="tdHeader" colspan="6">
+                대체 사유를 구체적으로 적어주세요.
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue" colspan="6">
+                <input class="textbox" id="etc" name="etc" rows="3" size="60" type="text" value="" maxlength="100" />
+            </td>
+        </tr>        
+    </table>
+
+    <div class="buttonDiv">
+        <center>
+            <input type="button" id="ok" class="infoButton" value="대체 요청" />
+            <input type="button" id="cancel" class="infoButton" value="취소" />
+        </center>
+    </div>
+
+</body>
+</html>

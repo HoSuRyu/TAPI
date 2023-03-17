@@ -1,0 +1,237 @@
+﻿@model List<TAPI_Interviewer.Models.SP_KLIPS2023_GETPERSONLISTResult>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+            $('#exit').click(function () {
+                window.location.href = "./List?seoPanelList=@ViewBag.seoPage";
+            });
+
+
+            $('#contact').click(function () {
+                if ('@(ViewBag.진행상태)' == '완료') {
+                    if (!confirm('완료 데이터가 있습니다. 접촉일지 작성 하시겠습니까?')) {
+                        return;
+                    }
+                }
+
+                window.location.href = './Contact?hid=@(ViewBag.HID)' + '&page=@ViewBag.seoPage';
+            });
+
+            $('#infosheet').click(function () {                
+                window.open('./InfoSheet?hid=@(ViewBag.HID)');
+                
+            });
+
+    });
+
+
+
+    function personSuveyClick(pid, status)
+    {
+        if (pid != null) {
+            window.location.href = './AgreePerson?hid=@(ViewBag.HID)&pid=' + pid + '&surveyType=PersonSurvey';
+            //window.location.href = './PersonSurvey?pid=' + pid;
+        }
+    }
+    function newPersonSuveyClick(pid, status)
+    {
+        if (pid != null) {
+            window.location.href = './AgreePerson?hid=@(ViewBag.HID)&pid=' + pid + '&surveyType=NewPersonSurvey';
+            //window.location.href = './NewPersonSurvey?pid=' + pid;
+        }
+    }
+
+    function attitudeSurveyClick(pid, status)
+    {
+        if (pid != null) {
+            window.location.href = './AttitudeSurvey?pid=' + pid;
+        }
+    }
+
+
+    function IncomeSuveyClick(hid, status)
+    {
+        if (hid != null) {
+            window.location.href = './IncomeSuvey?hid=' + hid;
+        }
+    }
+
+
+    function SuveyClick(hid, status)
+    {
+        @*alert('@ViewBag.동의여부');*@
+        if (hid != null) {
+            if ('@ViewBag.동의여부' == '동의') {
+                window.location.href = './Survey?hid=' + hid;
+            }
+            else {
+                window.location.href = './Agree?hid=' + hid;
+            }
+
+        }
+    }
+
+    function SplitSuveyClick(hid, status) {
+        if (hid != null) {
+            if ('@ViewBag.동의여부' == '동의') {
+                window.location.href = './SplitSuvey?hid=' + hid;
+            }
+            else {
+                window.location.href = './Agree?hid=' + hid;
+            }
+
+        }
+    }
+        function goPersonList(keyid, hid, status) {
+
+            if (status == '거절/조사불가')
+            {
+                alert("거절/조사불가 가구입니다.");
+                return;
+            }
+
+            if (keyid != null) {
+                window.location.href = './PersonList?keyid=' + keyid +'&hid='+hid;
+            }
+        }
+
+        function Refresh() {
+            location.reload();
+        }
+</script>
+
+
+@Html.Partial("header")
+<!--contents -->
+<div id="contwrap">
+    <div class="contentbox">
+        <div class="boardbox">
+            <div class="bd_contbox">
+                <div class="tablebox">
+                    <table class="tbl_sty01" cellpadding="0" cellspacing="0" border="0" style="width:100%;">
+                        <tbody>
+                            <tr>
+                                <td class="td_th txt_center" style="width:17%;">HID</td>
+                                <td style="width:23%;">@(ViewBag.HID)</td>
+                                <td class="td_th txt_center" style="width:17%;"> 최종접촉일지 - 방문횟수</td>
+                                <td style="width:23%;">@(ViewBag.방문횟수)</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">가구주</td>
+                                <td>@(ViewBag.가구주)</td>
+                                <td class="td_th txt_center"> 최종접촉일지 - 방문결과</td>
+                                <td>@(ViewBag.방문결과)</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">주소</td>
+                                <td colspan="3">@(ViewBag.주소)</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">&nbsp;</td>
+                                <td class="td_th txt_center">조사진행상황</td>
+                                <td>@(ViewBag.진행상태)</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">전화번호</td>
+                                <td>@(ViewBag.집전화)</td>
+                                <td colspan="2">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">휴대전화번호</td>
+                                <td>@(ViewBag.휴대전화)</td>
+                                <td colspan="2">&nbsp;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bot_btnbox" style="text-align:right">
+                    <button type="button" class="btnsty03" id="infosheet">인포시트</button>
+                    <button type="button" class="btnsty01" id="contact">접촉일지</button>
+                </div>
+                <div class="tablebox">
+                    <table class="tbl_sty03" cellpadding="0" cellspacing="0" border="0" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th colspan="4"><b>가구용 설문</b></th>
+                            </tr>
+                            <tr>
+                                <th>HID</th>
+                                <th>가구주</th>
+                                <th>설문진행상태</th>
+                                <th>설문하기</th>
+                               </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="txt_center">@(ViewBag.HID)</td>
+                                <td class="txt_center">@(ViewBag.가구주)</td>
+                                <td class="txt_center">@(ViewBag.설문진행상태)</td>
+                                <td class="txt_center">
+                                    @if (ViewBag.가구유형 == "분가")
+                                    {
+                                        <input type="button" id="Survey" class="infoButtonT" style="margin-right: 10px;" value="진행하기" onclick="SplitSuveyClick( @(ViewBag.HID), '@(ViewBag.설문진행상태)');" />
+                                    }
+                                    else
+                                    {
+                                        <input type="button" id="Survey" class="infoButtonT" style="margin-right: 10px;" value="진행하기" onclick="SuveyClick( @(ViewBag.HID), '@(ViewBag.설문진행상태)');" />
+                                    }
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br />
+              
+
+                @*  개인용 설문 파트  *@ 
+                <div style="overflow-x:scroll;width:100%;">
+                    @Html.Partial("AnswerInfoPartial", Model)
+                </div>
+                <br />
+                @*  가구소득 설문 파트 *@ 
+                <div class="tablebox">
+                    <table class="tbl_sty03" cellpadding="0" cellspacing="0" border="0" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th colspan="4"><b>가구소득 설문</b></th>
+                            </tr>
+                            <tr>
+                                <th>HID</th>
+                                <th>가구주</th>
+                                <th>설문진행상태</th>
+                                <th>설문하기</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="txt_center">@(ViewBag.HID)</td>
+                                <td class="txt_center">@(ViewBag.가구주)</td>
+                                <td class="txt_center">@(ViewBag.소득진행상태)</td>
+                                <td class="txt_center">
+                                   @if (ViewBag.가구소득문항응답가능여부 == "가능")
+                                   {
+                                    <input type="button" id="incomeSurvey" class="infoButtonT" style="margin-right: 10px;" value="진행하기" onclick="IncomeSuveyClick( @(ViewBag.HID), '@(ViewBag.소득진행상태)');" />
+                                   }
+                                   else
+                                   {
+                                    <input type="button" id="incomeSurvey" class="infoButtonTdisabled" style="margin-right: 10px;" value="진행하기" disabled="disabled" />
+                                   }
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                    <div class="bot_btnbox">
+                        <button type="button" class="btnsty03" id="exit">닫기</button>
+                    </div>
+                </div>
+            </div>
+    </div>
+    @Html.Partial("footer")
+
+</div>
+</body>
+</html>

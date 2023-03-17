@@ -1,0 +1,44 @@
+﻿
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+ 
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>TAPI 인터뷰어</title>
+    
+    <link href="/Content/Design/css/jquery-ui.min.css" rel="stylesheet">
+    <link href="/Content/Design/css/notosanskr.css" rel="stylesheet">
+    <link href="/Content/Design/css/style01.css" rel="stylesheet">
+
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/jquery-ui.min.js"></script>
+    <script src="/js/common.js"></script>
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.HtmlEditor },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.GridView },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.PivotGrid },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Chart },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Report }
+    )
+
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionSuite = ExtensionSuite.HtmlEditor },
+        new Script { ExtensionSuite = ExtensionSuite.GridView },
+        new Script { ExtensionSuite = ExtensionSuite.PivotGrid },
+        new Script { ExtensionSuite = ExtensionSuite.Editors }
+    )
+
+  
+    <link href="/Content/Design/images/icon.png" rel="shortcut icon" type="image/x-icon" />
+</head>
+<body>
+
+
+@RenderBody()

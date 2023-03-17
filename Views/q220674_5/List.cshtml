@@ -1,0 +1,68 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q220674_GETLISTResult>
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        @{
+            ViewBag.Title = "5월 옥외광고 모니터링 조사";
+        }
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+        <link href="@Url.Content("../../Content/KLIPS/Site.css?version=4")" rel="stylesheet" type="text/css" />
+        <script type="text/javascript">
+            $(document).ready(function () {
+                setStatus();
+            });
+
+            
+            function goPicture(pid, isPicture) {
+                if (isPicture == '1') {
+                    window.open('https://rpssurvey.hrcglobal.com/Media/12435/' + pid + '.jpg');
+                }
+                else {
+                    alert('등록된 참고사진이 없습니다.');
+                }
+            }
+            function goAnswerInfo(pid, status) {
+              
+                if (status == '완료') {
+                    alert('이미 완료한 응답자 입니다.');
+                    return;
+                }
+
+                if (pid != null) {
+                    window.location.href = './Survey?pid=' + pid;
+                }
+            }
+
+
+            function setStatus() {
+                $.post("./ProgressPartial", null, function (result) {
+                    $("#Progress").replaceWith(result);
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            }
+
+            function Refresh() {
+                location.reload();
+            }
+        </script>
+    </head>
+    <body>
+        <div style="width : 100%;display: inline-block;">
+            <label id="title">@ViewBag.Title</label>
+            <p/>
+            <div id="Progress">
+                @*@Html.Partial("ProgressPartial", Model)*@
+            </div>
+            <p/>
+            <div style="overflow-x:scroll;width:100%;">
+                @Html.Partial("ListPartial", Model)
+            </div>
+        </div>
+    </body>
+</html>

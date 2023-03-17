@@ -1,0 +1,468 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q220134_GETPERSONLISTResult>
+
+<script type="text/javascript">
+
+    function setAnswer(variable, val)
+    {
+        $("select[name="+variable+"]").val(val).attr("selected", "selected");
+    }
+
+    function isAnswerChange(val)
+    {
+        var isAnswerVal = $("select[name='isAnswer_"+val+"'] option:selected").val();
+        if( isAnswerVal == "가능")
+        {
+            $("input:text[name='noanswerText_"+val+"']").val('');
+            $("input:text[name='noanswerText_"+val+"']").prop('disabled', true);
+        }
+        else
+        {
+            $("input:text[name='noanswerText_"+val+"']").prop('disabled', false);
+        }
+    }
+
+    function checkVal(variable, type, valc)
+    {
+        var isAnswer =$("select[name=" + valc + "]").val();
+        if( isAnswer == '잘못 입력함')
+            return;
+
+        var val = '';
+        if( type=='text')
+        {
+            val = $("input:text[name=" + variable + "]").val();
+        }
+        if (type == 'selected') {
+            val = $("select[name=" + variable + "]").val();
+        }
+        if (type == 'radio') {
+            val = $("radio[name=" + variable + "]").val();
+        }
+
+
+        if( val == undefined || val=='')
+        {
+            $('#valueError').val(1);
+            return;
+        }
+    }
+
+    function checkTel(pid, val1, val2, val3, val4) {
+
+        var isAnswer =$("select[name=" + val4 + "]").val();
+        if( isAnswer == '잘못 입력함')
+            return;
+
+        var tel1 = val = $("select[name=" + val1 + "]").val();
+        if (val == undefined || val == '') {
+            $("input:hidden[name=" + val1 + "]").val('');
+            $('#valueError').val(1);
+            return;
+        }
+        var tel2 = val = $("input:text[name=" + val2 + "]").val();
+        var tel3 = val = $("input:text[name=" + val3 + "]").val();
+        if( tel2 =='' || tel3 == '')
+        {
+            $('#valueError').val(1);
+            return;
+        }
+    }
+
+    function checkNoAnswerVal(val1, val2)
+    {
+        var isAnswer =$("select[name=" + val1 + "]").val();
+        var text = '';
+        if( isAnswer == '불가능')
+        {
+            text = $("input:text[name=" + val2 + "]").val();
+
+            if(text=='')
+            {
+                $('#valueError').val(1);
+            }
+        }
+
+
+        return;
+    }
+
+    function savePID(pid)
+    {
+        var hiddenVal = $("input:hidden[name=pid]").val();
+        $("input:hidden[name=pid]").val(hiddenVal+'|'+pid);
+    }
+    function saveVal(variable, type, name)
+    {
+
+        var val = '';
+        if (type == 'text') {
+            val = $("input:text[name=" + variable + "]").val();
+        }
+        if (type == 'selected') {
+            val = $("select[name=" + variable + "]").val();
+
+        }
+        if (type == 'radio') {
+            val = $("radio[name=" + variable + "]").val();
+        }
+
+        var hiddenVal = $("input:hidden[name=" + name + "]").val();
+        $("input:hidden[name=" + name + "]").val(hiddenVal+'|'+val);
+
+    }
+    function  saveTel(val1, val2, val3)
+    {
+        var tel1 =  $("select[name=" + val1 + "]").val();
+        if( tel1 == undefined || tel1=='')
+        {
+            var hiddenVal = $("input:hidden[name=htel]").val();
+            $("input:hidden[name=htel]").val(hiddenVal+'|');
+            return;
+        }
+
+        var tel2 = val = $("input:text[name=" + val2 + "]").val();
+        var tel3 = val = $("input:text[name=" + val3 + "]").val();
+
+        var tel = tel1 + '-' + tel2 + '-' + tel3;
+
+        var hiddenVal = $("input:hidden[name=htel]").val();
+        $("input:hidden[name=htel]").val(hiddenVal+'|'+tel);
+
+    }
+
+    function insertVal()
+    {
+
+        var pid = $("input:hidden[name=pid]").val();
+        var name = $("input:hidden[name=name]").val();
+        var tel = $("input:hidden[name=htel]").val();
+        var cap = $("input:hidden[name=cap]").val();
+        var isAnswer = $("input:hidden[name=isAnswer]").val();
+        var noanswerText = $("input:hidden[name=noanswerText]").val();
+
+
+        $.post("./UpdatePerson", {  "hid": @(ViewBag.HID), "pid": pid, "name": name, "tel":tel, "cap":cap, "isAnswer":isAnswer, "noanswerText":noanswerText}, function (result) {
+            if (result != '')
+            {
+                alert(result);
+                location.reload();
+            }
+            else
+            {
+                location.reload();
+
+            }
+        }).error(function (jqXHR, status, error) {
+            alert(status);
+            alert(error);
+        });
+    }
+
+    $(document).ready(function () {
+
+
+        @foreach (TAPI_Interviewer.Models.SP_q220134_GETPERSONLISTResult list in Model)
+        {
+
+            string[] tel = string.IsNullOrEmpty(list.휴대전화) == true ? new string[] { "" } : list.휴대전화.Trim().Split('-');
+            @:setAnswer('cap_@list.PID', '@list.세대주여부');
+                                    @:setAnswer('isAnswer_@list.PID', '@list.응답가능여부');
+                                    @:setAnswer('tel1_@list.PID', '@tel[0]');
+
+
+        }
+
+
+        $('#createPerson').click(function () {
+
+
+
+            $('#valueError').val(0);
+            @foreach (TAPI_Interviewer.Models.SP_q220134_GETPERSONLISTResult list in Model)
+            {
+               @:checkVal('name_@list.PID', 'text', 'isAnswer_@list.PID');
+                                    }
+
+            if ($('#valueError').val() == 1) {
+                alert('가구원 이름을 모두 입력해 주세요.');
+                return;
+            }
+
+
+            @foreach (TAPI_Interviewer.Models.SP_q220134_GETPERSONLISTResult list in Model)
+            {
+                @:checkVal('cap_@list.PID', 'selected', 'isAnswer_@list.PID');
+                                    }
+
+            if ($('#valueError').val() == 1) {
+                alert('가구원 구분을 모두 선택해 주세요.');
+                return;
+            }
+
+
+
+            @foreach (TAPI_Interviewer.Models.SP_q220134_GETPERSONLISTResult list in Model)
+            {
+                @:checkTel('@list.PID', 'tel1_@list.PID', 'tel2_@list.PID', 'tel3_@list.PID', 'isAnswer_@list.PID');
+                                    }
+
+            if ($('#valueError').val() == 1) {
+                alert('휴대전화 번호를 모두 입력해 주세요.');
+                return;
+            }
+
+            @foreach (TAPI_Interviewer.Models.SP_q220134_GETPERSONLISTResult list in Model)
+                {
+                    @:checkVal('isAnswer_@list.PID', 'selected', );
+                                        }
+
+            if ($('#valueError').val() == 1) {
+                alert('응답 가능 여부를 모두 선택해 주세요.');
+                return;
+            }
+
+
+            @foreach (TAPI_Interviewer.Models.SP_q220134_GETPERSONLISTResult list in Model)
+            {
+                @:checkNoAnswerVal('isAnswer_@list.PID', 'noanswerText_@list.PID');
+                                    }
+            if ($('#valueError').val() == 1) {
+                alert('응답 불가능인 이유를 입력해 주세요.');
+                return;
+            }
+
+
+            @foreach (TAPI_Interviewer.Models.SP_q220134_GETPERSONLISTResult list in Model)
+            {
+                @:savePID(@list.PID);
+                @:saveVal('name_@list.PID', 'text', 'name');
+                @:saveVal('cap_@list.PID', 'selected', 'cap');
+                @:saveTel('tel1_@list.PID', 'tel2_@list.PID', 'tel3_@list.PID');
+                @:saveVal('isAnswer_@list.PID', 'selected', 'isAnswer');
+                @:saveVal('noanswerText_@list.PID', 'text', 'noanswerText');
+
+            }
+
+
+            insertVal();
+
+        });
+    });
+
+
+
+</script>
+
+<br />
+<input type="hidden" name="valueError" id="valueError" value="0"></input>
+<input type="hidden" name="isCapAnswer" id="valueError" value="0"></input>
+
+<input type="hidden" id="pid" name="pid" value="" /></input>
+<input type="hidden" id="name" name="name" value="" /></input>
+<input type="hidden" id="cap" name="cap" value="" /></input>
+<input type="hidden" id="htel" name="htel" value="" /></input>
+<input type="hidden" id="isAnswer" name="isAnswer" value="" /></input>
+<input type="hidden" id="noanswerText" name="noanswerText" value="" /></input>
+
+
+<table class="infoTable" style="width:1600px" >
+    <tr>
+        <td class="tdValue9">
+            가구원<br />번호
+        </td>
+       
+        <td class="tdValue9">
+            이름
+        </td>
+        <td class="tdValue9">
+            가구원 구분
+        </td>
+        <td class="tdValue9">
+            휴대 전화
+        </td>
+        <td class="tdValue9">
+            응답 가능 여부
+        </td>
+        <td class="tdValue9">
+            응답 불가능 사유
+        </td>
+        <td class="tdValue9">
+            설문 하기
+        </td>
+        <td class="tdValue9">
+            진행상태
+        </td>
+        <td class="tdValue9">
+            가구원<br />삭제
+        </td>
+       
+    </tr>
+    @{ 
+        int idx = 0;
+
+
+        foreach (TAPI_Interviewer.Models.SP_q220134_GETPERSONLISTResult list in Model)
+        {
+            idx++;
+
+            string[] tel = string.IsNullOrEmpty(list.휴대전화) == true ? new string[] { "" } : list.휴대전화.Trim().Split('-');
+
+
+
+
+        <tr align="center">
+            <td class="tdValue3c" width="100px" align="center">
+                 @(list.PID)
+            </td>
+            
+
+            <td class="tdValue3c" width="100px" align="center">
+                <input class="textbox" id="name_@(list.PID)"  name="name_@(list.PID)" rows ="1" size="6" type="text"  value="@(list.이름)">
+            </td>
+            <td class="tdValue3c" width="220px" align="center">
+                @if (idx == 1)
+                {
+                    @*<input class="textbox" id="name_@(list.PID)" name="name_@(list.PID)" rows="1" size="6" type="text" value="@(list.세대주여부)" readonly="readonly">*@
+
+                    <select id="cap_@(list.PID)" name="cap_@(list.PID)" class="tel_select5" >
+                        <option>가구원 대표</option>
+                    </select>
+                }
+                else
+                {
+                    <select id="cap_@(list.PID)" name="cap_@(list.PID)" class="tel_select5">
+                        <option></option>
+                        <option value='가구원 대표의 배우자'>가구원 대표의 배우자</option>
+                        <option value='그 외 가구원'>그 외 가구원</option>
+                    </select>
+                }
+            </td>
+            
+            <td class="tdValue3c"  width="500px" align="center">
+                <select id="tel1_@(list.PID)" name="tel1_@(list.PID)" class="tel_select3">
+                    <option></option>
+                    <option value='010'>010</option>
+                    <option value='011'>011</option>
+                    <option value='016'>016</option>
+                    <option value='017'>017</option>
+                    <option value='018'>018</option>
+                    <option value='019'>019</option>
+                    <option value='031'>031</option>
+                </select>
+                - <input class="textbox" id="tel2_@(list.PID)" name="tel2_@(list.PID)" rows="1" size="4" type="text" value="@(tel.Length <= 1 ? "" : tel[1])" maxlength="4">
+                - <input class="textbox" id="tel3_@(list.PID)" name="tel3_@(list.PID)" rows="1" size="4" type="text" value="@(tel.Length <= 1 ? "" : tel[2])" maxlength="4">
+            </td>
+
+            <td class="tdValue3c" width="200px" align="center">
+                @if (idx == 1)
+                {
+                    <select id="isAnswer_@(list.PID)" name="isAnswer_@(list.PID)" class="tel_select4">
+                        <option></option>
+                        <option value='가능'>가능</option>
+                    </select>
+                }
+                else
+                {
+                <select id="isAnswer_@(list.PID)" name="isAnswer_@(list.PID)" class="tel_select4" onchange="isAnswerChange(@list.PID)">
+                    <option></option>
+                    <option value='가능'>가능</option>
+                    <option value='불가능'>불가능</option>
+                    @*<option value='잘못 입력함'>잘못 입력함</option>*@
+                </select>
+                }
+            </td>
+          
+            <td class="tdValue3c" width="200px" align="center">
+            @if (idx != 1)
+            {
+                if (list.응답가능여부 == "가능")
+                {
+                    <input class="textbox" id="noanswerText_@(list.PID)" name="noanswerText_@(list.PID)" rows="1" size="20" type="text" value="@(list.불가능사유)" disabled="disabled">
+                }
+                else
+                {
+                    <input class="textbox" id="noanswerText_@(list.PID)" name="noanswerText_@(list.PID)" rows="1" size="20" type="text" value="@(list.불가능사유)">
+                }
+            }
+
+            </td>
+            <td class="tdValue3c"  width="100px" align="center">
+                @if ((idx == 1 && list.응답가능여부 == "가능"  ) || ( list.응답가능여부 == "가능" && ViewBag.가구원대표응답여부 == 1))
+                {
+                    <input type="button" id="personStart" class="infoButtonT2" style="margin-right: 10px;" value="진행하기" onclick="goSurvey( @(list.PID), '@(list.진행상태)');" />
+                }
+                else if (list.응답가능여부 == "가능")
+                {
+                    <input type="button" id="personStart" class="infoButtonTdisabled2" style="margin-right: 10px;" value="진행하기"  />
+                }
+            </td>
+            <td class="tdValue3c"  width="100px" align="center">
+                @if (list.응답가능여부 == "가능")
+                {
+                    @(list.진행상태)
+                }
+            </td>
+            <td class="tdValue3c"  width="100px" align="center">
+            @if (idx != 1)
+            {
+              <input type="button" id="personDelete" class="infoButtonT2" style="margin-right: 10px;" value="삭제" onclick="personDeleteClick( @(list.PID), '@(list.진행상태)');" />
+            }
+            </td>
+        </tr>
+            }
+        }
+
+</table>
+<br />
+<div class="buttonDiv">
+    <center>
+        <input type="button" id="createPerson" class="infoButton" style="margin-right: 60px;" value="가구원 저장" />
+        <input type="button" id="exit" class="infoButton" style="margin-right: 60px;" value="나가기" />
+    </center>
+</div>
+<style>
+    .infoButtonT2 {
+        background-color: #80a6e6;
+        display: inline-block;
+        cursor: pointer;
+        color: #ffffff;
+        font-family: 'Malgun Gothic';
+        font-size: 18px;
+        font-weight: bold;
+        text-decoration: none;
+        border: none;
+        width: 90px;
+        height: 35px;
+    }
+
+    .infoButtonTdisabled2 {
+        background-color: #d2d2d2;
+        display: inline-block;
+        cursor: pointer;
+        color: #ffffff;
+        font-family: 'Malgun Gothic';
+        font-size: 18px;
+        font-weight: bold;
+        text-decoration: none;
+        border: none;
+        width: 90px;
+        height: 35px;
+    }
+
+    .tel_select4
+{
+    color: black;
+    font-family: "Malgun Gothic";
+	font-size: 20px;
+	width:180px;
+}
+
+        .tel_select5
+{
+    color: black;
+    font-family: "Malgun Gothic";
+	font-size: 20px;
+	width:200px;
+}
+
+    </style>

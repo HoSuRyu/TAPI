@@ -1,0 +1,119 @@
+﻿@model List<TAPI_Interviewer.Models.q221454_PersonList>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "2022년도 한국 고령자 기술수용도 패널조사";
+
+    }
+
+    <script type="text/javascript">
+
+
+
+
+        $(document).ready(function () {
+
+            $('#CreatePerson').click(function () {
+               
+
+                $.post("./CreatePerson", { "keyid":@(ViewBag.DID)}, function (result) {
+                    if (result != '')
+                    {
+                        alert(result);
+                        location.reload();
+                    }
+                    else
+                    {
+                        alert('응답자 추가 되었습니다.');
+                        location.reload();
+
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+
+
+            $('#exit').click(function () {
+                window.location.href = './List';
+            });
+
+         
+
+
+
+           
+        });
+
+        function goSurvey(pid)
+        {
+            if (pid != null) {
+                window.location.href = './survey?keyid=@ViewBag.DID&pid=' + pid;
+            }
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/q210801/PanelInfo.css?version=5")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("../../Content/q200494/PanelInfo.css?version=6")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    <div style="width : 100%;display: inline-block;">
+        
+
+     <br />
+        <table class="infoTable">
+            
+            <tr>
+                <td class="tdValue" width="40%">
+                    동 ID
+                </td>
+                <td class="tdValue3">
+                    @(ViewBag.DID)
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    전체 주소 정보
+                </td>
+                <td class="tdValue3">
+                    @(ViewBag.전체주소정보)
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    원/대체
+                </td>
+                <td class="tdValue3">
+                    @(ViewBag.원대체)
+                </td>
+            </tr>
+        </table>
+        <div class="buttonDiv">
+            <center>
+                <input type="button" id="CreatePerson" class="infoButtonRedWide" style="margin-right: 60px;" value="응답자 추가" /> &nbsp; 
+                <input type="button" id="exit" class="infoButtonWide" style="margin-right: 60px;" value="나가기" />
+            </center>
+        </div>
+       <br />
+     
+        <div style="overflow-x:scroll;width:100%;">
+            @Html.Partial("PersonListPartial", Model)    
+        </div>
+        
+    </div>
+    <div class="buttonDiv" style="text-align:right;">
+        
+          
+        
+    </div>
+    
+</body>
+</html>

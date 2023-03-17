@@ -1,0 +1,62 @@
+﻿@model List<TAPI_Interviewer.Models.SP_H2022_GETHOUSELISTResult>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+            $('#exit').click(function () {
+                window.location.href = './List';
+            });
+
+            $('input[type=tel]').keydown(function (event) {
+                var charCode = (event.which) ? event.which : event.keyCode;
+
+                if (isNumeric(charCode, this) == false) {
+                    event.preventDefault();
+                }
+            });
+        });
+
+        function contact(hid, status)
+        {
+            if (status == '완료') {
+                alert("조사를 완료했습니다. \r접촉일지를 작성할 수 없습니다.");
+                return;
+            }
+            if (hid != null) {
+                window.location.href = './Contact?hid=' + hid;
+            }
+        }
+
+        function goAnswerInfo(hid) {
+            if (hid != null) {
+                window.location.href = './AnswerInfo?keyid=@ViewBag.HRC일련번호&hid=' + hid;
+            }
+        }
+</script>
+
+
+@Html.Partial("header")
+<div id="contwrap">
+    <div class="contentbox">
+        <div class="boardbox">
+            <div class="bd_contbox">
+                <div class="bd_titbox">                    
+                    <div class="filterbox">
+                        <button type="button" class="btnsty03" id="exit">닫기</button>
+                    </div>
+                </div>                
+                <div class="tablebox" style="overflow-x:scroll;width:100%;">
+                    @Html.Partial("HouseListPartial", Model)
+                </div>
+            </div>
+        </div>
+
+    </div>
+    @Html.Partial("footer")
+</div>
+
+
+    </body>
+</html>
+

@@ -1,0 +1,75 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q220817_GETPERSONLISTResult>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "2022년도 주택연금 수요실태조사 (일반노년가구)";
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {            
+            
+
+
+            $('#createHouse').click(function () {
+               
+                $.post("./CreatePerson", { "id": @ViewBag.id }, function (result) {
+                    if (result != '')
+                    {
+                        alert(result);
+                    }
+                    else
+                    {
+                        location.reload();
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+            $('#exit').click(function () {
+                window.location.href = './List';
+            });
+
+         
+        });
+
+        function runSurvey(pid) {
+            if (pid != null) {
+                window.location.href = './Survey?pid=' + pid;
+            }
+        }
+     
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    <div style="width:100%;display: inline-block;">
+        <table class="infoTable">
+            <tr>
+                <td class="tdValue" width="50%">집계구 번호</td>
+                <td class="tdValue3" width="50%">@(ViewBag.id)</td>
+            </tr>
+      
+        </table>
+        <br /><br />
+        <div class="buttonDiv">
+            <center>
+                <input type="button" id="createHouse" class="infoButton" style="margin-right: 30px;" value="응답자 추가" />
+                <input type="button" id="exit" class="infoButton" style="margin-right: 30px;" value="닫기" />
+            </center>
+        </div>
+        <br /><br />
+        <div style="overflow-x:scroll;width:100%;">
+            @Html.Partial("PersonListPartial", Model)
+        </div>
+    </div>
+</body>
+</html>

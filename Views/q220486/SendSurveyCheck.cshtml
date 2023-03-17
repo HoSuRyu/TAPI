@@ -1,0 +1,64 @@
+﻿@model TAPI_Interviewer.Models.q220486_List 
+
+<html>
+<head>
+    @{
+       
+        
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+            $('#cancel').click(function () {
+                window.location.href = './AnswerInfo?pid=@Model.PID';
+            });
+
+
+            $('#ok').click(function () {
+                window.location.href = './SendSurvey?pid=@Model.PID&type=@ViewBag.type';
+            });
+
+
+            
+
+        });
+
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("../../Content/q200494/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js" )"></script>
+</head>
+<body>
+    <div style="width : 100%;display: inline-block;">
+        <label id="title">온라인 조사 진행</label>
+        <table class="infoTable">
+            <tr>
+                <td  colspan="2">&nbsp; <br />비대면 조사를 위해 웹발송 신청을 진행합니다.<br />신청하시려는 PID 가 맞는지 다시 한 번 확인해주십시오
+ <br />&nbsp; </td>
+                
+            </tr>
+            <tr>
+                <td class="tdValue">PID</td>
+                <td>@(Model.PID)</td>
+            </tr>
+            <tr>
+                <td class="tdValue">아동 이름</td>
+                <td>@(Model.아동이름)</td>
+            </tr>
+
+        </table>
+        <br />&nbsp;
+        <div class="buttonDiv">
+            <br />&nbsp;
+            <center>
+                <input type="button" id="cancel" class="infoButtonRed" value="취소" />&nbsp;
+                <input type="button" id="ok" class="infoButtonGreen" value="확인" />
+            </center>
+        </div>
+    </div>
+</body>
+</html>

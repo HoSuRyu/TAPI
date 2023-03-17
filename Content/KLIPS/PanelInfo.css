@@ -1,0 +1,181 @@
+﻿.dxeEditArea.dxeEditAreaSys
+{
+    font-size: 14px;
+    font-family: 'Malgun Gothic';
+    height:45px !important;
+}
+
+#title
+{
+    display:inline-block;
+    text-align:center;
+    padding-top:15px;
+    width:100%;
+    height:50px;
+    background-color:#2478FF;
+    font-size:30px;
+    font-weight:bold;
+    font-family: 'Malgun Gothic';
+    color:White;
+}
+
+body {
+    color: black;
+    font-family: "Malgun Gothic";
+	font-size: 20px;
+}
+
+.infoTable
+{
+    width:100%;
+    text-align:center;
+}
+
+.editTable
+{
+    width:95%;
+}
+
+.infoTable tr td
+{
+    border:1px solid #000000;
+    height:50px;
+}
+
+.editTable tr
+{
+    border:1px solid #000000;
+    height:50px;
+}
+
+.editTable td
+{
+    border:1px solid #000000;
+    height:50px;
+}
+
+.tdLabel
+{
+    width:330px;
+}
+
+.tdValue
+{
+    background-color:#EBF1DE;
+}
+
+.tdValue2
+{
+    width:330px;
+    background-color:#EBF1DE;
+}
+
+.tdValue3
+{
+    padding-left:10px;
+    text-align:left;
+}
+
+.infoButton
+{
+	background-color:#6C6C6C;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:'Malgun Gothic';
+	font-size:20px;
+	font-weight:bold;
+	text-decoration:none;
+	border: none;
+	width:150px;
+	height:50px;
+}
+
+
+.infoButtonWide
+{
+	background-color:#6C6C6C;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:'Malgun Gothic';
+	font-size:20px;
+	font-weight:bold;
+	text-decoration:none;
+	border: none;
+	width:200px;
+	height:50px;
+}
+
+
+.exitButton
+{
+	background-color:#6C6C6C;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:'Malgun Gothic';
+	font-size:20px;
+	font-weight:bold;
+	text-decoration:none;
+	border: none;
+	width:150px;
+	height:50px;
+	margin-right:60px;
+	margin-left:1120px;
+	margin-top:15px;
+}
+
+.buttonDiv
+{
+    display:inline-block;
+    width:100%;
+    margin: 10px;
+}
+
+.textbox {
+    color: black;
+    font-family: "Malgun Gothic";
+	font-size: 20px;
+	margin-right:10px;
+}
+
+.addr_select
+{
+    color: black;
+    font-family: "Malgun Gothic";
+	font-size: 20px;
+	width:280px;
+}
+
+.tel_select
+{
+    color: black;
+    font-family: "Malgun Gothic";
+	font-size: 20px;
+	width:50px;
+}
+
+.tel_select2
+{
+    color: black;
+    font-family: "Malgun Gothic";
+	font-size: 20px;
+	width:200px;
+}
+
+.tel_select3
+{
+    color: black;
+    font-family: "Malgun Gothic";
+	font-size: 20px;
+	width:100px;
+}
+
+.tel_select9
+{
+    color: black;
+    font-family: "Malgun Gothic";
+	font-size: 20px;
+	width:350px;
+}

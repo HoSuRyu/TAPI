@@ -1,0 +1,110 @@
+﻿
+<html>
+<head>
+    @{  
+        ViewBag.Title = "경기도 농촌기본소득 시범사업 조사 - 리스트 생성";
+    }
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+
+            $('#cancel').click(function () {
+                window.location.href = './List';
+            });
+
+            $('#save').click(function () {
+
+                var address1 = $(":radio[name='address1']:checked").val();
+
+
+                if (address1 == undefined || address1 == '') {
+                    alert("시도를 선택해 주세요.")
+                    return;
+                }
+                var address2 = $("#address2").val();
+                if (address2 == "") {
+                    alert("상세 주소를 입력해 주세요.")
+                    return;
+                }
+
+
+                $.post("./CreateHouseOK", {
+                    "address1": address1, "address2": address2
+                }, function (result) {
+
+
+                    if (result == '생성') {
+                        alert('가구가 생성 되었습니다.');
+                        window.location.href = './List';
+                    }
+                    else{
+                        alert(result);
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+
+
+        });
+
+
+
+    </script>
+    @*<link href="@Url.Content("../../Content/q200494/Site.css?version=2")" rel="stylesheet" type="text/css" />*@
+    <link href="@Url.Content("../../Content/q210801/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/jquery.chained.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    <label id="title">@ViewBag.Title</label>
+    <br />&nbsp;
+   
+    <table class="infoTable">
+        <tr>
+            <td class="tdValue" >
+               시도
+            </td>
+            <td class="tdValue3" >                
+                <input type="radio" name="address1" value="청산면" id="address1_01" /> <label for="address1_01"> 연천시 청산면</label><br />
+                <input type="radio" name="address1" value="삼죽면" id="address1_02" /> <label for="address1_02"> 안성시 삼죽면</label><br />               
+                
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue">
+                상세 주소
+            </td>
+            <td class="tdValue3">
+                <input class="textbox" id="address2" name="address2" rows="1" size="60" type="text" maxlength="100" value="" />
+
+            </td>
+        </tr>
+
+        
+           
+         
+    </table>
+
+    <br />
+
+        
+
+
+    <table width="100%">
+        <tr>
+            <td align="center" width="50%">
+                <input type="button" id="save" class="infoButton" value="저장" />
+                <input type="button" id="cancel" class="infoButton" value="나가기" />
+            </td>
+        </tr>
+    </table>
+        
+</body>
+</html>

@@ -1,0 +1,119 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q220807_GETLISTResult>
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        @{
+            ViewBag.Title = "심리 검사 전국 조사";
+        }
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+        <link href="@Url.Content("../../Content/KLIPS/Site.css?version=4")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("../../Content/q210801/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+        <script type="text/javascript">
+            $(document).ready(function () {
+                setStatus();
+
+
+             
+
+            });
+
+            function goSurvey1(pid, status)
+            {
+
+                if (status == "완료") {
+                    alert("1차 조사 설문을 이미 완료하였습니다.");
+                    return;
+                }
+
+                if (pid != null) {
+                    window.location.href = './Survey1?pid=' + pid;
+                }
+            }
+
+
+            function goSurvey2(pid, status, type, status2, agree) {
+                if (status != "완료")
+                {
+                    alert("1차조사 설문을 먼저 완료해 주세요.");
+                    return;
+                }
+
+                if (status2 == "완료") {
+                    alert("2차조사 설문을 이미 완료하였습니다.");
+                    return;
+                }
+
+                if (type != "일반" || agree != "동의")
+                {
+                    alert("2차조사 설문 대상자가 아닙니다.");
+                    return;
+                }
+
+              
+
+                if (pid != null) {
+                    window.location.href = './Survey2?pid=' + pid;
+                }
+            }
+
+
+            function goSurvey3(pid, status, type, status2) {
+                if (status != "완료") {
+                    alert("1차조사 설문을 먼저 완료해 주세요.");
+                    return;
+                }
+
+                if (status2 == "완료") {
+                    alert("부부조사 설문을 이미 완료하였습니다.");
+                    return;
+                }
+
+                if (type != "부부") {
+                    alert("부부조사 설문 대상자가 아닙니다.");
+                    return;
+                }
+
+                if (pid != null) {
+                    window.location.href = './Survey3?pid=' + pid;
+                }
+            }
+
+            function setStatus() {
+                $.post("./ProgressPartial", null, function (result) {
+                    $("#Progress").replaceWith(result);
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            }
+
+            function viewYD(keyid)
+            {
+                window.open('https://rpssurvey.hrcglobal.com/Media/12172/'+keyid+'.png');
+
+            }
+
+            function Refresh() {
+                location.reload();
+            }
+        </script>
+    </head>
+    <body>
+        <div style="width : 100%;display: inline-block;">
+            <label id="title">@ViewBag.Title</label>
+            <p/>
+            <div id="Progress">
+                @*@Html.Partial("ProgressPartial", Model)*@
+            </div>
+          
+            <p/>
+            <div style="overflow-x:scroll;width:100%;">
+                @Html.Partial("ListPartial", Model)
+            </div>
+        </div>
+    </body>
+</html>

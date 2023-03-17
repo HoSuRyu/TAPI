@@ -1,0 +1,101 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q220615_GETLISTResult>
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        @{
+            ViewBag.Title = "2022년 청년 사회 첫 출발 실태조사";
+        }
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+        <link href="@Url.Content("../../Content/KLIPS/Site.css?version=4")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("../../Content/q210801/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+        <script type="text/javascript">
+            $(document).ready(function () {
+                setStatus();
+            });
+
+            function goHouseList(keyid, status) {
+
+                if (status == "대체요청")
+                {
+                    alert("대체요청 상태입니다.");
+                    return;
+                }
+
+                if (keyid != null) {
+                    window.location.href = './HouseList?keyid=' + keyid;
+                }
+            }
+
+            function setStatus() {
+                $.post("./ProgressPartial", null, function (result) {
+                    $("#Progress").replaceWith(result);
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            }
+
+            function Refresh() {
+                location.reload();
+            }
+        </script>
+    </head>
+    <body>
+        <div style="width : 100%;display: inline-block;">
+            <label id="title">@ViewBag.Title</label>
+            <p/>
+            <div id="Progress">
+                @*@Html.Partial("ProgressPartial", Model)*@
+            </div>
+
+            <table class="infoTable" style="width:100%; align-self:center">
+
+
+                <tr>
+                    <td class="tdValue9" colspan="2">
+                        18~19세
+                    </td>
+                    <td class="tdValue9" colspan="2">
+                        20-24세
+                    </td>
+                    <td class="tdValue9" colspan="2">
+                        25-29세
+                    </td>
+                    <td class="tdValue9" colspan="2">
+                        30-34세
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdValue9">남</td>
+                    <td class="tdValue9">여</td>
+                    <td class="tdValue9">남</td>
+                    <td class="tdValue9">여</td>
+                    <td class="tdValue9">남</td>
+                    <td class="tdValue9">여</td>
+                    <td class="tdValue9">남</td>
+                    <td class="tdValue9">여</td>
+                </tr>
+                <tr align="center">
+                    <td class="tdValue3c">@ViewBag.쿼터1</td>
+                    <td class="tdValue3c">@ViewBag.쿼터2</td>
+                    <td class="tdValue3c">@ViewBag.쿼터3</td>
+                    <td class="tdValue3c">@ViewBag.쿼터4</td>
+                    <td class="tdValue3c">@ViewBag.쿼터5</td>
+                    <td class="tdValue3c">@ViewBag.쿼터6</td>
+                    <td class="tdValue3c">@ViewBag.쿼터7</td>
+                    <td class="tdValue3c">@ViewBag.쿼터8</td>
+                </tr>
+
+                    </table>
+
+            <p/>
+            <div style="overflow-x:scroll;width:100%;">
+                @Html.Partial("ListPartial", Model)
+            </div>
+        </div>
+    </body>
+</html>

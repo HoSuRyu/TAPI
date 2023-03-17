@@ -1,0 +1,87 @@
+﻿@model TAPI_Interviewer.Models.q220486_List
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "대체 신청";
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#ok').click(function () {
+
+                var status = $(":radio[name='contact']:checked").val();
+                var etc = $(":text[name='etc']").val();
+
+                if (status == undefined || status == '') {
+                    alert('대체 사유를 선택 해 주세요.');
+                    return;
+                }
+                
+              
+
+                if (status == '기타' && etc == '') {
+                    alert('기타 세부 사유를 입력 해 주세요.');
+                    return;
+                }
+
+                $.post("./ReplaceOK", { "pid": '@Model.PID', "status": status, "etc": etc }, function (result) {
+                    alert('대체 요청 되었습니다.');
+                    window.location.href = './List';
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+            $('#cancel').click(function () {
+                window.location.href = './List';
+            });
+        });
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js" )"></script>
+</head>
+<body>
+    <div style="width : 100%;display: inline-block;">
+        <label id="title">대체 신청</label>
+        <table class="infoTable">
+            <tr>
+                <td class="tdValue" colspan="2"><br />대체 신청을 진행합니다.<br /> 신청하시려는 PID가 맞는지 다시 한 번 확인해주십시오.<br />&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="tdValue">PID</td>
+                <td>@(Model.PID)</td>
+            </tr>
+            <tr>
+                <td class="tdValue">아동 이름</td>
+                <td>@(Model.아동이름)</td>
+            </tr>
+            
+            <tr>
+                <td class="tdValue">
+                    대체 사유
+                </td>
+                <td style="text-align: left;padding-left:10px; padding-top:10px; padding-bottom:10px;">
+                    <input type="radio" name="contact" value="4회 이상 연락 진행하였으니 연락불가" id="contact_1" /><label for="contact_1">1. 4회 이상 연락 진행하였으니 연락불가</label><br />
+                    <input type="radio" name="contact" value="방문 시 지속적인 부재" id="contact_2" /><label for="contact_2">2. 방문 시 지속적인 부재</label><br />
+                    <input type="radio" name="contact" value="조사대상 아님" id="contact_3" /><label for="contact_3">3. 조사대상 아님</label><br />
+                    <input type="radio" name="contact" value="거절" id="contact_4" /><label for="contact_4">4. 거절</label><br />
+                    <input type="radio" name="contact" value="강력 거절(고소,고발 등 협박 수준으로 거절)" id="contact_5" /><label for="contact_5">5. 강력 거절(고소,고발 등 협박 수준으로 거절)</label><br />
+                    <input type="radio" name="contact" value="기타" id="contact_6" /><label for="contact_6">6. 기타 </label><input class="textbox" id="etc" name="etc" rows="1" size="30" type="text" value="" maxlength="100" />
+                </td>
+            </tr>
+            
+        </table>
+
+        <div class="buttonDiv">
+            <center>
+                <input type="button" id="ok" class="infoButton" value="대체 요청" />
+                <input type="button" id="cancel" class="infoButton" value="나가기" />
+            </center>
+        </div>
+    </div>
+</body>
+</html>

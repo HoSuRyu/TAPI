@@ -1,0 +1,153 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q220615_GETHOUSELISTResult>
+ 
+
+<script type="text/javascript">
+    function SagreeChange(hid) {
+        var sAgree = $("select[name='sAgree_" + hid + "'] option:selected").val();
+
+        $.post("./ChangeSagree", { "hid": hid, "sAgree": sAgree }, function (result) {
+            if (result != '') {
+                alert(result);
+                location.reload();
+            }
+            else {
+                location.reload();
+
+            }
+        }).error(function (jqXHR, status, error) {
+            alert(status);
+            alert(error);
+        });
+    }
+
+    $(document).ready(function () {
+
+       
+
+        function setAnswer(variable, val) {
+            $("select[name=" + variable + "]").val(val).attr("selected", "selected");
+        }
+
+        @foreach (TAPI_Interviewer.Models.SP_q220615_GETHOUSELISTResult list in Model)
+        {
+
+            @:setAnswer('sAgree_@list.HID', '@list.조사가능여부');
+        }
+});
+</script>
+<br />
+<table class="infoTable" style="width:1600px">
+    <tr>
+        <td class="tdValue9">
+            가구 일련 번호
+        </td>
+
+        <td class="tdValue9">
+            가구원
+        </td>
+        <td class="tdValue9">
+            주소
+        </td>
+        <td class="tdValue9">
+            조사 가능 여부 
+        </td>
+        
+    </tr>
+    @{
+        
+
+
+        foreach (TAPI_Interviewer.Models.SP_q220615_GETHOUSELISTResult list in Model)
+        {
+
+            
+
+            <tr align="center">
+                <td class="tdValue3c" width="100px" align="center">
+                    @(list.HID)
+                </td>
+                <td class="tdValue3c" width="100px" align="center">
+                    @if (list.조사가능여부 == "조사 가능")
+                    {
+                        <input type="button" id="personStart" class="infoButtonT2" style="margin-right: 10px;" value="리스트" onclick="goPersonList(@(list.HID));" />
+                    }
+                    else
+                    {
+                        <input type="button" id="personStart" class="infoButtonTdisabled2" style="margin-right: 10px;" value="리스트" />
+                    }
+                </td>
+
+                <td class="tdValue3c" width="300px" align="center">
+                    @(list.전체주소)
+                </td>
+                <td class="tdValue3c" width="220px" align="center">
+                    @if (list.조사가능여부 == "조사 가능")
+                {
+                        
+
+                        <select id="sAgree_@(list.HID)" name="sAgree_@(list.HID)" class="tel_select5">
+                            <option value='조사 가능'>1. 조사 가능</option>
+                        </select>
+                    }
+                    else
+                    {
+                        <select id="sAgree_@(list.HID)" name="sAgree_@(list.HID)" class="tel_select5" onchange="SagreeChange(@list.HID)">
+                            <option></option>
+                            <option value='조사 가능'>1. 조사 가능</option>
+                            <option value='조사 대상 연령대 없음'>2. 조사 대상 연령대 없음</option>
+                            <option value='조사 거절'>3. 조사 거절</option>
+                            <option value='부재중'>4. 부재중</option>
+                        </select>
+                    }
+                </td>
+
+            </tr>
+        }
+    }
+
+</table>
+<br />
+
+<style>
+    .infoButtonT2 {
+        background-color: #80a6e6;
+        display: inline-block;
+        cursor: pointer;
+        color: #ffffff;
+        font-family: 'Malgun Gothic';
+        font-size: 18px;
+        font-weight: bold;
+        text-decoration: none;
+        border: none;
+        width: 90px;
+        height: 35px;
+    }
+
+    .infoButtonTdisabled2 {
+        background-color: #d2d2d2;
+        display: inline-block;
+        cursor: pointer;
+        color: #ffffff;
+        font-family: 'Malgun Gothic';
+        font-size: 18px;
+        font-weight: bold;
+        text-decoration: none;
+        border: none;
+        width: 90px;
+        height: 35px;
+    }
+
+    .tel_select4 {
+        color: black;
+        font-family: "Malgun Gothic";
+        font-size: 20px;
+        width: 180px;
+    }
+
+    .tel_select5 {
+        color: black;
+        font-family: "Malgun Gothic";
+        font-size: 20px;
+        width: 300px;
+    }
+</style>

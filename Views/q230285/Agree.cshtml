@@ -1,0 +1,157 @@
+﻿@model TAPI_Interviewer.Models.KLIPS2023_HouseList
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#survey').click(function () {
+
+            if ('@ViewBag.설문타입' == '가구설문')
+            {
+                if ('@ViewBag.가구유형' == '분가') {
+                    window.location.href = './SplitSurvey?hid=@(Model.HID)';
+                }
+                else {
+                    window.location.href = './Survey?hid=@(Model.HID)';
+                }
+            }
+            else
+            {
+                if ('@ViewBag.설문타입' == 'PersonSurvey') {
+                    window.location.href = './PersonSurvey?pid=@(ViewBag.PID)';
+                }
+                if ('@ViewBag.설문타입' == 'NewPersonSurvey') {
+                    window.location.href = './NewPersonSurvey?pid=@(ViewBag.PID)';
+                }
+            }
+        });
+
+
+        $('#exit').click(function () {
+            window.location.href = './AnswerInfo?hid=@(Model.HID)';
+        });
+
+    });
+</script>
+
+<!--contents -->
+<div id="contwrap">
+    <div class="contentbox">
+        <div class="boardbox">
+            <div class="bd_contbox">
+                <div class="tablebox">
+                    <table class="tbl_sty01" cellpadding="0" cellspacing="0" border="0" style="width:100%;">
+                        <tbody>
+                            <tr>
+                                <td class="td_th txt_center"><b> "한국노동패널조사" 참여에 대한 설명문</b></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    안녕하십니까?<br />
+                                    한국노동패널조사는 우리나라를 대표하는 패널조사로, 1998년에 시작하여 현재까지 실시되고 있는 가장 오래된 조사자료 입니다. 한국을 대표하는 가구 및 가구원을 대상으로 가구의 경제상태, 노동시장 활동, 생활 만족도에 대한 자료를 수집하며, 이는 실제 정책에 반영되어 우리나라의 노동환경 개선에 일조하고 있습니다.<br />
+                                    <br />
+                                    본 조사는 자발적으로 참여 의사를 밝히신 분에 한하여 수행되며, 귀하께서는 본 조사의 목적 및 내용에 대하여 이해하는 것이 중요합니다. 조사에 관하여 질문이 있으시면, 아래의 담당 연구원에게 연락주시기 바랍니다.<br />
+                                    <br />
+
+                                    1. 연구의 목적<br />
+                                    본 조사는 1998년에 시작하여 현재까지 실시되고 있는 가장 오래된 조사자료 입니다. 한국을 대표하는 가구 및 가구원을 대상으로 가구의 경제상태, 노동시장 활동, 생활 만족도에 대한 자료를 수집하며, 이는 실제 정책에 반영되어 우리나라의 노동환경 개선에 일조하고 있습니다.<br />
+                                    <br />
+
+
+                                    2. 참여 대상<br />
+                                    전국을 대표할 수 있도록 표집된 가구와 가구에 속한 15세 이상 가구원 전수가 대상입니다.<br />
+                                    <br />
+
+
+                                    3. 연구의 참여 절차<br />
+                                    본 조사를 위해 훈련된 면접원이 가구를 방문하여 면대면 면접조사로 실시할 예정입니다.<br />
+                                    <br />
+
+
+                                    4. 참여 기간<br />
+                                    본 조사는 2023년 12월까지 실시되며, 이후 매년 동일 가구를 대상으로 조사가 진행됩니다.<br />
+
+                                    <br />
+
+                                    5. 연구 참여에 대한 보상<br />
+                                    본 조사의 참여자에게는 감사의 뜻으로 소정의 사례금을 드립니다. 1인 가구를 기준으로 기본 사례비는 가구당 45,000원이고, 성공 가구원 수가 1명씩 늘어날 때마다 5,000원씩 추가로 지급해드립니다.<br />
+                                    <br />
+
+
+                                    6. 개인정보보호에 관한 사항<br />
+                                    본 조사의 참여로 귀하에게서 수집되는 개인정보는 성별, 연령, 연락처 등입니다. 이 정보는 사은품 및 사례비 지급을 위해서만 사용하며, 수집된 정보는 개인정보보호법에 따라 관리됩니다. 수집된 자료는 연구 목적으로만 사용될 것이며, 개인의 답변 내용은 기밀로 처리됩니다. 본 조사에서 수집된 자료는 개인식별정보가 포함되지 않은 상태로, 컴퓨터 데이터 파일(sas, spss, stata)의 형태로 만들어져 경제와 노동을 연구하는 연구자들에게 공개됩니다. 귀하께서 본 동의서에 서명하는 것은, 이러한 사항에 대하여 사전에 알고 있었으며 이를 허용한다는 동의로 간주 될 것입니다.<br />
+                                    <br />
+
+
+                                    7. 연구 참여 철회 및 중단 보장<br />
+                                    귀하께서는 희망 시 조사 참여를 중단할 수 있으며, 이에 따른 불이익은 없습니다. 조사 참여 중단을 희망하시면, 담당 연구원이나 연구책임자에게 즉시 말씀해 주십시오.<br />
+                                    <br />
+
+
+                                    8. 문의<br />
+                                    본 조사에 대해 질문이 있거나 문제가 생길 시, 아래의 연락처로 연락주시기 바랍니다.<br />
+                                    <br />
+                                    한국노동연구원 노동패널팀 전화: 044-287-6651~4 이메일: klips@kli.re.kr<br />
+                                    한국리서치 노동패널조사팀 전화: 02-3014-0708 이메일: hsjang@hrc.co.kr<br />
+                                </td>                                
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br />
+                <div class="tablebox">
+                    <table class="tbl_sty01" cellpadding="0" cellspacing="0" border="0" style="width:100%;">                       
+                        <tbody>
+                            <tr>
+                                <td class="td_th txt_center"><b> "한국노동패널조사" 참여 동의서</b></td>
+                            </tr>
+                            <tr>
+                                <td >
+                                    1. 나는 이 설명서를 읽었으며, 내용을 충분히 이해합니다.<br />
+                                    2. 나는 조사의 목적과 절차, 참여에 대한 보상에 대해 들었으며, 질문에 대해서는 만족할 만한 대답을 얻었습니다.<br />
+                                    3. 나는 이 연구에 참여하는 것에 대해 자발적으로 동의합니다.<br />
+                                    4. 나는 언제라도 중도에 연구 참여를 거부하거나 중단할 수 있으며, 연구 참여를 거부하더라도 어떠한 불이익이 없다는 것을 알고 있습니다.<br />
+                                    5. 나는 동의서에 서명함으로서, 본 조사의 참여에 동의합니다.<br /><br />
+                                    
+                                </td>                             
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="tablebox">
+                        <table class="tbl_sty02" cellpadding="0" cellspacing="0" border="0" style="width:100%;">
+                            <tbody>
+                                <tr>
+                                    <td class="td_th txt_center"> 조사 참여자</td>
+                                    <td class="td_th txt_center"> 성명</td>
+                                    <td>@ViewBag.응답자이름</td>
+                                    <td class="td_th txt_center"> 날짜</td>
+                                    <td>@ViewBag.오늘날짜</td>
+                                </tr>
+                                <tr>
+                                    <td class="td_th txt_center"> 면접원</td>
+                                    <td class="td_th txt_center"> 성명</td>
+                                    <td>@Model.면접원이름</td>
+                                    <td class="td_th txt_center"> 날짜</td>
+                                    <td>@ViewBag.오늘날짜</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br />
+
+
+
+                <div class="bot_btnbox">
+                    <button type="button" class="btnsty01" id="survey" style="width:100%">조사 참여 동의</button>
+                    <button type="button" class="btnsty02" id="exit" style="width:100%">조사 참여 동의하지 않음</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("footer")
+
+</div>
+</body>
+</html>

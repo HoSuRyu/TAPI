@@ -1,0 +1,79 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q220614_GETPERSONLISTResult>
+
+<br />
+<table class="infoTable" align="center">
+    <tr>
+        <td class="tdValue9">
+            가구원 번호
+        </td>
+        <td class="tdValue9">
+            가구주와의 관계
+        </td>
+        <td class="tdValue9">
+            성명
+        </td>
+        <td class="tdValue9">
+            성별
+        </td>
+        <td class="tdValue9">
+            출생년도
+        </td>
+        <td class="tdValue9">
+            조사대상여부
+        </td>
+        <td class="tdValue9">
+            설문 하기
+        </td>
+        <td class="tdValue9">
+            진행 상태
+        </td>
+    </tr>
+
+
+    @foreach (TAPI_Interviewer.Models.SP_q220614_GETPERSONLISTResult list in Model)
+    {
+        <tr align="center">
+            <td class="tdValue3c">
+                @(list.PID)
+            </td>
+            <td class="tdValue3c">
+                @(list.가구주와의관계)
+
+                @{
+                    string textHtml = "";
+                    if (list.가구주와의관계기타 != "")
+                    {
+                        textHtml = "기타: " + list.가구주와의관계기타;
+                    }
+                }
+                @Html.Raw(textHtml)
+            </td>
+            <td class="tdValue3c" >
+                @(list.성명)
+            </td>
+            <td class="tdValue3c">
+                @(list.성별)
+            </td>
+            <td class="tdValue3c">
+                @(list.생년)년 
+            </td>
+            <td class="tdValue3c">
+              @(list.조사대상여부)
+            </td>
+            <td class="tdValue3c" align="center">
+                @*@if (list.조사대상여부 == "적격")
+                {*@
+                    <input type="button" id="personStart" class="infoButtonT" style="margin-right: 10px;" value="진행하기"  onclick="personInfoClick( @(list.PID), '@(list.진행상태)');"/>
+                @*}*@
+            </td>
+            <td class="tdValue3c">
+            @if (list.조사대상여부 == "적격" || list.조사대상여부 == "")
+            {
+                @(list.진행상태)
+             }
+            </td>
+        </tr>
+    }
+
+</table>
+

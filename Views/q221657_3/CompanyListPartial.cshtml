@@ -1,0 +1,192 @@
+﻿@Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "CompanyList";
+        settings.KeyFieldName = "PID";
+        settings.CallbackRouteValues = new { Controller = "q221657_3", Action = "CompanyListPartial", keyid = ViewBag.상권ID };
+        settings.Width = System.Web.UI.WebControls.Unit.Pixel(2000);
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "PID";
+            column.Caption = "사업체<br>일련번호";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(100);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "사업체명";
+            column.Caption = "사업체명";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(120);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "기본정보";
+            column.SetDataItemTemplateContent(c =>
+            {
+                Html.DevExpress().Button(
+                    buttonSettings =>
+                    {
+                        buttonSettings.Name = Guid.NewGuid().ToString();
+                        buttonSettings.Text = "기본정보";
+                        buttonSettings.ClientSideEvents.Click = string.Format("function(s, e) {{ goAnswerInfo('{0}'); }}", DataBinder.Eval(c.DataItem, "PID"));
+                        buttonSettings.ControlStyle.Font.Size = System.Web.UI.WebControls.FontUnit.Point(11);
+                        buttonSettings.ControlStyle.Font.Name = "맑은 고딕";
+                    }).Render();
+            });
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(80);
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "진행상태";
+            column.Caption = "진행상태";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(80);
+
+            column.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+            comboBoxProperties.DataSource = ViewBag.StatusList;
+            comboBoxProperties.DropDownStyle = DropDownStyle.DropDownList;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "접촉일지<br>작성";
+            column.SetDataItemTemplateContent(c =>
+            {
+                Html.DevExpress().Button(
+                    buttonSettings =>
+                    {
+                        buttonSettings.Name = Guid.NewGuid().ToString();
+                        buttonSettings.Text = "접촉일지";
+                        buttonSettings.ClientSideEvents.Click = string.Format("function(s, e) {{ contact('{0}', '{1}'); }}", DataBinder.Eval(c.DataItem, "PID"), DataBinder.Eval(c.DataItem, "진행상태"));
+                        buttonSettings.ControlStyle.Font.Size = System.Web.UI.WebControls.FontUnit.Point(11);
+                        buttonSettings.ControlStyle.Font.Name = "맑은 고딕";
+                    }).Render();
+            });
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(80);
+        });
+
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "최종접촉일지";
+            column.Caption = "접촉일지";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(80);
+
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "주소";
+            column.Caption = "주소";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(300);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "전화번호";
+            column.Caption = "전화번호";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(80);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "업종";
+            column.Caption = "업종";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(80);
+
+
+            column.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+            comboBoxProperties.DataSource = ViewBag.bType;
+            comboBoxProperties.DropDownStyle = DropDownStyle.DropDownList;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "업종목표";
+            column.Caption = "업종별<br>목표";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(50);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "업종별완료부수";
+            column.Caption = "업종별<br>완료부수";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(50);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "업종목표달성";
+            column.Caption = "업종<br>목표 달성";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(60);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+
+        settings.FormatConditions.AddHighlight((condition) =>
+        {
+            condition.ApplyToRow = true;
+            condition.FieldName = "업종";
+            condition.Expression = "[업종]=='소매업'";
+            condition.RowStyle.BackColor = System.Drawing.Color.AliceBlue;
+
+            condition.Format = GridConditionHighlightFormat.Custom;
+        });
+        settings.FormatConditions.AddHighlight((condition) =>
+        {
+            condition.ApplyToRow = true;
+            condition.FieldName = "업종";
+            condition.Expression = "[업종]=='음식 및 주점업'";
+            condition.RowStyle.BackColor = System.Drawing.Color.LightBlue;
+
+            condition.Format = GridConditionHighlightFormat.Custom;
+        });
+        settings.FormatConditions.AddHighlight((condition) =>
+        {
+            condition.ApplyToRow = true;
+            condition.FieldName = "업종";
+            condition.Expression = "[업종]=='오락 및 스포츠업'";
+            condition.RowStyle.BackColor = System.Drawing.Color.LightSkyBlue;
+
+            condition.Format = GridConditionHighlightFormat.Custom;
+        });
+        settings.FormatConditions.AddHighlight((condition) =>
+        {
+            condition.ApplyToRow = true;
+            condition.FieldName = "업종";
+            condition.Expression = "[업종]=='기타 개인 서비스업'";
+            condition.RowStyle.BackColor = System.Drawing.Color.LightSteelBlue;
+
+            condition.Format = GridConditionHighlightFormat.Custom;
+        });
+
+        settings.Styles.Header.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+        settings.Styles.Cell.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+        settings.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+
+        //settings.SettingsPager.Mode = GridViewPagerMode.ShowPager;
+        //settings.SettingsPager.Position = System.Web.UI.WebControls.PagerPosition.Top;
+        //settings.SettingsPager.PageSize = 50;
+        //settings.SettingsPager.FirstPageButton.Visible = true;
+        //settings.SettingsPager.LastPageButton.Visible = true;
+
+        settings.Settings.ShowFilterRow = true;
+        settings.Settings.ShowFilterRowMenu = false;
+        settings.Settings.VerticalScrollableHeight = 600;
+        settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
+        settings.SettingsBehavior.AllowDragDrop = false;
+
+        settings.SettingsBehavior.AllowFocusedRow = false;
+        settings.ControlStyle.Font.Size = System.Web.UI.WebControls.FontUnit.Point(11);
+        settings.ControlStyle.Font.Name = "맑은 고딕";
+        settings.SettingsBehavior.AllowSort = true;
+    }).Bind(Model).GetHtml()

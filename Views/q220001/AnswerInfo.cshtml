@@ -1,0 +1,395 @@
+﻿@model TAPI_Interviewer.Models.SP_q220001_GETINFOResult
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = " 기본 정보 입력";
+
+        string[] tel = string.IsNullOrEmpty(Model.집전화) == true ? new string[] { "" } : Model.집전화.Trim().Split('-');
+    
+        string[] hp = string.IsNullOrEmpty(Model.휴대전화) == true ? new string[] { "" } : Model.휴대전화.Trim().Split('-');
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+             
+
+            $(":checkbox[name='IschangeCname']").change(function () {
+                if( $('#IschangeCname').is(':checked')){
+
+                    $("#changeCname").removeAttr('disabled');
+                }
+                else {
+                    $("#changeCname").attr('disabled', 'disabled');
+                }
+            });
+
+
+            $(":radio[name='gender']").filter('[value="@(Model.응답자성별)"]').prop('checked', true);
+            $("select[name='tel1']").val("@(tel[0])").attr("selected", "selected");
+             $("select[name='hp1']").val("@(hp[0])").attr("selected", "selected");
+
+            $('#save').click(function () {
+                saveInfo('저장');
+            });
+
+            $('#survey').click(function () {
+
+                saveInfo('설문');
+            });
+
+
+            $('#exit').click(function () {
+                window.location.href = './List';
+            });
+
+            $(":radio[name='IsNewAddress']").change(function () {
+                setDisabled();
+            });
+            if (@(Model.주소확인) == 1)
+            {
+                $("#IsNewAddress_1").prop('checked', true);
+            }
+
+
+            setDisabled();
+
+
+
+        });
+
+
+
+        function saveInfo(stype) {
+
+            var age = $("select[name='age'] option:selected").val();
+            var gender = $(":radio[name='gender']:checked").val();
+            var tel1 = $("select[name='tel1'] option:selected").val();
+            var tel = tel1;
+
+            var hp1 = $("select[name='hp1'] option:selected").val();
+            var hp = hp1;
+
+            var cname = $("#changeCname").val();
+            var pname = $("#pname").val();
+
+            var cType = $(":radio[name='cType']:checked").val();
+            var cTypeEtc = $("#cTypeEtc").val();
+            var area = $("select[name='area'] option:selected").val();
+            var memberC = $("select[name='memberC'] option:selected").val();
+
+
+
+            if (pname == '') {
+                $("#pname").focus();
+                alert('이름을 입력 해 주세요.');
+                return;
+            }
+
+            if (pname.length > 50) {
+                $("#pname").focus();
+                alert('이름을 50자 이내로 입력 해 주세요.');
+                return;
+            }
+
+
+            if (gender == undefined || gender == '')
+            {
+                alert('성별을 선택 해 주세요.');
+                return;
+            }
+            if (gender == '남')
+            {
+                alert("여자만 응답 가능합니다.");
+                return;
+            }
+
+
+            if (tel1=='') {
+                alert('전화번호를 입력해 주세요.');
+                return;
+            }
+
+            if (tel1 != '없음'  && tel1 != '') {
+                tel = tel1 + '-' + $("#tel2").val() + '-' + $("#tel3").val();
+
+                if ( tel != '02-000-0000' && tel != '02-0000-0000' && (isTelePhone(tel) == false && isCellPhone(tel) == false)) {
+                    $("#tel2").focus();
+                    alert('유효한 전화 번호를 입력 해 주세요.');
+                    return;
+                }
+            }
+            if (hp1 != '없음' && hp1 != '') {
+                hp = hp1 + '-' + $("#hp2").val() + '-' + $("#hp3").val();
+
+                if (hp != '010-0000-0000' && isCellPhone(hp) == false) {
+                    $("#hp2").focus();
+                    alert('유효한 휴대전화 번호를 입력 해 주세요.');
+                    return;
+                }
+            }
+
+            var IsNewAddress = $(":radio[name='IsNewAddress']:checked").val();
+            var jibunAddr = $("#jibunAddr").val();
+            var roadAddrPart1 = $("#roadAddrPart1").val();
+            var siNm = $("#siNm").val();
+            var sggNm = $("#sggNm").val();
+            var emdNm = $('#emdNm').val();
+            var sebuAddr = $("#sebuAddr").val();
+
+
+            if (IsNewAddress == undefined || IsNewAddress == '') {
+                alert("'주소'가 맞는지 확인해 주세요.");
+                return;
+            }
+
+            if (IsNewAddress == '주소 틀림' && jibunAddr == '') {
+                alert('주소를 입력해 주세요.');
+                return;
+            }
+
+
+
+            $.post("./SaveInfo", {
+
+                "PID": @(Model.PID),
+                "name": pname,
+                "gender": gender,
+                "tel": tel,
+                "hp": hp,
+                "IsNewAddress": IsNewAddress,
+                "jibunAddr": jibunAddr,
+                "roadAddrPart1": roadAddrPart1,
+                "siNm": siNm,
+                "sggNm": sggNm,
+                "emdNm": emdNm,
+                "sebuAddr": sebuAddr
+            }, function (result) {
+                  if (result != '')
+                    {
+                        alert(result);
+                    }
+                    else
+                    {
+                        if (stype == '저장') {
+                            alert("저장되었습니다.");
+                        }
+                       
+                        else if(stype=='설문')
+                        {
+                            window.location.href = './Survey?pid='+@(Model.PID);
+                        }
+                    }
+
+
+            }).error(function (jqXHR, status, error) {
+                alert(status);
+                alert(error);
+            });
+
+
+
+        }
+
+
+        function isTelePhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^(0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]|70|505))[1-9]+[0-9]{6,7}$/;
+
+            return regPhone.test(p);
+        }
+
+        function isCellPhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/;
+
+            return regPhone.test(p);
+        }
+
+
+
+
+        function setDisabled() {
+            var IsNewAddress = $(":radio[name='IsNewAddress']:checked").val();
+
+
+            if (IsNewAddress == '주소 틀림') {
+
+                $("#searchJusoButton").removeAttr('disabled');
+                $("#roadAddrPart1").removeAttr('disabled');
+                $("#jibunAddr").removeAttr('disabled');
+                $("#sebuAddr").removeAttr('disabled');
+            }
+            else {
+                $("#searchJusoButton").attr('disabled', 'disabled');
+                $("#roadAddrPart1").val("").attr('disabled', 'disabled');
+                $("#jibunAddr").val("").attr('disabled', 'disabled');
+                $("#sebuAddr").val("").attr('disabled', 'disabled');
+            }
+
+        }
+
+
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css?version=5")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("../../Content/q210801/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/jquery.chained.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    @Html.Partial("CommonAddressSearchScript")
+
+    <div id="main" style="width:100%;">    
+        <table class="infoTable">
+            <tr>
+                <td class="tdValue">
+                    PID
+                </td>
+                <td class="tdValue3">
+                    @(Model.PID)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="tdValue">
+                    응답자 이름
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="pname" rows="1" size="13" type="text" value="@(Model.응답자이름)">
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="tdValue">
+                    응답자 성별
+                </td>
+                <td class="tdValue3">
+                    <input type="radio" name="gender" id="gender_1" value="남" /><label for="gender_1"> 남 </label> &nbsp; &nbsp;
+                    <input type="radio" name="gender" id="gender_2" value="여" /><label for="gender_2"> 여</label>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td class="tdValue">
+                    집전화
+                </td>
+                <td class="tdValue3">
+                    <select id="tel1" name="tel1" class="tel_select2">
+                        <option></option>
+                        <option value='02'>서울 02</option>
+                        <option value='051'>부산 051</option>
+                        <option value='053'>대구 053</option>
+                        <option value='032'>인천 032</option>
+                        <option value='062'>광주 062</option>
+                        <option value='042'>대전 042</option>
+                        <option value='052'>울산 052</option>
+                        <option value='044'>세종 044</option>
+                        <option value='031'>경기 031</option>
+                        <option value='033'>강원 033</option>
+                        <option value='043'>충북 043</option>
+                        <option value='041'>충남 041</option>
+                        <option value='063'>전북 063</option>
+                        <option value='061'>전남 061</option>
+                        <option value='054'>경북 054</option>
+                        <option value='055'>경남 055</option>
+                        <option value='064'>제주 064</option>
+                        <option value='070'>인터넷전화 070</option>
+                    </select>
+                    - <input class="textbox" id="tel2" rows="1" size="4" type="tel" value="@(tel.Length <= 1 ? "" : tel[1])" maxlength="4">
+                    - <input class="textbox" id="tel3" rows="1" size="4" type="tel" value="@(tel.Length <= 1 ? "" : tel[2])" maxlength="4">
+
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    휴대전화
+                </td>
+                <td class="tdValue3">
+                    <select id="hp1" name="hp1" class="tel_select2">
+                        <option></option>
+                        <option value='010'>010</option>
+                        <option value='011'>011</option>
+                        <option value='016'>016</option>
+                        <option value='017'>017</option>
+                        <option value='018'>018</option>
+                        <option value='019'>019</option>
+                        <option value='없음'>없음</option>
+                    </select>
+                    - <input class="textbox" id="hp2" rows="1" size="4"  value="@(hp.Length <= 1 ? "" : hp[1])" type="tel" maxlength="4">
+                    - <input class="textbox" id="hp3" rows="1" size="4"  value="@(hp.Length <= 1 ? "" : hp[2])" type="tel" maxlength="4">
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="tdValue">
+                    주소
+                </td>
+                <td class="tdValue3">
+                    @Model.전체주소정보
+                </td>
+            </tr>
+
+            <tr>
+                <td class="tdValue">
+                    주소 확인
+                </td>
+                <td class="tdValue3" colspan="3" bgcolor="#ffea78">
+                    <input type="radio" name="IsNewAddress" id="IsNewAddress_1" value="주소 맞음" /><label for="IsNewAddress_1">1. 주소 맞음 </label> &nbsp; &nbsp;
+                    <input type="radio" name="IsNewAddress" id="IsNewAddress_2" value="주소 틀림" /><label for="IsNewAddress_2">2. 주소 틀림</label>
+
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    주소검색
+                </td>
+                <td class="tdValue3" colspan="3" style="padding:10px 0px 10px 10px;">
+                    <input type="button" class="infoButton" value="주소검색" onclick="jusoPopUp();" style=" cursor pointer;" id="searchJusoButton"> ◀ 주소검색버튼을 클릭하세요.<br />
+                    <input class="textbox" type="text" id="jibunAddr" placeholder="" readonly="readonly" title="주소" style="width:90%">
+                    <input type="hidden" id="siNm" title="시도">
+                    <input type="hidden" id="sggNm" title="시군구">
+                    <input type="hidden" id="emdNm" title="읍면동">
+                    <input type="hidden" id="roadAddrPart1" title="도로명주소">
+
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    세부주소<br />(층,동,호수 등)
+                </td>
+                <td class="tdValue3" colspan="3">
+                    <input class="textbox" type="text" id="sebuAddr" style ="width:100%;" placeholder="상세주소 예)105동 123호" title="상세주소" style="width:90%">
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="tdValue">
+                    조사 진행상태
+                </td>
+                <td class="tdValue3">
+                    @Model.진행상태
+                </td>
+            </tr>
+        </table>
+       
+        <div class="buttonDiv">
+
+            <center>
+                <input type="button" id="save" class="infoButton" style="margin-right: 60px;" value="정보 저장" />
+                <input type="button" id="survey" class="infoButton" style="margin-right: 60px;" value="조사하기" />
+                <input type="button" id="exit" class="infoButton" style="margin-right: 60px;" value="나가기" />
+            </center>
+     </div>
+</body>
+</html>

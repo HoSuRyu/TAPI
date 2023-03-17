@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 58.625, 89.875" name="SURVEY">
+  <DataContextMoniker Name="/SURVEYDataContext" />
+  <nestedChildShapes>
+    <classShape Id="c111945a-ee9a-444d-b8cf-2bfd456a67eb" absoluteBounds="0.875, 0.5, 2, 6.7707340494791657">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_0" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d19464a9-f670-456b-a0fb-7f38d755f4de" absoluteBounds="0.88999999999999968, 0.96, 1.9700000000000002, 6.2107340494791661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="ca2d3382-11e1-4bae-aded-c6c782fe8e7c" absoluteBounds="3.125, 0.5, 2, 16.578107096354167">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_p160619" />
+      <nestedChildShapes>
+        <elementListCompartment Id="89f05970-09c0-44ca-bc35-7e06632718dc" absoluteBounds="3.1399999999999997, 0.96, 1.9700000000000002, 16.018107096354164" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="12edbed8-5b01-44f8-800c-177e0d598e18" absoluteBounds="5.5, 0.5, 2, 10.0398583984375">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_p160404_13" />
+      <nestedChildShapes>
+        <elementListCompartment Id="18d2ceba-dd39-42fb-895f-1cf805fd2ff0" absoluteBounds="5.515, 0.96, 1.9700000000000002, 9.4798583984375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="45498008-06ca-490c-9094-63ee2eb0221b" absoluteBounds="7.75, 0.5, 2, 89.075747070312488">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_p171330_2" />
+      <nestedChildShapes>
+        <elementListCompartment Id="dedb18c1-8e4f-4bc2-8f51-b415980f344e" absoluteBounds="7.7650000000000006, 0.96, 1.9700000000000002, 88.5157470703125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="fb7acaa1-7244-4d8b-ad58-7429c7a3e37d" absoluteBounds="10.125, 0.5, 2, 10.0398583984375">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_p171950_1" />
+      <nestedChildShapes>
+        <elementListCompartment Id="102a7a2f-5a01-4a58-b62a-d6f2616c0513" absoluteBounds="10.14, 0.96, 1.9700000000000002, 9.4798583984375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="06824f66-dff2-496f-9d6c-ca3e9f739e61" absoluteBounds="14.625, 0.5, 2, 8.5014469401041666">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_p180118_1" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d8828b59-77c4-400f-9d25-a6be4331cbee" absoluteBounds="14.64, 0.96000000000000085, 1.9700000000000002, 7.941446940104167" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9aa6fe87-e9ae-40b2-8637-d5646f884132" absoluteBounds="12.375, 0.5, 2, 8.5014469401041666">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_p180118_2" />
+      <nestedChildShapes>
+        <elementListCompartment Id="531a5a47-35bf-414b-82de-9b39c742fb9a" absoluteBounds="12.39, 0.96, 1.9700000000000002, 7.941446940104167" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="88beb21e-9afb-4e60-a602-ceed46dea524" absoluteBounds="17.125, 0.625, 2, 8.8860498046875">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_p180626_2" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7fc69b21-e6f4-48ad-a169-a4c42b338455" absoluteBounds="17.14, 1.085, 1.9700000000000002, 8.3260498046875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d490ac16-ee37-4147-93f6-58f7b144b1fc" absoluteBounds="19.375, 0.625, 2, 8.6937483723958326">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_p180626_3" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ffefea22-9677-4105-b7a3-86631eb5bc09" absoluteBounds="19.39, 1.085, 1.9700000000000002, 8.1337483723958321" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="95285f6c-d475-4109-beb5-a10abbec9dda" absoluteBounds="21.875, 0.875, 2, 14.6550927734375">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_p190240_2" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c5dabb6c-3aa6-4c5e-a7f6-0292a950f80f" absoluteBounds="21.89, 1.335, 1.9700000000000002, 14.0950927734375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="f9f86fb4-9f77-4fef-b23a-6348063ca619" absoluteBounds="28.375, 0.75, 2, 11.962872721354165">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_q201277" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4e83a12d-253e-4702-b967-f980f8440c18" absoluteBounds="28.39, 1.21, 1.9700000000000002, 11.402872721354166" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="e1680d7a-3464-4a3b-8586-1251ab6b8a5b" absoluteBounds="24, 0.875, 2, 11.962872721354165">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_q201277_2" />
+      <nestedChildShapes>
+        <elementListCompartment Id="9e9edccf-de98-4903-9d38-0d3abdd8d435" absoluteBounds="24.015, 1.335, 1.9700000000000002, 11.402872721354166" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="e7d97492-347e-45b2-9843-83b0826bcd55" absoluteBounds="26.125, 0.875, 2, 11.7705712890625">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_q201277_3" />
+      <nestedChildShapes>
+        <elementListCompartment Id="940b532a-86c3-44df-8d88-86eaf468210c" absoluteBounds="26.14, 1.335, 1.9700000000000002, 11.2105712890625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="39e79ff7-27ed-4b0b-be38-ce17b40fb0f9" absoluteBounds="30.5, 0.75, 2, 11.962872721354165">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_q201277_1" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a5e898ee-4756-4bc6-a80e-2a1f0d4e3cef" absoluteBounds="30.515, 1.21, 1.9700000000000002, 11.402872721354166" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="007e7bdc-fa5d-4745-864b-d4995589bcc4" absoluteBounds="32.625, 0.625, 2, 15.616599934895834">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_q210694_2" />
+      <nestedChildShapes>
+        <elementListCompartment Id="53913614-7856-43ac-bba6-9019571ee695" absoluteBounds="32.64, 1.085, 1.9700000000000002, 15.056599934895832" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="69105d41-1869-431f-9b2b-c3a7e0328921" absoluteBounds="34.75, 0.625, 2, 11.7705712890625">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_q211116" />
+      <nestedChildShapes>
+        <elementListCompartment Id="f5c323f7-118c-40e5-96be-e2c3f9083893" absoluteBounds="34.765, 1.085, 1.9700000000000002, 11.2105712890625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="45eadcd7-52a0-470b-98d9-9dff17e9867b" absoluteBounds="36.875, 0.75, 2, 11.7705712890625">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_q211116_1" />
+      <nestedChildShapes>
+        <elementListCompartment Id="34111746-916d-400e-a922-665dfa4cc2b9" absoluteBounds="36.89, 1.21, 1.9700000000000002, 11.2105712890625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="fac0c29a-57be-499b-bc00-32e2a46c5172" absoluteBounds="39, 0.625, 2, 11.962872721354165">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_q211662" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7692dc56-f2a6-4eea-9d7c-39b1c6afb192" absoluteBounds="39.015, 1.085, 1.9700000000000002, 11.402872721354166" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="1c4b1420-c43a-43be-b22a-afacca00da05" absoluteBounds="41.125, 0.625, 2, 11.7705712890625">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_q211224" />
+      <nestedChildShapes>
+        <elementListCompartment Id="09ab0610-4056-4b10-bdb0-4c46017f3697" absoluteBounds="41.14, 1.085, 1.9700000000000002, 11.2105712890625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9fb073b4-5924-4e61-89ed-47add862bc7f" absoluteBounds="43.25, 0.5, 2, 11.962872721354165">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_q211597" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a3dbb341-54fa-409c-be47-784e09ef85f0" absoluteBounds="43.265, 0.96, 1.9700000000000002, 11.402872721354166" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9221c132-8d16-454b-8006-3df392817bc6" absoluteBounds="45.75, 0.75, 2, 11.962872721354165">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_q210991" />
+      <nestedChildShapes>
+        <elementListCompartment Id="09d84d5b-d214-43ce-b347-a4928818a524" absoluteBounds="45.765, 1.21, 1.9700000000000002, 11.402872721354166" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="20560e8e-41f4-430c-b4cc-ba20a119ca5d" absoluteBounds="47.875, 0.75, 2, 46.192527669270831">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_q220674_6" />
+      <nestedChildShapes>
+        <elementListCompartment Id="edf9a57e-b5d3-439e-8529-7edef522286d" absoluteBounds="47.89, 1.21, 1.9700000000000002, 45.632527669270829" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="f2d0394d-6ade-4590-bc92-ca6c16ba2902" absoluteBounds="50.375, 0.875, 2, 46.192527669270831">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_q221411" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5bf9230d-0c06-4156-ad24-6cb21d23eea4" absoluteBounds="50.39, 1.335, 1.9700000000000002, 45.632527669270829" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="bea5e980-8e84-46b9-8729-26df8898f9dd" absoluteBounds="52.375, 0.875, 2, 46.192527669270831">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_q221411_2" />
+      <nestedChildShapes>
+        <elementListCompartment Id="37ca860e-ba9e-4ae9-822a-afaf4bba30fe" absoluteBounds="52.39, 1.335, 1.9700000000000002, 45.632527669270829" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="79a7dba9-6dae-4cc6-9ad8-0633114dd2be" absoluteBounds="56.375, 0.875, 2, 46.192527669270831">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_q221411_1" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6d38e8bd-f653-43c4-8e18-fb9fda517576" absoluteBounds="56.39, 1.335, 1.9700000000000002, 45.632527669270829" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="5df971fd-610e-45bc-a1ed-2a233d7cd206" absoluteBounds="54.375, 0.875, 2, 46.192527669270831">
+      <DataClassMoniker Name="/SURVEYDataContext/T_SamplingList_q221411_3" />
+      <nestedChildShapes>
+        <elementListCompartment Id="00c89df6-1018-426f-8a51-d48ed8ff77cf" absoluteBounds="54.39, 1.335, 1.9700000000000002, 45.632527669270829" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

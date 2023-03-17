@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "2022년 9차 여성가족패널조사";
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#search").click(function () {
+                var opid = $("#opid").val();
+
+                if (opid == '') {
+                    alert('합가 전 PID를 입력 해 주세요.');
+                    return;
+                }
+
+                $.post("./CheckOPID", { "opid": opid }, function (result) {
+                    $("#CheckOPID").html(result);
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+            $('#run').click(function () {
+                var opid = $("#opid").val();
+                var CheckOPIDYN = $("#CheckOPIDYN").val();
+
+                if (opid == '') {
+                    alert('합가 전 PID를 입력 해 주세요.');
+                    return;
+                }
+
+                if (CheckOPIDYN != '1' && opid != '모름') {
+                    alert('합가 전 PID를 확인 해 주세요.');
+                    return;
+                }
+
+                if (confirm("반영된 PID는 변경 할 수 없습니다.\r\nPID : " + opid + "\r\n맞다면 '확인', '아니면 '취소'를 클릭 해 주세요.") == true)
+                {
+                    $.post("./NewCode6PersonSurvey", { "hid": "@ViewBag.HID", "pid": "@ViewBag.PID", "pnum": "@ViewBag.PNum", "opid": opid }, function (result) {
+                        window.location.href = result;
+                    }).error(function (jqXHR, status, error) {
+                        alert(status);
+                        alert(error);
+                    });
+                }
+            });
+
+            $('#exit').click(function () {
+                window.location.href = './PanelInfo?hid=@ViewBag.HID';
+            });
+        });
+    </script>
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/jquery.chained.min.js" )"></script>
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js" )"></script>
+</head>
+<body>
+    <div id="main" style="width:1350px;">
+        <table class="infoTable">
+            <tr>
+                <td colspan="6">가구용 설문</td>
+            </tr>
+            <tr>
+                <td class="tdValue">HID</td>
+                <td class="tdValue">PID</td>
+                <td class="tdValue">이름</td>
+                <td class="tdValue">합가 전 PID</td>
+                <td class="tdValue">합가 전 PID 검색</td>
+                <td class="tdValue">설문실행</td>
+            </tr>
+            <tr>
+                <td>@ViewBag.HID</td>
+                <td>@ViewBag.PID</td>
+                <td>@ViewBag.Name</td>
+                <td><input type="text" class="textbox" id="opid" value="@ViewBag.OPID" name="opid" rows="1" size="10" maxlength="10" /></td>
+                <td><input type="button" id="search" class="infoButton" value="검색" /></td>
+                <td><input type="button" id="run" class="infoButton" value="설문실행" /></td>
+            </tr>
+        </table>
+        <br />
+        <font size="3" color="red">
+            * 합가 전 PID 검색이 되지 않거나 모르시면 합가 전 PID에 '모름'으로 입력 후 진행 해 주세요.<br/>
+            * 검색 정보는 이전 응답 정보로 참고용입니다.<br />
+        </font>
+        <br />
+        <div id="CheckOPID"></div>
+        <input type="button" id="exit" class="exitButton" value="나가기" />
+    </div>
+</body>
+</html>

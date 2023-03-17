@@ -1,0 +1,66 @@
+﻿@model TAPI_Interviewer.Models.q221264_List
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "2022년 하반기 장애인경제활동실태조사";
+
+        
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#contact').click(function () {
+                if ('@(Model.진행상태)' == '완료(대면)' || '@(Model.진행상태)' == '완료(전화)') {
+                    if (!confirm('완료 데이터가 있습니다. 비성공 하시겠습니까?')) {
+                        return;
+                    }
+                }
+
+                window.location.href = './Contact?pid=@(Model.PID)';
+            });
+
+
+
+            $('#survey').click(function () {
+                window.location.href = './AnswerInfo?pid=@(Model.PID)';
+            });
+
+
+
+            $('#exit').click(function () {
+                window.location.href = './List';
+            });
+
+        });
+
+
+
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/q200494/PanelInfo.css?version=5")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    @Html.Partial("CommonAddressSearchScript")
+
+   
+        <div class="buttonDiv">
+            <center>
+                <br />&nbsp;
+                <br />&nbsp;
+                <br />&nbsp;
+                <input type="button" id="survey" class="infoButtonBlue" style="margin-right: 10px;" value="조사 협조" />
+                <input type="button" id="contact" class="infoButtonRed" style="margin-right: 10px;" value="비성공 사유" />
+                <input type="button" id="exit" class="infoButton" style="margin-right: 10px;" value="닫기" />
+            </center>
+        </div>
+    
+</body>
+</html>

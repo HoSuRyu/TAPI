@@ -1,0 +1,132 @@
+﻿@Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "SurveyInfo";
+        settings.KeyFieldName = "PID";
+        settings.CallbackRouteValues = new { Controller = "q220674_6", Action = "ListPartial" };
+        settings.Width = System.Web.UI.WebControls.Unit.Pixel(1600);
+
+
+
+
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "PID";
+            column.Caption = "의뢰번호";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(50);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "광고주명";
+            column.Caption = "광고주명";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(50);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "광고종료일";
+            column.Caption = "광고종료일";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(50);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "매체명";
+            column.Caption = "매체명";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(60);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "광고내용";
+            column.Caption = "광고내용";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(150);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "주소";
+            column.Caption = "주소";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(100);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "운영조건";
+            column.Caption = "운영조건";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(100);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "진행상태";
+            column.Caption = "진행상태";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(50);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "조사하기";
+            column.SetDataItemTemplateContent(c =>
+            {
+                Html.DevExpress().Button(
+                    buttonSettings =>
+                    {
+                        buttonSettings.Name = Guid.NewGuid().ToString();
+                        buttonSettings.Text = "조사하기";
+                        buttonSettings.ClientSideEvents.Click = string.Format("function(s, e) {{ goAnswerInfo('{0}', '{1}'); }}", DataBinder.Eval(c.DataItem, "PID"), DataBinder.Eval(c.DataItem, "진행상태"));
+                        buttonSettings.ControlStyle.Font.Size = System.Web.UI.WebControls.FontUnit.Point(11);
+                        buttonSettings.ControlStyle.Font.Name = "맑은 고딕";
+                    }).Render();
+            });
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(60);
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "참고 이미지";
+            column.SetDataItemTemplateContent(c =>
+            {
+                Html.DevExpress().Button(
+                    buttonSettings =>
+                    {
+                        buttonSettings.Name = Guid.NewGuid().ToString();
+                        buttonSettings.Text = "참고 이미지";
+                        buttonSettings.ClientSideEvents.Click = string.Format("function(s, e) {{ goPicture('{0}','{1}'); }}", DataBinder.Eval(c.DataItem, "PID"), DataBinder.Eval(c.DataItem, "첨부파일"));
+                        buttonSettings.ControlStyle.Font.Size = System.Web.UI.WebControls.FontUnit.Point(11);
+                        buttonSettings.ControlStyle.Font.Name = "맑은 고딕";
+                    }).Render();
+            });
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(60);
+        });
+
+        settings.Styles.Header.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+        settings.Styles.Cell.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+        //settings.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+
+        settings.SettingsPager.Mode = GridViewPagerMode.ShowPager;
+        settings.SettingsPager.Position = System.Web.UI.WebControls.PagerPosition.Top;
+        settings.SettingsPager.PageSize = 50;
+        settings.SettingsPager.FirstPageButton.Visible = true;
+        settings.SettingsPager.LastPageButton.Visible = true;
+        
+
+        settings.Settings.ShowFilterRow = true;
+        settings.Settings.ShowFilterRowMenu = false;
+        settings.Settings.VerticalScrollableHeight = 650;
+        settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
+        settings.SettingsBehavior.AllowDragDrop = false;
+
+        settings.SettingsBehavior.AllowFocusedRow = false;
+        settings.ControlStyle.Font.Size = System.Web.UI.WebControls.FontUnit.Point(11);
+        settings.ControlStyle.Font.Name = "맑은 고딕";
+        settings.SettingsBehavior.AllowSort = true;
+    }).Bind(Model).GetHtml()

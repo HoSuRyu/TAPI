@@ -1,0 +1,65 @@
+﻿
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "상가 임대차 실태조사 - 대체요청";
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#ok').click(function () {
+
+                var status = $(":text[name='status']").val();
+
+                if (status == '') {
+                    alert('대체 사유를 입력 해 주세요.');
+                    return;
+                }
+
+
+                $.post("./ReplaceOK", { "keyid": '@ViewBag.상권ID', "status": status }, function (result) {
+                    alert('대체 요청 되었습니다.');
+                    window.location.href = './List';
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+            $('#cancel').click(function () {
+                window.location.href = './List';
+            });
+        });
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js" )"></script>
+</head>
+<body>
+    <div style="width : 100%;display: inline-block;">
+        <table class="infoTable">
+            <tr>
+                <td class="tdValue">상권ID</td>
+                <td>@ViewBag.상권ID </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    대체 사유
+                </td>
+                <td style="text-align: left;padding-left:10px;">
+                    <input class="textbox" id="status" name="status" rows="1" size="100%" type="text" value="" maxlength="500" />
+                </td>
+            </tr>
+        </table>
+
+        <div class="buttonDiv">
+            <center>
+                <input type="button" id="ok" class="infoButton" value="대체 요청" />
+                <input type="button" id="cancel" class="infoButton" value="나가기" />
+            </center>
+        </div>
+    </div>
+</body>
+</html>

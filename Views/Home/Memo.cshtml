@@ -1,0 +1,98 @@
+﻿@model TAPI_Interviewer.Models.T_Memo
+
+<head>
+    <title>메모</title>
+
+    <link href="../../../Content/layoutMemo.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" src="../../../Scripts/jquery-1.11.2.js"></script>
+    <script type="text/javascript" src="../../../Scripts/jquery.word-break-keep-all.min.js"></script>
+
+    <script type="text/javascript">
+        //첨에는 버튼 가리고
+        $(document).ready(function () {
+            $("#Cancel").click(function () {
+                window.close();
+            });
+
+            $('#Save').click(function () {
+                $('#Save').attr('disabled', 'disabled');
+
+                var memoValue = $("#memo").val().replace(/\s/gi, "");
+
+                var json = {};
+                $(':hidden,textarea').each(function () {
+                    json[$(this).attr('name')] = $(this).val();
+                });
+
+                $.ajax({
+                    url: '@Url.Action("SaveMemo", "Home")',
+                    data: JSON.stringify(json),
+                    type: 'POST',
+                    contentType: 'application/json',
+                    dataType: 'text',
+                    success: function (response) {
+                        var result = response.split(':');
+                        if (result[0] == 'ok')
+                        {
+                            alert(result[1]);
+                            window.close();
+                        }
+                        else
+                        {
+                            alert('오류가 발생 했습니다. 다시 시도 해 주세요.');
+                        }
+                    },
+                    eorror: function () {
+                        alert('오류가 발생 했습니다. 다시 시도 해 주세요.');
+                    },
+                    complete: function () {
+                        $('#Save').removeAttr('disabled');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+
+<div id="QuestionView">
+    <div id="header">
+        <div class="hinner">
+            <div id="logo"><img src="https://rpssurvey.hrcglobal.com/images/logo.jpg"></div>
+        </div>
+    </div>
+
+    @Html.HiddenFor(x => x.id)
+    @Html.HiddenFor(x => x.questionnaireNumber)
+    @Html.HiddenFor(x => x.PID)
+    @Html.HiddenFor(x => x.uid)
+    @Html.HiddenFor(x => x.sQuestionVariable)
+
+    <div id="container">
+        <div id="content">
+            <div id="question">
+                <div class="qbox">
+                    <span class="qicon"><img src="https://rpssurvey.hrcglobal.com/images/icon_q.jpg" alt="질문"></span>
+                    <span class="qtxt"><span class="qnum">메모</span></span>
+                </div>
+            </div>
+
+            <div id="options">
+                <table class="exTable">
+                    <tbody>
+                        <tr style="display: table-row;">
+                            <td width="100" style="display: table-cell;">
+                                @Html.TextAreaFor(x => x.memo, new { @class = "textbox", @rows = "8", cols = "110", maxlength = "500", style = "resize: none; font-size:30px; width:100%;" })
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="navbtnNE">
+    <input type="button" id="Cancel" value="취소" />
+    <input type="button" id="Save" value="저장" />
+</div>

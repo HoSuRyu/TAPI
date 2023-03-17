@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="SENDMASTER">
+  <DataContextMoniker Name="/SENDMASTERDataContext" />
+  <nestedChildShapes>
+    <classShape Id="0d3a6f36-048e-4592-8721-0eaa110b714c" absoluteBounds="2.875, 0.625, 2, 2.3478011067708335">
+      <DataClassMoniker Name="/SENDMASTERDataContext/T_SendMessage" />
+      <nestedChildShapes>
+        <elementListCompartment Id="f7b22fe3-7eea-4509-91f2-3d401377a03d" absoluteBounds="2.89, 1.085, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="7a90920e-cd2d-42c0-a970-78a02be38c2e" absoluteBounds="0.625, 0.5, 2, 3.3093082682291666">
+      <DataClassMoniker Name="/SENDMASTERDataContext/T_SendMaster" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8fb2cce8-e78b-4a00-a211-f017dd2b42a5" absoluteBounds="0.63999999999999968, 0.96, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="308898d4-4012-4a64-86ef-49fbe586037b" absoluteBounds="5.125, 0.75, 2, 2.9247054036458331">
+      <DataClassMoniker Name="/SENDMASTERDataContext/T_SendEmail" />
+      <nestedChildShapes>
+        <elementListCompartment Id="466d3719-588a-48e5-83b0-9ceb24f3e980" absoluteBounds="5.14, 1.21, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

@@ -1,0 +1,97 @@
+﻿@model TAPI_Interviewer.Models.SP_q221228_GETQUOTAResult
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "연근해어업 실태조사 - 세부업종별 완료집계";
+    }
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/Site.css?version=4")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("../../Content/q210801/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+            $(document).ready(function () {
+                
+            });
+    </script>
+</head>
+<body>
+    <div style="width : 100%;display: inline-block;">
+        <label id="title">@ViewBag.Title</label>
+        <p />
+
+        <table class="infoTable" style="width:70%; align-self:center">
+
+
+            <tr>
+                <td class="tdValue9">1:연안개량안강망   </td>
+                <td class="tdValue3c" align='center'> @Model.col01 </td>
+                <td class="tdValue9">2:연안선망         </td>
+                <td class="tdValue3c" align='center'> @Model.col02 </td>
+            </tr>
+            <tr>
+                <td class="tdValue9">3:연안통발         </td>
+                <td class="tdValue3c" align='center'> @Model.col03 </td>
+                <td class="tdValue9">4:연안조망         </td>
+                <td class="tdValue3c" align='center'> @Model.col04 </td>
+            </tr>
+            <tr>
+                <td class="tdValue9">5:연안선인망       </td>
+                <td class="tdValue3c" align='center'> @Model.col05 </td>
+                <td class="tdValue9">6:연안자망         </td>
+                <td class="tdValue3c" align='center'> @Model.col06 </td>
+            </tr>
+            <tr>
+                <td class="tdValue9">7:연안들망         </td>
+                <td class="tdValue3c" align='center'> @Model.col07 </td>
+                <td class="tdValue9">8:연안복합         </td>
+                <td class="tdValue3c" align='center'> @Model.col08 </td>
+            </tr>
+            <tr>
+                <td class="tdValue9">9:안강망           </td>
+                <td class="tdValue3c" align='center'> @Model.col09 </td>
+                <td class="tdValue9">10:들망            </td>
+                <td class="tdValue3c" align='center'> @Model.col10 </td>
+            </tr>
+            <tr>
+                <td class="tdValue9">11:건망            </td>
+                <td class="tdValue3c" align='center'> @Model.col11 </td>
+                <td class="tdValue9">12:건간망          </td>
+                <td class="tdValue3c" align='center'> @Model.col12 </td>
+            </tr>
+            <tr>
+                <td class="tdValue9">13:지인망          </td>
+                <td class="tdValue3c" align='center'> @Model.col13 </td>
+                <td class="tdValue9">14:승망류          </td>
+                <td class="tdValue3c" align='center'> @Model.col14 </td>
+            </tr>
+            <tr>
+                <td class="tdValue9">15:장망류          </td>
+                <td class="tdValue3c" align='center'> @Model.col15 </td>
+                <td class="tdValue9">16:선인망          </td>
+                <td class="tdValue3c" align='center'> @Model.col16 </td>
+            </tr>
+            <tr>
+                <td class="tdValue9">17:해선망          </td>
+                <td class="tdValue3c" align='center'> @Model.col17 </td>
+                <td class="tdValue9">18:새우조망        </td>
+                <td class="tdValue3c" align='center'> @Model.col18 </td>
+            </tr>
+            <tr>
+                <td class="tdValue9">19:패류형망        </td>
+                <td class="tdValue3c" align='center'> @Model.col19 </td>
+                <td class="tdValue9">20:실뱀장어안강망  </td>
+                <td class="tdValue3c" align='center'> @Model.col20 </td>
+            </tr>
+
+
+        </table>
+
+        <p />
+    
+    </div>
+</body>
+</html>

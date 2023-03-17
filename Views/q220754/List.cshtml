@@ -1,0 +1,85 @@
+﻿@model List<TAPI_Interviewer.Models.SP_H2022_GETLISTResult>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+                setStatus();
+
+                $('#goInfo1').click(function () {
+                    window.open('https://rpssurvey.hrcglobal.com/Media/12803/info1.png');
+                });
+
+                $('#goInfo2').click(function () {
+                    window.open('https://rpssurvey.hrcglobal.com/Media/12803/info2.png');
+                });
+
+            });
+
+
+            function goHouseList(keyid, status) {
+                if (status == '대체요청') {
+                    alert('대체요청 하셨습니다.');
+                    return;
+                }
+
+                if (keyid != null) {
+                    window.location.href = './HouseList?keyid=' + keyid;
+                }
+            }
+
+            function replace(keyid, status) {
+
+                if (status == "대체요청") {
+                    alert("대체요청 상태입니다.");
+                    return;
+                }
+
+                if (keyid != null) {
+                    window.location.href = './Replace?keyid=' + keyid + '&listType=1';
+                }
+            }
+
+
+
+            function setStatus() {
+
+                $.post("./ProgressPartial", null)
+                    .done(function (result) {
+                        $("#Progress").replaceWith(result);
+                    }).always(function () {
+                        $('#goArea').attr('style', 'background-color: #ca2d35;display: inline-block;');
+                        $('#goAPT').attr('style', 'background-color: #e7e7e7;display: inline-block;');
+                        $('#goETC').attr('style', 'background-color: #e7e7e7;display: inline-block;');
+                    });
+            }
+
+            function Refresh() {
+                location.reload();
+            }
+</script>
+
+@Html.Partial("header")
+<div id="contwrap">
+    <div class="contentbox">
+        <div class="boardbox">
+            <div id="Progress"></div>
+
+            <div class="bd_contbox">
+                <div class="btnbox">
+                    <button type="button" class="btnsty03" id="goInfo1">관리사무소 공문</button>
+                    <button type="button" class="btnsty03" id="goInfo2">개별가구 공문</button>
+
+                </div>
+                <div class="tablebox" style="overflow-x:scroll;width:100%;">
+                    @Html.Partial("ListPartial", Model)
+                </div>
+            </div>
+        </div>
+
+    </div>
+    @Html.Partial("footer")
+</div>
+
+
+    </body>
+</html>

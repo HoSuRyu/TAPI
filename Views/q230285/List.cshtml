@@ -1,0 +1,73 @@
+﻿@model List<TAPI_Interviewer.Models.SP_KLIPS2023_GETLISTResult>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        setStatus();
+    });
+
+    function Refresh() {
+
+        location.reload();
+    }
+
+    function goAnswerInfo(pid, status) {
+        if (status == '이관요청') {
+            alert('이관요청 하셨습니다.');
+            return;
+        }
+
+        if (pid != null) {
+            window.location.href = './AnswerInfo?hid=' + pid + '&page=@ViewBag.seoPage';
+        }
+    }
+
+    function goTransfer(pid, status) {
+
+        if (status == '완료') {
+            alert('조사 완료한 가구입니다.');
+            return;
+        }
+        if (status == '이관요청') {
+            alert('이관요청 하셨습니다.');
+            return;
+        }
+
+        if (pid != null) {
+            window.location.href = './Transfer?hid=' + pid + '&page=@ViewBag.seoPage';
+        }
+    }
+
+    function setStatus() {
+        $.post("./ProgressPartial", null, function (result) {
+            $("#Progress").replaceWith(result);
+        });
+    }
+
+    function Refresh() {
+        location.reload();
+    }
+</script>
+
+
+
+@Html.Partial("header")
+
+<div id="contwrap">
+    <div class="contentbox">
+        <div class="boardbox">
+            <div id="Progress"></div>
+
+            <div class="bd_contbox">
+                <div class="tablebox">
+                    @Html.Partial("ListPartial", Model)
+                </div>
+            </div>
+        </div>
+
+    </div>
+    @Html.Partial("footer")
+</div>
+
+
+    </body>
+</html>

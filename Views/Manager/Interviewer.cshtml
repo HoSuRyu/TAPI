@@ -1,0 +1,196 @@
+﻿@model  TAPI_Interviewer.Models.Manager.Info
+
+@{
+    ViewBag.Title = "한국리서치 TAPI 면접원등록";
+}
+
+<style type="text/css">
+    body {
+        font-family: 'Malgun Gothic';
+        font-size: 23px;
+    }
+
+    .project {
+        margin: 10px;
+        float:left;
+        font-size: 23px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+    }
+
+    select {
+            border-radius: 3px;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            border: 1px solid #ccc;
+            display: inline-block;
+            font-size: 23px;
+            padding: 12px 16px;
+            width: 600px;
+            font-family: 'Malgun Gothic';
+    }
+
+    .button
+    {
+        font-size: 25px;
+        font-family: 'Malgun Gothic';
+        float:right;
+    }
+
+    .sv
+    {
+        margin: 10px;
+        font-size: 23px;
+        position: absolute;
+        top: 130px;
+        left: 0px;
+    }
+
+    .uidList
+    {
+        margin: 10px;
+        font-size: 23px;
+        position: absolute;
+        top: 260px;
+        left: 0px;
+    }
+
+    textarea {
+        margin: 10px;
+        width: 600px;
+        height: 300px;
+        font-size: 23px;
+    }
+
+    .addInterviewer
+    {
+        margin: 10px;
+        font-size: 23px;
+        position: absolute;
+        top: 660px;
+        left: 0px;
+    }
+
+    .InterviewerList
+    {
+        margin: 10px;
+        font-size: 23px;
+        position: absolute;
+        top: 760px;
+        left: 0px;
+    }
+
+    .main
+    {
+        width: 800px;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('textarea').each(function () {
+            $(this).css('resize', 'none');
+        });
+
+        $("#project").change(function () {
+            var projectValue = $("#project").find('option:selected').val();
+
+            if (projectValue == '') {
+                return;
+            }
+
+            $.post("../Manager/SelectProject", { "project": projectValue }, function (result) {
+                $("#InterviewerList").html(result);
+            }).error(function (jqXHR, status, error) {
+                alert(status);
+                alert(error);
+            });
+        });
+
+        $("#addInterviewer").click(function () {
+            var projectValue = $("#project").find('option:selected').val();
+            var employeeValue = $("#employee").find('option:selected').val();
+            var uidList = $("#uidList").val();
+
+            if (projectValue == '') {
+                alert('프로젝트를 선택 해 주세요.');
+                return;
+            }
+
+            if (employeeValue == '') {
+                alert('담장자를 선택 해 주세요.');
+                return;
+            }
+
+            if (uidList == '') {
+                alert('면접원 아이디를 입력 해 주세요.');
+                return;
+            }
+
+            $.post("../Manager/AddInterviewer", { "project": projectValue, "employee": employeeValue, "uidList": uidList }, function (result) {
+                $("#InterviewerList").html(result);
+                $("#uidList").val('');
+            }).error(function (jqXHR, status, error) {
+                alert(status);
+                alert(error);
+            });
+        });
+    });
+</script>
+
+<div class="main">
+    <div class="project">
+        1. 프로젝트 선택
+        <p>
+            <select id="project">
+                <option value=""></option>
+            @foreach (string project in Model.ProjectList)
+            {
+                <option value="@project">@project</option>
+            }
+            </select>
+        </p>
+    </div>
+
+    <div>
+        @using (Html.BeginForm("Logout", "Manager", FormMethod.Post))
+        {
+            <input type="submit" id="sign_out_button" class="button" value="로그아웃" />
+        }
+    </div>
+
+    <div class="sv">
+        2. 담당자 선택
+        <p>
+            <select id="employee">
+                <option value=""></option>
+            @foreach (var T_EmployeeInfo in Model.T_EmployeeInfoList)
+            {
+                <option value="@T_EmployeeInfo.사원번호">@T_EmployeeInfo.이름</option>
+            }
+            </select>
+        </p>
+    </div>
+
+    <div class="uidList">
+        3. 등록 할 면접원 아이디 넣기(구분은 줄바꿈)
+        <p>
+            <textarea id="uidList"></textarea>
+        </p>
+    </div>
+
+    <div class="addInterviewer">
+        4. 등록버튼 클릭
+        <p>
+            <input type="button" id="addInterviewer" class="button" value="등록하기" />
+        </p>
+    </div>
+
+    <div class="InterviewerList">
+        5. 리스트 확인 (Ctrl + F를 눌러 검색 해 주세요.)
+        <div id="InterviewerList">
+
+        </div>
+    </div>
+</div>

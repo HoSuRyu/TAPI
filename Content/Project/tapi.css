@@ -1,0 +1,63 @@
+#tapi { margin:20px 0px 0px 0px;}
+#tapi .tapi_title { background:url(../../images/Project/tapi_top_r.gif) right top no-repeat; height:75px; font:bold 22px "Nanum Gothic"; color:#fff; text-align:center; line-height:320%;}
+#tapi .tapi_title p { background:url(../../images/Project/tapi_top_l.gif) left top no-repeat;}
+#tapi .tapi_title span {color:#fff799;}
+#tapi .tapi_name_area {text-align:center; margin-bottom:20px;}
+#tapi .tapi_name { background:url(../../images/Project/tapi_tit_r.gif) right top no-repeat; text-align:center; height:56px; display:inline-block; padding-right:20px; font:bold 12pt "Nanum Gothic"; line-height:300%; color:#222;}
+#tapi .tapi_name span {background:url(../../images/Project/tapi_tit_l.gif) left top no-repeat; height:56px; display:inline-block; padding-left:20px; color:#4a6bdb;}
+
+#tapi .tapi_table { width:100%;}
+#tapi .tapi_table thead th {border-top:1px solid #59617c; background:#8c92a8; border-bottom:1px solid #59617c; border-right:1px solid #59617d; color:#fff; font:bold 9pt "Nanum Gothic"; padding:12px;}
+#tapi .tapi_table thead th:last-child {border-right:none;}
+#tapi .tapi_table tbody td { border-right:1px solid #a6b9b8; border-bottom:1px solid #a6b9b8; text-align:center; color:#666; font:normal 9pt "Nanum Gothic"; min-height:39px;}
+#tapi .tapi_table tbody td:last-child {border-right:none;}
+
+#tapi .tapi_join {}
+#tapi .tapi_join .join_tit { background:url(../../images/Project/tapi_join_tit_r.gif) right top no-repeat; height:59px; font:bold 12pt "Nanum Gothic"; line-height:340%; text-indent:25px; color:#222; }
+#tapi .tapi_join .join_tit p {background:url(../../images/Project/tapi_join_tit_l.gif) left top no-repeat;}
+#tapi .tapi_join_form {padding:15px; text-align:center;}
+#tapi .tapi_join_form label {font:bold 11pt "Nanum Gothic"; color:#222;}
+#tapi .tapi_join_form input.tapi {padding:2px 3px 2px; border-radius:8px; border:1px solid #848484; height:35px; width:150px; margin-right:5px;}
+#tapi .tapi_join .join_bottom { background:url(../../images/Project/tapi_join_bottom_r.gif) right top no-repeat; height:101px; font:normal 9pt "Nanum Gothic"; text-align:center; color:#222; }
+#tapi .tapi_join .join_bottom p {background:url(../../images/Project/tapi_join_bottom_l.gif) left top no-repeat; height:101px; padding:25px 0px 0px 0px; line-height:150%; color:#5070dd;}
+
+#tapi .tapi_join .join_status { height:40px; font:bold 12pt "Nanum Gothic"; line-height:100%; text-indent:25px; color:#222; }
+#tapi .tapi_join .join_status .join_ing  { margin:0 0 0 100px; }
+
+#tapi #content { padding:20px;}
+
+.dxeEditArea.dxeEditAreaSys
+{
+    font:bold 17pt "Nanum Gothic";
+    height:30px !important;
+}
+
+.dxgvFilterRow
+{
+    background:#8c92a8;
+}
+
+.dxgv
+{
+    font:bold 17pt "Nanum Gothic";
+    padding:0px !important;
+}
+
+.dxgvHeader
+{
+    background:#8c92a8;
+}
+
+.dxgvHeader table tr td
+{
+    text-align: center;
+    background:#8c92a8;
+    color:#fff;
+    font:bold 17pt "Nanum Gothic";
+}
+
+.dxeListBoxItem
+{
+    height:20px !important;
+    font:bold 17pt "Nanum Gothic";
+}

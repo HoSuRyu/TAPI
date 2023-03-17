@@ -1,0 +1,504 @@
+﻿<script type="text/javascript">
+    function jusoPopUp(){
+	    document.getElementById('popAddrSearch').style.display='block' ;
+		$("#popAddrSearch").focus();
+    }
+
+    function openApiDivCallBack(roadFullAddr, roadAddrPart1, roadAddrPart2, engAddr, jibunAddr, zipNo, admCd, rnMgtSn, bdMgtSn, detBdNmList, siNm, sggNm, emdNm) {
+        $('#zipNo').val(zipNo);
+        $('#roadAddrPart1').val(roadAddrPart1);
+        $('#roadAddrPart2').val(roadAddrPart2);
+
+        if (roadAddrPart2 == '') {
+            $('#roadAddrPart2').val(roadAddrPart1);
+        }
+
+        $('#jibunAddr').val(jibunAddr);
+        $('#siNm').val(siNm);
+        $('#sggNm').val(sggNm);
+        $('#emdNm').val(emdNm);
+
+	    document.getElementById('popAddrSearch').style.display='none';  //div 닫기
+	    $('#sebuAddr').focus();
+    }
+
+    function closeLayerPopUp(){
+	    document.getElementById('popAddrSearch').style.display='none';
+	    $("#searchJusoButton").focus();
+    }
+
+    //도로명 엔터키 검색
+    function enterSearchDiv() {
+	    var evt_code = (window.netscape) ? ev.which : event.keyCode;
+	    if (evt_code == 13) {
+	        
+		    if(!checkKeyWord(document.formAPIDiv.keyword,"검색어")) return ;
+		    document.formAPIDiv.currentPage.value='1';
+		    searchDivAddr(); //jsonp사용시 enter검색
+	    }
+    }
+
+    function searchDivButton() {
+	    document.formAPIDiv.currentPage.value='1';
+	    searchDivAddr(); //jsonp사용시 enter검색
+    }
+
+    // 도로명주소 openAPI 호출하기
+    function searchDivAddr(){
+	    if (!checkSearchedWord(document.formAPIDiv.keyword)) {
+		    return ;
+	    }
+
+        //크로스 도메인 오류로 변경
+        $.get("/Main/GetAddress", { "address": encodeURI(document.formAPIDiv.keyword.value), "currentPage" : document.formAPIDiv.currentPage.value, "countPerPage" : document.formAPIDiv.countPerPage.value },
+            function (xmlData) {
+                var errCode = $(xmlData).find("errorCode").text();
+			    var errDesc = $(xmlData).find("errorMessage").text();
+			    if(errCode != "0"){
+				    alert(errDesc);
+			    }else{
+                    if(xmlData != null){
+                        makeListDiv(xmlData);
+					    pageDivMake(xmlData);
+				    }
+                }
+            })
+        .error(function (jqXHR, status, error) {
+            alert(error);
+        });
+    }
+
+    function jsonpCallback(xmlStr) {
+        if(navigator.appName.indexOf("Microsoft") > -1){
+            var xmlData = new ActiveXObject("Microsoft.XMLDOM");
+			xmlData.loadXML(xmlStr.returnXml)
+		}else{
+            var xmlData = xmlStr.returnXml;
+		}
+
+		var errCode = $(xmlData).find("errorCode").text();
+		var errDesc = $(xmlData).find("errorMessage").text();
+		if(errCode != "0"){
+			alert(errDesc);
+		}else{
+            if(xmlStr != null){
+                makeListDiv(xmlData);
+				pageDivMake(xmlData);
+			}
+		}
+    }
+
+    //특수문자, 특정문자열(sql예약어의 앞뒤공백포함) 제거
+    function checkSearchedWord(obj){
+	    if(obj.value.length >0){
+		    //특수문자 제거
+		    var expText = /[%=><]/ ;
+		    if(expText.test(obj.value) == true){
+			    alert("특수문자를 입력 할수 없습니다.") ;
+			    obj.value = obj.value.split(expText).join("");
+			    return false;
+		    }
+
+		    //특정문자열(sql예약어의 앞뒤공백포함) 제거
+		    var sqlArray = new Array(
+			    //sql 예약어
+			    "OR", "SELECT", "INSERT", "DELETE", "UPDATE", "CREATE", "DROP", "EXEC",
+             		        "UNION",  "FETCH", "DECLARE", "TRUNCATE"
+		    );
+
+		    var regex ;
+		    var regex_plus ;
+		    for(var i=0; i<sqlArray.length; i++){
+			    regex = new RegExp("\\s" + sqlArray[i] + "\\s","gi") ;
+			    if (regex.test(obj.value)) {
+			        alert("\"" + sqlArray[i]+"\"와(과) 같은 특정문자로 검색할 수 없습니다.");
+				    obj.value =obj.value.replace(regex, "");
+				    return false;
+			    }
+
+			    regex_plus = new RegExp( "\\+" + sqlArray[i] + "\\+","gi") ;
+			    if (regex_plus.test(obj.value)) {
+			        alert("\"" + sqlArray[i]+"\"와(과) 같은 특정문자로 검색할 수 없습니다.");
+				    obj.value =obj.value.replace(regex_plus, "");
+				    return false;
+			    }
+		    }
+	    }
+	    return true ;
+    }
+
+    // 적용예 (api 호출 전에 검색어 체크)
+    function searchJuso(){
+	    if (!checkSearchedWord(document.form.keyword)) {
+		    return ;
+	    }
+    }
+
+    /*
+        * 제공받은 주소정보를 화면에 셋팅하기
+        * 사이트에 맞게 화면 구성하기
+        */
+    function makeListDiv(xmlStr){
+
+	    var htmlStr = "<tbody  id='listDiv'>";
+	    var tr_index = 0 ;
+
+	    if($(xmlStr).find("juso").length > 0) {
+	        $(xmlStr).find("juso").each(function () {
+
+	            var roadAddr = $(this).find('roadAddr').text().replace(/ /gi, "&nbsp;").replace('&nbsp;&nbsp;', '&nbsp;').replace(/&apos;/g, "");
+	            var addrDetail = $(this).find('addrDetail').text().replace(/ /gi, "&nbsp;").replace('&nbsp;&nbsp;', '&nbsp;').replace(/&apos;/g, "");
+	            var roadAddrPart1 = $(this).find('roadAddrPart1').text().replace(/ /gi, "&nbsp;").replace('&nbsp;&nbsp;', '&nbsp;').replace(/&apos;/g, "");
+	            var roadAddrPart2 = $(this).find('roadAddrPart2').text().replace(/ /gi, "&nbsp;").replace('&nbsp;&nbsp;', '&nbsp;').replace(/&apos;/g, "");
+	            var engAddr = $(this).find('engAddr').text().replace(/ /gi, "&nbsp;").replace('&nbsp;&nbsp;', '&nbsp;').replace(/&apos;/g, "");
+	            var jibunAddr = $(this).find('jibunAddr').text().replace(/ /gi, "&nbsp;").replace('&nbsp;&nbsp;', '&nbsp;').replace(/&apos;/g, "");
+	            var zipNo = $(this).find('zipNo').text().replace(/ /gi, "&nbsp;").replace(/&apos;/g, "");
+	            var admCd = $(this).find('admCd').text().replace(/ /gi, "&nbsp;").replace(/&apos;/g, "");
+	            var rnMgtSn = $(this).find('rnMgtSn').text().replace(/ /gi, "&nbsp;").replace(/&apos;/g, "");
+	            var bdMgtSn = $(this).find('bdMgtSn').text().replace(/ /gi, "&nbsp;").replace(/&apos;/g, "");
+	            var detBdNmList = $(this).find('detBdNmList').text().replace(/ /gi, "&nbsp;").replace('&nbsp;&nbsp;', '&nbsp;').replace(/&apos;/g, "");
+	            var siNm = $(this).find('siNm').text().replace(/ /gi, "&nbsp;").replace('&nbsp;&nbsp;', '&nbsp;').replace(/&apos;/g, "");
+	            var sggNm = $(this).find('sggNm').text().replace(/ /gi, "&nbsp;").replace('&nbsp;&nbsp;', '&nbsp;').replace(/&apos;/g, "");
+	            var emdNm = $(this).find('emdNm').text().replace(/ /gi, "&nbsp;").replace('&nbsp;&nbsp;', '&nbsp;').replace(/&apos;/g, "");
+
+			    if (roadAddrPart2 == '') {
+			        roadAddrPart2 = 'NoData';
+			    }
+
+			    if (sggNm == '') {
+			        sggNm = 'NoData';
+			    }
+
+			    htmlStr += "<tr>";
+			    htmlStr += "<td class='subj' style='text-align:center;'>" + zipNo + "</td>";
+			    htmlStr += "<td class='subj' style='text-align:left; padding-left:50px;'>"
+						    + "<a href = javascript:openApiDivCallBack(\"" + roadAddr + "\",\"" + roadAddrPart1 + "\",\"" + roadAddrPart2
+															    + "\",\"" + engAddr + "\",\"" + jibunAddr + "\",\"" + zipNo + "\",\"" + admCd + "\",\"" + rnMgtSn + "\",\"" + bdMgtSn + "\",\"" + detBdNmList + "\",\"" + siNm + "\",\"" + sggNm + "\",\"" + emdNm + "\")>"
+						    + roadAddr + "</br>" + jibunAddr
+						    + "</a></td>";
+			    htmlStr += "</tr>";
+
+		    });
+	    }else {
+		    htmlStr += "<tr>";
+		    htmlStr += "<td align='center' colspan='2'>검색결과가 없습니다.</td>";
+		    htmlStr += "</tr>";
+	    }
+
+        htmlStr += "</tbody>";
+        $("#listDiv").replaceWith(htmlStr);
+	    //$("#listDiv").html(htmlStr);
+    }
+
+    // 페이징 처리
+    function pageDivMake(xmlStr){
+	    var total = $(xmlStr).find("totalCount").text();
+	    $('#totalCntDiv').text("(총 "+total+"건)");	 // 총건수 셋팅
+	    var pageNum = document.formAPIDiv.currentPage.value;
+	    var paggingStr = "<div class='paginate' id='pageApiDiv'>";
+	    if(total < 1){
+	    }else{
+		    var PAGEBLOCK=5;
+		    var pageSize=document.formAPIDiv.countPerPage.value;
+		    var totalPages = Math.floor((total-1)/pageSize) + 1;
+		    var firstPage = Math.floor((pageNum-1)/PAGEBLOCK) * PAGEBLOCK + 1;
+
+		    if( firstPage <= 0 ) firstPage = 1;
+
+		    var lastPage = firstPage-1 + PAGEBLOCK;
+		    if( lastPage > totalPages ) lastPage = totalPages;
+
+		    var nextPage = lastPage+1 ;
+		    var prePage = firstPage-5 ;
+
+		    if( firstPage > PAGEBLOCK ){
+			    paggingStr +=  "<a title='이전 페이지' href='javascript:goPageDiv("+prePage+");'>&lsaquo;</a>&nbsp;&nbsp;" ;
+		    }
+
+		    for( i=firstPage; i<=lastPage; i++ ){
+			    if( pageNum == i )
+				    paggingStr += "<a title='현재 "+i+"페이지' style='font-weight:bold; color:#4a6cde; font-size:15px; border:1px solid #4a6cde;' href='javascript:goPageDiv("+i+");'>" + i + "</a>&nbsp;&nbsp;";
+			    else
+				    paggingStr += "<a title='"+i+"페이지'  href='javascript:goPageDiv("+i+");'>" + i + "</a>&nbsp;&nbsp;";
+		    }
+
+		    if( lastPage < totalPages ){
+			    paggingStr +=  "<a title='다음 페이지' href='javascript:goPageDiv("+nextPage+");'>&rsaquo;</a>";
+		    }
+
+            paggingStr +=  "</div>";
+
+            $("#pageApiDiv").replaceWith(paggingStr);
+		    //$("#pageApiDiv").html(paggingStr);
+		    document.formAPIDiv.keyword.focus();
+	    }
+    }
+
+    // 페이지 이동
+    function goPageDiv(pageNum){
+	    document.formAPIDiv.currentPage.value=pageNum;
+	    searchDivAddr();
+    }
+</script>
+
+<style type="text/css">
+    *::-webkit-input-placeholder {
+        color: #969696;
+    }
+
+    *:-moz-placeholder {
+        color: #969696;
+    }
+
+    *::-moz-placeholder {
+        color: #969696;
+    }
+
+    *:-ms-input-placeholder {
+        color: #969696;
+    }
+
+    /*정보 입력 폼 스타일*/
+    .basic_tablePinfo {
+        width: 90%;
+        margin-left: 50px;
+    }
+
+        .basic_tablePinfo th {
+            background: #d8e1ff;
+            border-bottom: 1px solid #fff;
+            font-weight: bold;
+        }
+
+        .basic_tablePinfo tr:last-child th {
+            border-bottom: 1px solid #d8e1ff;
+        }
+
+        .basic_tablePinfo td {
+            padding: 10px;
+            border: 1px solid #dcdcdc;
+        }
+
+        .basic_tablePinfo input, .basic_tablePinfo select {
+            padding-left: 5px;
+            height: 30px;
+            line-height: 30px;
+            font-size: 23px;
+            border: 1px solid #dcdcdc;
+            box-sizing: content-box;
+        }
+
+        .basic_tablePinfo .addrebox input {
+            margin-bottom: 5px;
+        }
+
+            .basic_tablePinfo .addrebox input:last-child {
+                margin-bottom: none;
+            }
+
+        .basic_tablePinfo .btn-b {
+            border: none;
+            background: #8c8c8c;
+            color: #fff;
+            vertical-align: top;
+            font-size: 23px;
+            font-weight: bold;
+            height: 31px;
+            line-height: 31px;
+            padding: 0 10px;
+        }
+
+        .basic_tablePinfo .my-placeholder label {
+            height: 26px;
+            line-height: 26px;
+            padding-left: 5px;
+        }
+
+    /*레이어 팝업 스타일*/
+    .pop-address-search-wrapper {
+        position: fixed;
+        top: 80px;
+        left: 50%;
+        margin-left: -400px;
+        border: 1px solid #787878;
+        display: none;
+        width: 800px;
+        z-index: 999;
+        box-shadow: 0 4px 10px rgba(0,0,0,.3);
+        -webkit-box-shadow: 0 4px 10px rgba(0,0,0,.3);
+        -moz-box-shadow: 0 4px 10px rgba(0,0,0,.3);
+    }
+
+        .pop-address-search-wrapper legend, .pop-address-search-wrapper caption {
+            font-size: 0;
+            text-indent: -9999px;
+            overflow: hidden;
+        }
+
+    .pop-address-header {
+        background: #4a6cde;
+        height: 50px;
+        color: #fff;
+        text-align: center;
+    }
+
+        .pop-address-header h2 {
+            font-size: 16px;
+            line-height: 50px;
+            margin: 0px;
+        }
+
+        .pop-address-header .close {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50px;
+            height: 50px;
+        }
+
+    .pop-address-body {
+        padding: 30px;
+        background: #fff;
+    }
+
+    .pop-address-field {
+        border: none;
+        height: 40px;
+        margin: 20px 0 40px;
+        text-align: center;
+    }
+
+        .pop-address-field .pop-addr-wrap {
+            display: inline-block;
+            width: 300px;
+            height: 40px;
+            line-height: 40px;
+            border: 1px solid #4a6cde;
+            position: relative;
+            padding: 0 40px 0 0;
+        }
+
+        .pop-address-field input[type="text"] {
+            display: block;
+            border: none;
+            padding: 0 4%;
+            line-height: 39px;
+            height: 39px;
+            width: 275px;
+        }
+
+        .pop-address-field input[type="button"] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            border: none;
+            width: 40px;
+            height: 40px;
+            background: url(/Content/Design/images/search.jpg) no-repeat 50% 50%;
+        }
+
+    .text-guide {
+        margin-bottom: 10px;
+    }
+
+    table.data-col {
+        table-layout: fixed;
+        width: 100%;
+        border-top: 1px solid #787878;
+        text-align: center;
+    }
+
+        table.data-col thead tr th {
+            border-bottom: 1px solid #787878;
+            padding: 12px 0;
+            background: #f0f0f0;
+            font-weight: bold;
+        }
+
+        table.data-col tbody tr td {
+            border-bottom: 1px solid #dcdcdc;
+            padding: 12px 0;
+        }
+
+            table.data-col tbody tr td a:hover {
+                color: #4a6cde;
+                font-weight: bold;
+                text-decoration: underline;
+            }
+
+    /*페이지네이션*/
+    .paginate {
+        margin-top: 25px;
+        text-align: center;
+    }
+
+        .paginate > * {
+            display: inline-block;
+            padding: 0 3px;
+            min-width: 31px;
+            height: 31px;
+            line-height: 31px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -o-box-sizing: border-box;
+            -ms-box-sizing: border-box;
+            box-sizing: border-box;
+            vertical-align: middle;
+        }
+
+        .paginate a {
+            border: 1px solid #fff;
+        }
+
+            .paginate a:hover,
+            .paginate a:focus {
+                border: 1px solid #969696;
+            }
+
+            .paginate a:hover,
+            .paginate a:focus {
+                border: 1px solid #969696;
+                color: #4a6cde;
+                font-weight: bold;
+                text-decoration: none;
+            }
+</style>
+
+<!-- 주소찾기 레이어 팝업 -->
+<div id="popAddrSearch" class="pop-address-search-wrapper">
+    <form name="formAPIDiv" id="formAPIDiv" method="post">
+        <input type="hidden" id="currentPage" name="currentPage" value="1" style="width:100px" />
+        <input type="hidden" id="countPerPage" name="countPerPage" value="5" style="width:100px" />
+        <div class="pop-address-search-form pop-address-search-layer3">
+            <div class="pop-address-header">
+                <h2>주소 검색</h2>
+                <a class="close" href="javascript:closeLayerPopUp();"><img src="/Content/Design/images/closebtn.png" alt="닫기"></a>
+            </div>
+            <div class="pop-address-body">
+                <fieldset class="pop-address-field">
+                    <legend>도로명주소 검색</legend>
+                    <span class="pop-addr-wrap">
+                        <input type="text" id="keyword" name="keyword" onkeydown="enterSearchDiv()" style="width:98%" title="검색어 입력" placeholder="도로명주소, 건물명 또는 지번 입력">
+                        <input type="button" style='cursor:pointer;' id="" onclick="javascript:searchDivButton();" title="검색">
+                    </span>
+                </fieldset>
+                <p class="text-guide">&middot; 해당되는 주소를 선택해주세요.</p>
+                <table class="data-col">
+                    <caption>검색 결과</caption>
+                    <colgroup>
+                        <col style="width:20%">
+                        <col>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th scope="col">우편번호</th>
+                            <th scope="col">도로명주소</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listDiv"></tbody>
+                </table>
+                <div class="paginate" id="pageApiDiv"></div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="SURVEYTOOL" Class="SURVEYTOOLDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=10.0.11.175,15000;Initial Catalog=SURVEYTOOL;User ID=kimsj" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="SURVEYTOOLConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.T_Interviewer" Member="T_Interviewers">
+    <Type Name="T_Interviewer">
+      <Column Name="id" Type="System.Decimal" DbType="Decimal(38,0) NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="employeeNumber" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+      <Column Name="userName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="rrnFront" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="homePhoneNumber" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="mobilePhoneNumber" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="deleteYN" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="createDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="updateDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.T_Script" Member="T_Scripts">
+    <Type Name="T_Script">
+      <Column Name="id" Type="System.Decimal" DbType="Decimal(38,0) NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="questionnaireID" Type="System.Decimal" DbType="Decimal(38,0) NOT NULL" CanBeNull="false" />
+      <Column Name="script" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="contents" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="hashString" Type="System.String" DbType="VarChar(32)" CanBeNull="true" />
+      <Column Name="createDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="variableList" Type="System.Xml.Linq.XElement" DbType="Xml" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="quotaVariableList" Type="System.Xml.Linq.XElement" DbType="Xml" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="quotaList" Type="System.Xml.Linq.XElement" DbType="Xml" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="rotationInfo" Type="System.Xml.Linq.XElement" DbType="Xml" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="parser" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
+    </Type>
+  </Table>
+  <Table Name="dbo.T_InterviewerLoginInfo" Member="T_InterviewerLoginInfos">
+    <Type Name="T_InterviewerLoginInfo">
+      <Column Name="id" Type="System.Decimal" DbType="Decimal(38,0) NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="employeeNumber" Type="System.Decimal" DbType="Decimal(38,0) NOT NULL" CanBeNull="false" />
+      <Column Name="loginDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.T_Questionnaire" Member="T_Questionnaires">
+    <Type Name="T_Questionnaire">
+      <Column Name="id" Type="System.Decimal" DbType="Decimal(38,0) NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="pof" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="questionnaireNumber" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="questionnaireName" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="questionnairePersonName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="questionnaireType" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="surveySequenceNumber" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="researcherName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="fieldWorkerName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="assignCount" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+      <Column Name="fieldWorkYN" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="deleteYN" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="createDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="updateDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="editYN" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="viewCodeYN" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.T_EmployeeInfo" Member="T_EmployeeInfo">
+    <Type Name="T_EmployeeInfo">
+      <Column Name="사원번호" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="부서" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="이름" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.T_QuestionnaireDistribution" Member="T_QuestionnaireDistribution">
+    <Type Name="T_QuestionnaireDistribution">
+      <Column Name="id" Type="System.Decimal" DbType="Decimal(38,0) NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="employeeNumber" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+      <Column Name="questionnaireID" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+      <Column Name="deleteYN" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="createDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="updateDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="sendDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="deviceName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="office" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="office_code" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="sv_name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="area" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="testYN" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="etc1" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="etc2" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="etc3" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="etc4" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="etc5" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="etc6" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="etc7" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="etc8" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="etc9" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="etc10" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="etc11" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="etc12" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="etc13" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="etc14" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="etc15" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="etc16" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="etc17" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="etc18" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="etc19" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="etc20" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.T_Quota" Member="T_Quota">
+    <Type Name="T_Quota">
+      <Column Name="id" Type="System.Decimal" DbType="Decimal(38,0) NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="questionnaireID" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+      <Column Name="quotaVariable" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="questionVariable" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="quotaNumber" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="exampleValue" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="exampleLabel" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="quota01" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="quota02" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="quota03" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="quota04" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="quota05" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="gridPosition" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="assignCount" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+      <Column Name="isEarlyOver" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="completeCount" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+      <Column Name="cawiSuccessCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="capiSuccessCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="catiSuccessCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="piSuccessCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="tapiSuccessCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="cawiQuotaFullCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="capiQuotaFullCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="catiQuotaFullCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="piQuotaFullCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="tapiQuotaFullCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="cawiScreenOutCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="capiScreenOutCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="catiScreenOutCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="piScreenOutCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="tapiScreenOutCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="cawiAnswerStopCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="capiAnswerStopCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="catiAnswerStopCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="piAnswerStopCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="tapiAnswerStopCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="reservationCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="ranking" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+      <Column Name="createDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="updateDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Function Name="dbo.GET_RPS_LIVE_T_Employee" Method="GET_RPS_LIVE_T_Employee">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.GET_InterviewerInfo" Method="GET_InterviewerInfo">
+    <Parameter Name="questionnaireID" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <ElementType Name="GET_InterviewerInfoResult">
+      <Column Name="employeeNumber" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+      <Column Name="userName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="office" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="sv_name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GET_RPS_LIVE_T_Interviewer" Method="GET_RPS_LIVE_T_Interviewer">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.GET_TAPIProject" Method="GET_TAPIProject">
+    <Parameter Name="employeeNumber" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="isGang" Type="System.Int32" DbType="Int" />
+    <Parameter Name="etc1" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="etc2" Type="System.String" DbType="NVarChar(50)" />
+    <ElementType Name="GET_TAPIProjectResult">
+      <Column Name="questionnaireName" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="questionnaireNumber" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="url" Type="System.String" DbType="VarChar(32) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+</Database>

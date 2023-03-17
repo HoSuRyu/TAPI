@@ -1,0 +1,196 @@
+﻿@Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "PanelList";
+        settings.KeyFieldName = "HID";
+        settings.CallbackRouteValues = new { Controller = "SHOUSE2021", Action = "ListPartial" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "HID";
+            column.Caption = "HID";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(90);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "최종응답차수";
+            column.Caption = "최종<br> 응답 차수";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(60);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "응답자명";
+            column.Caption = "응답자명";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(90);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "진행하기";
+            column.SetDataItemTemplateContent(c =>
+            {
+                Html.DevExpress().Button(
+                    buttonSettings =>
+                    {
+                        buttonSettings.Name = Guid.NewGuid().ToString();
+                        buttonSettings.Text = "진행하기";
+                        buttonSettings.ClientSideEvents.Click = string.Format("function(s, e) {{ goPanelInfo('{0}', '{1}'); }}", DataBinder.Eval(c.DataItem, "HID"), DataBinder.Eval(c.DataItem, "진행상태"));
+                        buttonSettings.ControlStyle.Font.Size = System.Web.UI.WebControls.FontUnit.Point(11);
+                        buttonSettings.ControlStyle.Font.Name = "맑은 고딕";
+                    }).Render();
+            });
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(90);
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "이관하기";
+            column.SetDataItemTemplateContent(c =>
+            {
+                Html.DevExpress().Button(
+                    buttonSettings =>
+                    {
+                        buttonSettings.Name = Guid.NewGuid().ToString();
+                        buttonSettings.Text = "이관하기";
+                        buttonSettings.ClientSideEvents.Click = string.Format("function(s, e) {{ goTransfer('{0}', '{1}'); }}", DataBinder.Eval(c.DataItem, "HID"), DataBinder.Eval(c.DataItem, "진행상태"));
+                        buttonSettings.ControlStyle.Font.Size = System.Web.UI.WebControls.FontUnit.Point(11);
+                        buttonSettings.ControlStyle.Font.Name = "맑은 고딕";
+                    }).Render();
+            });
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(90);
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "임대주택_유형";
+            column.Caption = "임대주택 유형";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(120);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "시도";
+            column.Caption = "시도";
+
+            column.SetDataItemTemplateContent(c =>
+            {
+                string address = string.IsNullOrEmpty(DataBinder.Eval(c.DataItem, "시도") as string) == true ? "" : DataBinder.Eval(c.DataItem, "시도") as string;
+                address = string.IsNullOrEmpty(DataBinder.Eval(c.DataItem, "이관시도") as string) == true ? address : "(이관)" + DataBinder.Eval(c.DataItem, "이관시도") as string;
+                address = string.IsNullOrEmpty(DataBinder.Eval(c.DataItem, "수정시도") as string) == true ? address : "(수정)" + DataBinder.Eval(c.DataItem, "수정시도") as string;
+
+                ViewContext.Writer.Write(address);
+            });
+
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(100);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "시군구";
+            column.Caption = "시군구";
+
+            column.SetDataItemTemplateContent(c =>
+            {
+                string address = string.IsNullOrEmpty(DataBinder.Eval(c.DataItem, "시군구") as string) == true ? "" : DataBinder.Eval(c.DataItem, "시군구") as string;
+                address = string.IsNullOrEmpty(DataBinder.Eval(c.DataItem, "이관시군구") as string) == true ? address : "(이관)" + DataBinder.Eval(c.DataItem, "이관시군구") as string;
+                address = string.IsNullOrEmpty(DataBinder.Eval(c.DataItem, "수정시군구") as string) == true ? address : "(수정)" + DataBinder.Eval(c.DataItem, "수정시군구") as string;
+
+                ViewContext.Writer.Write(address);
+            });
+
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(100);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "상세주소";
+            column.Caption = "상세주소";
+
+            column.SetDataItemTemplateContent(c =>
+            {
+                string address = string.IsNullOrEmpty(DataBinder.Eval(c.DataItem, "상세주소") as string) == true ? "" : DataBinder.Eval(c.DataItem, "상세주소") as string;
+                address = string.IsNullOrEmpty(DataBinder.Eval(c.DataItem, "이관상세주소") as string) == true ? address : string.Format("(이관) {0} {1}", DataBinder.Eval(c.DataItem, "이관상세주소"), DataBinder.Eval(c.DataItem, "이관동호"));
+                address = string.IsNullOrEmpty(DataBinder.Eval(c.DataItem, "수정상세주소") as string) == true ? address : string.Format("(수정) {0} {1}", DataBinder.Eval(c.DataItem, "수정상세주소"), DataBinder.Eval(c.DataItem, "수정동호"));
+
+                ViewContext.Writer.Write(address);
+            });
+
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(300);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "최종_접촉_횟수";
+            column.Caption = "최종 접촉일지<br>- 방문 횟수";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(110);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "최종_접촉_결과";
+            column.Caption = "최종 접촉일지<br>- 방문 결과";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(110);
+
+            column.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+            comboBoxProperties.DataSource = ViewBag.lastContactList;
+            comboBoxProperties.DropDownStyle = DropDownStyle.DropDownList;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "진행상태";
+            column.Caption = "진행상태";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(110);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+
+            column.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+            comboBoxProperties.DataSource = ViewBag.statusList;
+            comboBoxProperties.DropDownStyle = DropDownStyle.DropDownList;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "배부일";
+            column.Caption = "배부일";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(100);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+
+        settings.Styles.Header.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+        settings.Styles.Cell.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+        settings.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+
+        settings.Settings.ShowFilterRow = true;
+        settings.Settings.ShowFilterRowMenu = false;
+        settings.Settings.VerticalScrollableHeight = 650;
+        settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
+        settings.SettingsBehavior.AllowDragDrop = false;
+
+        settings.SettingsBehavior.AllowFocusedRow = false;
+        settings.ControlStyle.Font.Size = System.Web.UI.WebControls.FontUnit.Point(11);
+        settings.ControlStyle.Font.Name = "맑은 고딕";
+        settings.SettingsBehavior.AllowSort = true;
+
+        //settings.ClientSideEvents.RowClick = "OnRowClick";
+
+        //settings.PreRender = (sender, e) =>
+        //{
+        //    ASPxGridView grid = (ASPxGridView)sender;
+        //    grid.FocusedRowIndex = -1;
+        //};
+    }).Bind(Model).GetHtml()

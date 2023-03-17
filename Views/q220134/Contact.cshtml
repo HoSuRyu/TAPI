@@ -1,0 +1,157 @@
+﻿@model TAPI_Interviewer.Models.q220134_HouseList
+           
+<html>
+<head>
+    @{  
+        ViewBag.Title = "경기도 농촌기본소득 시범사업 조사 - 접촉일지";
+    }
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+           
+            @*$("input[name='contact']").val("@Model.접촉상태").prop('checked', true);*@
+
+            $('input:radio[name=contact]:input[value="@Model.접촉상태"]').attr("checked", true);
+
+            $('#cancel').click(function () {
+                window.location.href = './List';
+            });
+
+            $('#save').click(function () {
+
+              
+
+                var contact = $(":radio[name='contact']:checked").val();
+
+
+
+                if (contact == undefined || contact == '') {
+                    alert("접촉 결과를 선택해 주세요.")
+                    return;
+                }
+                var etc = $("#etc").val();
+                
+                if (contact == "기타" ) {
+                    if (etc == "") {
+                        alert("기타 사유를 입력해 주세요.")
+                        return;
+                    }
+                }
+                
+
+
+                $.post("./ContactOK", {
+                    "hid": '@Model.HID', "contact": contact, "etc":etc
+                }, function (result) {
+
+
+                    if (result == '저장') {
+                        alert('저장 되었습니다.');
+                        window.location.href = './List';
+                    }
+                    else{
+                        alert(result);
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+
+
+        });
+
+
+
+    </script>
+    <link href="@Url.Content("../../Content/q200494/Site.css?version=2")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/jquery.chained.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    <label id="title">@ViewBag.Title</label>
+    <br />&nbsp;
+
+    <table class="infoTable">
+        <tr>
+            <td class="tdHeader">
+               주소 아이디
+            </td>
+            <td class="tdValue">
+                @Model.HID
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                시도
+            </td>
+            <td class="tdValue">
+                @Model.시도
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                시군구
+            </td>
+            <td class="tdValue">
+                @Model.시군구
+            </td>
+        </tr>       
+        <tr>
+            <td class="tdHeader">
+                읍면동
+            </td>
+            <td class="tdValue">
+                @Model.읍면동
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                상세주소
+            </td>
+            <td class="tdValue">
+                @Model.상세주소
+            </td>
+        </tr>
+        
+    </table>
+
+    <table class="infoTable">
+         
+        <tr >
+            <td class="tdHeader" >
+                접촉 결과
+            </td>
+       </tr>
+        <tr>
+            <td class="tdValue" >                
+                <input type="radio" name="contact" value="접촉 성공" id="contact_01" /> <label for="contact_01">1. 접촉 성공</label><br />
+                <input type="radio" name="contact" value="조사 불응(거절,사람 없음 등)" id="contact_02" /> <label for="contact_02">2. 조사 불응(거절,사람 없음 등)</label><br />
+                <input type="radio" name="contact" value="조사 불능(빈집, 가구 내 조사 대상자 없음 등)" id="contact_03" /> <label for="contact_03">3. 조사 불능(빈집, 가구 내 조사 대상자 없음 등)</label><br />
+                <input type="radio" name="contact" value="기타" id="contact_04" /> <label for="contact_04">4. 기타</label> <input class="textbox" id="etc" name="etc" rows="1" size="60" type="text"  maxlength="100"  value="@(Model.접촉상태기타)" /><br />
+                
+                
+            </td>
+        </tr>
+       
+         
+    </table>
+
+    <br />
+
+        
+    <table width="100%">
+        <tr>
+            <td align="center" width="50%">
+                <input type="button" id="save" class="infoButton" value="저장" />
+                <input type="button" id="cancel" class="infoButton" value="나가기" />
+            </td>
+        </tr>
+    </table>
+        
+</body>
+</html>

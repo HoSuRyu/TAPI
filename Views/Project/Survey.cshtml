@@ -1,0 +1,21 @@
+﻿@model TAPI_Interviewer.Models.Project.ProjectInfo
+
+<html>
+<head>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ('@ViewBag.Error' != '') {
+                alert('@ViewBag.Error');
+
+                window.location.href = 'https://rpssurvey.hrcglobal.com/?PN=@Model.Number';
+            }
+            else if ('@ViewBag.C' != '') {
+                window.location.href = 'https://rpssurvey.hrcglobal.com/?c=@ViewBag.C';
+            }
+        });
+    </script>
+</head>
+<body>
+
+</body>
+</html>

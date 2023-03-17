@@ -1,0 +1,47 @@
+﻿@model TAPI_Interviewer.Models.Project.ProgressCount
+
+<!--<table style="width:60%;float:right;margin:20px 0px;">-->
+<table style="width:100%;">
+    @{
+        if (Model != null)
+        {
+            <tr>
+                <td style="width:10%;" bgcolor=#ffff00 height="25" align="center"><b>긴급 방문</b></td>
+                <td style="width:45%;">&nbsp; </td>
+                <td style="width:5%;">배부</td>
+                <td style="width:5%;">@Model.All</td>
+                <td style="width:5%;">진행</td>
+                <td style="width:5%;">@Model.Ing</td>
+                <td style="width:5%;">완료</td>
+                <td style="width:5%;">@Model.End</td>
+                <td style="width:10%;">당사자 완료</td>
+                <td style="width:5%;">@Model.endEtc</td>
+            </tr>
+            <tr>
+                <td style="width:10%;" bgcolor=#87ceeb height="25" align="center"><b>주소 수정</b></td>
+                <td style="width:45%;">&nbsp;</td>
+                <td style="width:5%;">&nbsp;</td>
+                <td style="width:5%;">&nbsp;</td>
+                <td style="width:5%;">대면 완료</td>
+                <td style="width:5%;">@Model.endDir</td>
+                <td style="width:5%;">전화 완료</td>
+                <td style="width:5%;">@Model.endTel</td>
+                <td style="width:10%;">&nbsp;</td>
+                <td style="width:5%;">&nbsp;</td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td style="width:15%;">배부</td>
+                <td style="width:5%;">0</td>
+                <td style="width:15%;">진행</td>
+                <td style="width:5%;">0</td>
+                <td style="width:15%;">보호자 완료</td>
+                <td style="width:5%;">0</td>
+                <td style="width:15%;">당사자  완료</td>
+                <td style="width:5%;">0</td>
+            </tr>
+        }
+    }
+</table>

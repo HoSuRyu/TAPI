@@ -1,0 +1,94 @@
+﻿@model TAPI_Interviewer.Models.q221150_AreaList
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "2022년 사이버폭력 실태조사 - 대체요청";
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#ok').click(function () {
+              
+                var status = $(":radio[name='contact']:checked").val();
+                var etc = $(":text[name='etc']").val();
+
+                if (status == undefined || status == '') {
+                    alert('대체 사유를 선택 해 주세요.');
+                    return;
+                }
+                if (status == '4. 기타' && etc == '') {
+                    alert('세부 사유를 입력 해 주세요.');
+                    return;
+                }
+
+          
+                $.post("./ReplaceOK", { "keyid": '@Model.HRC일련번호', "status": status, "etc": etc }, function (result) {
+                    alert('대체 요청 되었습니다.');
+                    window.location.href = './List';
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+            $('#cancel').click(function () {
+                window.location.href = './List';
+            });
+        });
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js" )"></script>
+</head>
+<body>
+    <div style="width : 100%;display: inline-block;">
+        <table class="infoTable">
+            <tr>
+                <td class="tdValue">HRC일련번호</td>
+                <td>@(Model.HRC일련번호)</td>
+            </tr>
+            <tr>
+                <td class="tdValue">주소</td>
+                <td>@(Model.시도명) @(Model.시군구명) @(Model.읍면동명)</td>
+            </tr>
+            <tr>
+                <td class="tdValue">조사구 번호</td>
+                <td>@(Model.조사구번호)</td>
+            </tr>
+            <tr>
+                <td class="tdValue">본/대체</td>
+                <td>@(Model.대체조사구)</td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    대체 사유
+                </td>
+                <td style="text-align: left;padding-left:10px;"><br />
+                    <input type="radio" name="contact" value="1. 지역재개발로 인해 주택 소멸" id="contact_1" /><label for="contact_1"> 1. 지역재개발로 인해 주택 소멸</label><br />
+                    <input type="radio" name="contact" value="2. 아파트 출입 불가" id="contact_2" /><label for="contact_2"> 2. 아파트 출입 불가</label><br />
+                    <input type="radio" name="contact" value="3. 부재 및 거절이 많아 목표 표본 미달" id="contact_3" /><label for="contact_3"> 3. 부재 및 거절이 많아 목표 표본 미달</label><br />
+                    <input type="radio" name="contact" value="4. 기타" id="contact_4" /><label for="contact_4"> 4. 기타</label><br />&nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    세부 사유(100자 이내)
+                </td>
+                <td style="text-align: left;padding-left:10px;">
+                    <input class="textbox" id="etc" name="etc" rows="1" size="50" type="text" value="" maxlength="100" />
+                </td>
+            </tr>
+        </table>
+
+        <div class="buttonDiv">
+            <center>
+                <input type="button" id="ok" class="infoButton" value="대체 요청" />
+                <input type="button" id="cancel" class="infoButton" value="나가기" />
+            </center>
+        </div>
+    </div>
+</body>
+</html>

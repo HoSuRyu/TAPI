@@ -1,0 +1,119 @@
+﻿@model TAPI_Interviewer.Models.HOUSE2022_APTList
+<script type="text/javascript">
+        $(document).ready(function () {
+            $('#ok').click(function () {
+
+
+                var status = $(":radio[name='contact']:checked").val();
+                var etc = $(":text[name='etc']").val();
+
+                if (status == undefined || status == '') {
+                    alert('대체 사유를 선택 해 주세요.');
+                    return;
+                }
+
+                if (status == '기타' && etc == '') {
+                    alert('세부 사유를 입력 해 주세요.');
+                    return;
+                }
+
+                if ('@Model.접촉일지에러' == '에러' )
+                {
+                    if(status=='기타' || status=='부재 및 거절이 많아 목표 표본 미달')
+                    {
+                        alert('‘접촉일지 작성’ 가구수가 부족합니다. \r가구 접촉일지를 입력해주세요');
+                        return;
+                    }
+                }
+
+                $.post("./ReplaceOK", { "keyid": '@Model.HRC일련번호', "status": status, "etc": etc, "listType":2 }, function (result) {
+                    alert('대체 요청 되었습니다.');
+                    window.location.href = './ListAPT';
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+            $('#cancel').click(function () {
+                window.location.href = './HouseListAPT?keyid=@Model.HRC일련번호';
+            });
+        });
+</script>
+
+
+@Html.Partial("header")
+<!--contents -->
+<div id="contwrap">
+    <div class="contentbox">
+        <div class="boardbox">
+            <div class="bd_titbox">
+                <h3>대체 요청</h3>
+            </div>
+            <div class="bd_contbox">
+                <div class="tablebox">
+                    <table class="tbl_sty02" cellpadding="0" cellspacing="0" border="0" style="width:100%;">
+                        <tbody>
+                            <tr>
+                                <td class="td_th txt_center" style="width:200px;">일련번호</td>
+                                <td>@(Model.HRC일련번호)</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">주소</td>
+                                <td>@(Model.주소)</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">원/대체</td>
+                                <td>@(Model.표본구분)</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">대체 사유</td>
+                                <td>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" value="아파트 출입 불가">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 2. 아파트 출입 불가</span>
+                                    </label>
+                                    <br>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" value="부재 및 거절이 많아 목표 표본 미달">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 3. 부재 및 거절이 많아 목표 표본 미달</span>
+                                    </label>
+                                    <br>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" value="기타">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 4. 기타</span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">세부 사유(100자 이내)</td>
+                                <td>
+                                    <input type="text" class="form_ctrl" style="width:80%;" id="etc" name="etc">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bot_btnbox">
+                    <button type="button" class="btnsty01" id="ok">대체 요청</button>
+                    <button type="button" class="btnsty03" id="cancel">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("footer")
+</div>
+
+

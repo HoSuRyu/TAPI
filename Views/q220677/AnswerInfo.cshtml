@@ -1,0 +1,362 @@
+﻿@model TAPI_Interviewer.Models.q220677_List
+
+@{
+    string isAddr = Model.주소확인여부;
+    string istel = Model.컨택연락처확인여부;
+}
+
+<script type="text/javascript">
+$(document).ready(function () {
+
+    $('#save').click(function () {
+        saveInfo();
+    });
+
+    $('#contact').click(function () {
+        window.location.href = './Contact?pid=@(Model.PID)';
+    });
+
+
+
+    $('#exit').click(function () {
+        window.location.href = './List';
+    });
+
+            
+    $(":radio[name='IsNewAddress']").change(function () {
+        setDisabled();
+    });
+
+          
+    $(":radio[name='IsNewTel']").change(function () {
+            
+        setDisabled();
+    });
+
+    $(document).on('keypress keyup blur focusout', 'input[type=tel]', function () {
+        $(this).val($(this).val().replace(/[^0-9]/g, ''));
+    });
+
+    setDisabled();
+});
+
+function saveInfo() 
+{
+
+    var pid = @Model.PID;
+    var ctel = $("#ctel").val();
+
+    var newtel1 = $("select[name='newtel1'] option:selected").val();
+
+            
+    var IsNewAddress = $(":radio[name='IsNewAddress']:checked").val();
+    var roadAddrPart1 = $("#txtRoadAddress").val();
+    var siNm = $("#txtSido").val();
+    var sggNm = $("#txtSigungu").val();
+    var emdNm = $('#txtBname').val();
+    var sebuAddr = $("#txtDetailAddress").val();
+
+
+    if (IsNewAddress == undefined || IsNewAddress == '') {
+        alert("'주소'가 맞는지 확인해 주세요.");
+        return;
+    }
+
+    if (IsNewAddress == '주소 틀림' && roadAddrPart1 == '') {
+        alert('주소를 입력해 주세요.');
+        return;
+    }
+
+
+    var IsNewTel = $(":radio[name='IsNewTel']:checked").val();
+
+    if (IsNewTel == undefined || IsNewTel == '') {            
+        alert("'컨택연락처'가 맞는지  확인해 주세요.");
+        return;
+    }
+
+    var newtel = newtel1;            
+    var relation = $(":radio[name='relation']:checked").val();
+    if (ctel == '' && (IsNewTel == '컨택연락처 맞음' || IsNewTel == ''))
+    {
+        alert("컨택 연락처가 없습니다. \r\n'컨택연락처 틀림'을 선택 후 입력해 주세요.");
+        return;
+    }
+
+    if (IsNewTel == '컨택연락처 틀림') {
+
+        if (newtel == '' || $("#newtel2").val() == '' || $("#newtel3").val() == '' )
+        {
+            alert('컨택 연락처를 입력해 주세요.');
+            return;
+        }
+
+        if (relation == undefined || relation == '')
+        {
+            alert('컨택 연락처 관계를 선택해 주세요.');
+            return;
+        }
+
+        newtel = newtel1 + '-' + $("#newtel2").val() + '-' + $("#newtel3").val();
+        if (isCellPhone(newtel) == false && isTelePhone(newtel) == false) {
+            $("#newtel2").focus();
+            alert('유효한 전화번호를 입력해 주세요. ');
+            return;
+        }
+    }
+
+        
+    $.post("./SaveInfo", { "pid": pid, "roadAddrPart1": roadAddrPart1, "siNm": siNm, "sggNm": sggNm, "emdNm":emdNm, "sebuAddr": sebuAddr, "IsNewAddress": IsNewAddress, "ctel": newtel, "relation": relation, "IsNewTel": IsNewTel
+    }, function (result) {
+            if (result != '')
+            {
+                alert(result);
+            }
+            else
+            {
+                window.location.href = './Subsatitute?pid=@(Model.PID)';
+            }
+        }).error(function (jqXHR, status, error) {
+            alert(status);
+            alert(error);
+        });
+}
+
+function isTelePhone(p) {
+    p = p.split('-').join('');
+
+    var regPhone = /^(0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]|70|505))[1-9]+[0-9]{6,7}$/;
+
+    return regPhone.test(p);
+}
+
+function isCellPhone(p) {
+    p = p.split('-').join('');
+
+    var regPhone = /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/;
+
+    return regPhone.test(p);
+}
+
+function setDisabled()
+{
+    var IsNewAddress = $(":radio[name='IsNewAddress']:checked").val();
+            
+
+    if (IsNewAddress == '주소 틀림') {
+            
+        $("#searchJusoButton").removeAttr('disabled');
+        $("#txtRoadAddress").removeAttr('disabled');        
+        $("#txtDetailAddress").removeAttr('disabled');
+    }
+    else {
+        $("#searchJusoButton").attr('disabled', 'disabled');
+        $("#txtRoadAddress").val("").attr('disabled', 'disabled');        
+        $("#txtDetailAddress").val("").attr('disabled', 'disabled');
+    }
+
+            
+    var IsNewTel = $(":radio[name='IsNewTel']:checked").val();
+    if (IsNewTel == '컨택연락처 틀림') {
+        $("#newtel1").removeAttr('disabled');
+        $("#newtel2").removeAttr('disabled');
+        $("#newtel3").removeAttr('disabled');
+
+        $('input:radio[name="relation"]').prop('disabled', false);
+    }
+    else {
+        $("#newtel1").attr('disabled', 'disabled');
+        $("#newtel2").val("").attr('disabled', 'disabled');
+        $("#newtel3").val("").attr('disabled', 'disabled');
+        $('input:radio[name="relation"]').prop('disabled', true);
+        $('input:radio[name="relation"]').prop("checked", false);
+
+    }
+}
+</script>
+
+@Html.Partial("header")
+@Html.Partial("AddressSearchScript")
+
+<!--contents -->
+<div id="contwrap">
+    <div class="contentbox">
+        <div class="boardbox">
+            <div class="bd_contbox">
+                <div class="tablebox">
+                    <table class="tbl_sty01" cellpadding="0" cellspacing="0" border="0" style="width:100%;">
+                        <tbody>
+                            <tr>
+                                <td class="td_th txt_center" style="width:210px;">PID</td>
+                                <td>@(Model.PID)</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">응답자 이름</td>
+                                <td>@(Model.성명)</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">주소</td>
+                                <td>@(Model.수정전체주소)</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">주소 확인</td>
+                                <td class="td_cl01">
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="IsNewAddress" id="IsNewAddress_1" value="주소 맞음">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">주소 맞음</span>
+                                    </label>
+                                    &nbsp;&nbsp;
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="IsNewAddress" id="IsNewAddress_2" value="주소 틀림">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">주소 틀림</span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">주소 검색</td>
+                                <td>
+                                    @*<input type="button" class="infoButton" value="주소검색" onclick="jusoPopUp();" id="searchJusoButton" disabled="disabled"> ◀ 주소검색버튼을 클릭하세요.<br>*@
+                                    @*<input class="form_ctrl" type="text" id="roadAddrPart1" placeholder="" readonly="readonly" title="주소" style="width:90%">*@
+                                    <input type="button" class="infoButton" value="주소검색" onclick="ZipcodeSearch();" id="searchJusoButton" disabled="disabled"> ◀ 주소검색버튼을 클릭하세요.<br>                                    
+                                    <input class="form_ctrl" type="text"  id="txtRoadAddress" placeholder="" readonly="readonly" title="주소" style="width:90%" >
+                                                            
+                                    <input type="hidden" id="txtSido" title="시도">
+                                    <input type="hidden" id="txtSigungu" title="시군구">
+                                    <input type="hidden" id="txtBname" title="읍면동">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">세부 주소 (층, 동, 호수 등)</td>
+                                <td>
+                                    
+                                    <input class="form_ctrl" type="text" id="txtDetailAddress" maxlength="50" placeholder="상세주소 예)105동 123호" title="상세주소" style="width:90%" disabled="disabled">
+                                    @*<input class="form_ctrl" type="text" id="sebuAddr" maxlength="50" placeholder="상세주소 예)105동 123호" title="상세주소" style="width:90%" disabled="disabled">*@
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">핸드폰 번호</td>
+                                <td>@(Model.휴대폰번호)</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">집 전화 번호</td>
+                                <td>@(Model.집전화번호)</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center"> 컨택 연락처</td>
+                                <td>@(Model.수정컨택전화번호)</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center"> 시설 전화번호</td>
+                                <td>@(Model.시설전화번호)</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center"> 컨택 연락처 확인</td>
+                                <td class="td_cl01">
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="IsNewTel" id="IsNewTel_1" value="컨택연락처 맞음">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">컨택연락처 맞음</span>
+                                    </label>
+                                    &nbsp;&nbsp;
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="IsNewTel" id="IsNewTel_2" value="컨택연락처 틀림" >
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">컨택연락처 틀림</span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">컨택 연락처 </td>
+                                <td>
+                                    <select class="form_ctrl"  id="newtel1" name="newtel1">
+                                        <option></option>
+                                        <option value='010'>010</option>
+                                        <option value='011'>011</option>
+                                        <option value='02'>서울 02</option>
+                                        <option value='051'>부산 051</option>
+                                        <option value='053'>대구 053</option>
+                                        <option value='032'>인천 032</option>
+                                        <option value='062'>광주 062</option>
+                                        <option value='042'>대전 042</option>
+                                        <option value='052'>울산 052</option>
+                                        <option value='044'>세종 044</option>
+                                        <option value='031'>경기 031</option>
+                                        <option value='033'>강원 033</option>
+                                        <option value='043'>충북 043</option>
+                                        <option value='041'>충남 041</option>
+                                        <option value='063'>전북 063</option>
+                                        <option value='061'>전남 061</option>
+                                        <option value='054'>경북 054</option>
+                                        <option value='055'>경남 055</option>
+                                        <option value='064'>제주 064</option>
+                                        <option value='070'>인터넷전화 070</option>      
+                                    </select>
+                                    -
+                                    <input type="text" class="form_ctrl" size="4" id="newtel2" >
+                                    -
+                                    <input type="text" class="form_ctrl" size="4" id="newtel3">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center"> 컨택 연락처 관계</td>
+                                <td>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="relation" id="relation_1" value="본인">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">본인</span>
+                                    </label>
+                                    &nbsp;&nbsp;
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="relation" id="relation_2" value="보호자" >
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">보호자</span>
+                                    </label>
+                                    &nbsp;&nbsp;
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="relation" id="relation_3" value="시설관계자">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">시설관계자</span>
+                                    </label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                ※ 추후 한국리서치 본사로부터 조사원이 실제로 조사를 진행한 것이 맞는지 확인하기 위한 목적으로 귀하에게 전화를 드릴 수 있습니다.
+                <br />&nbsp; &nbsp;이를 위해 '컨택 연락처는 응답자와 통화가 가능한 번호를 입력해 주세요.
+                <div class="bot_btnbox">
+                    <button type="button" class="btnsty01" id="save">계속하기</button>                    
+                    <button type="button" class="btnsty03" id="exit">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("footer")
+    
+</div>
+</body>
+</html>
+    

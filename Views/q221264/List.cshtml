@@ -1,0 +1,62 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q221264_GETLISTResult>
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        @{
+            ViewBag.Title = "2022년 하반기 장애인경제활동실태조사";
+        }
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+        <link href="@Url.Content("../../Content/q200494/Site.css?version=4")" rel="stylesheet" type="text/css" />
+        <script type="text/javascript">
+            $(document).ready(function () {
+                setStatus();
+            });
+
+            function goAnswerInfo(pid, status) {
+                if (status == '대체요청') {
+                    alert('대체요청 하셨습니다.');
+                    return;
+                }
+
+                if (status == '이관요청') {
+                    alert('이관요청 하셨습니다.');
+                    return;
+                }
+
+                if (pid != null) {
+                    window.location.href = './Select?pid=' + pid;
+                }
+            }
+
+            function setStatus() {
+                $.post("./ProgressPartial", null, function (result) {
+                    $("#Progress").replaceWith(result);
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            }
+
+            function Refresh() {
+                location.reload();
+            }
+        </script>
+    </head>
+    <body>
+        <div style="width : 100%;display: inline-block;">
+            <label id="title">@ViewBag.Title</label>
+            <p/>
+            <div id="Progress">
+                @*@Html.Partial("ProgressPartial", Model)*@
+            </div>
+            <p/>
+            <!-- <div style="overflow-x:scroll;width:100%;"></div>-->
+                @Html.Partial("ListPartial", Model)
+            
+        </div>
+    </body>
+</html>

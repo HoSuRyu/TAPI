@@ -1,0 +1,572 @@
+﻿@model TAPI_Interviewer.Models.KLIPS2022_HouseList
+           
+<html>
+<head>
+    @{
+        ViewBag.Title = "이관";
+    }
+    <script type="text/javascript">
+        $(document).on('keypress keyup blur', 'input[name="numberBox"]', function () {
+            var maxlength = $(this).attr("maxLength");
+            var inputLength = $(this).val().length;
+
+            if (inputLength >= maxlength) {
+                event.preventDefault();
+                return false;
+            }
+        });
+
+        $(document).ready(function () {
+
+            $("#ok").click(function () {
+
+                var reason = $(":radio[name='reason']:checked").val();
+                if (reason == undefined || reason == '') {
+                    alert("이관신청 사유를 선택해 주세요.")
+                    return;
+                }
+                var reasonetc = $(":text[name='reasonetc']").val();
+                if (reason == "기타" && reasonetc == '')
+                {
+                    alert("기타 내용을입력해 주세요.");
+                    $("#reasonetc").focus();
+                    return;
+                }
+
+                var address1 = $('#address1').val();
+                var address2 = $('#address2').val();
+                var emdNm = $('#emdNm').val();
+                var address = $('#address').val();
+                var dongho = $.trim($('#dongho').val());
+
+                //var address = '봉은사로179';
+                //var address1 = 'address1';
+                //var address2 = 'address2';
+                //var emdNm = 'emdNm';
+                //var dongho = 'dongho';
+
+                if (address == '') {
+                    alert('변경 된 주소 정보를 입력해주세요.');
+                    return;
+                }
+
+                if (dongho == '') {
+                    alert('세부주소를 입력해주세요');
+                    return;
+                }
+                var etc = $(":text[name='etc']").val();
+
+                var tel1 = $("#edit_tel1_1 option:selected").val();
+                var tel2 = $("#edit_tel2_1 option:selected").val();
+                if (tel1 == undefined || tel1 == '' || tel2 == undefined || tel2 == '')
+                {
+                    alert('연락처 정보를 입력해주세요. 없는 경우 없음을 선택해 주세요.');
+                    return;
+                }
+                if (tel1 == '없음' && tel2 == '없음')
+                {
+                    alert('연락처 정보 중 하나는 입력해 주세요.');
+                    return;
+                }
+              
+                var edit_tel1 = '';
+                if (tel1 != '없음') {
+                    edit_tel1 = tel1 + '-' + $('#edit_tel1_2').val() + '-' + $('#edit_tel1_3').val();
+                    if (isTelePhone(edit_tel1) == false) {
+                        $("#edit_tel1_2").focus();
+                        alert('유효한 집전화 번호를 입력 해 주세요.');
+                        return;
+                    }
+                }
+                var edit_tel2 = '';
+                if (tel2 != '없음') {
+                    edit_tel2 = tel2 + '-' + $('#edit_tel2_2').val() + '-' + $('#edit_tel2_3').val();
+                    if (isCellPhone(edit_tel2) == false) {
+                        $("#edit_tel2_2").focus();
+                        alert('유효한 휴대전화 번호를 입력 해 주세요.');
+                        return;
+                    }
+                }
+                
+                $.post("./TransferOK", {
+                    "hid": '@ViewBag.HID', "address1": address1, "address2": address2, "emdNm": emdNm, "address": address, "dongho": dongho, "edit_tel1": edit_tel1, "edit_tel2": edit_tel2, "reason": reason, "reasonetc": reasonetc, "etc": etc
+                }, function (result) {
+
+                    alert('이관 요청 되었습니다.');
+                    window.location.href = './List';
+
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+
+            });
+
+            $("#cancel").click(function () {
+                window.location.href = "./List";
+            });
+        });
+
+        function isCellPhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/;
+
+            return regPhone.test(p);
+        }
+
+        function isTelePhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^(0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]|70|505))[1-9]+[0-9]{6,7}$/;
+
+            return regPhone.test(p);
+        }
+
+        function jusoPopUp() {
+            document.getElementById('popAddrSearch').style.display = 'block';
+            $("#popAddrSearch").focus();
+        }
+
+        function openApiDivCallBack(roadFullAddr, roadAddrPart1, roadAddrPart2, engAddr, jibunAddr, zipNo, admCd, rnMgtSn, bdMgtSn, detBdNmList, siNm, sggNm, emdNm) {
+            $('#address').val(roadAddrPart1);
+            $('#dongho').val('');
+            $('#address1').val(siNm);
+            $('#address2').val(sggNm);
+            $('#emdNm').val(emdNm);
+
+
+            document.getElementById('popAddrSearch').style.display = 'none';  //div 닫기
+            $('#dongho').focus();
+        }
+
+        function closeLayerPopUp() {
+            document.getElementById('popAddrSearch').style.display = 'none';
+            $("#searchJusoButton").focus();
+        }
+
+        //도로명 엔터키 검색
+        function enterSearchDiv() {
+            var evt_code = (window.netscape) ? ev.which : event.keyCode;
+            if (evt_code == 13) {
+
+                if (!checkKeyWord(document.formAPIDiv.keyword, "검색어")) return;
+                document.formAPIDiv.currentPage.value = '1';
+                searchDivAddr(); //jsonp사용시 enter검색
+            }
+        }
+
+        function searchDivButton() {
+            document.formAPIDiv.currentPage.value = '1';
+            searchDivAddr(); //jsonp사용시 enter검색
+        }
+
+        // 도로명주소 openAPI 호출하기
+        function searchDivAddr() {
+            if (!checkSearchedWord(document.formAPIDiv.keyword)) {
+                return;
+            }
+
+
+            //크로스 도메인 오류로 변경
+
+            $.get("../../Main/GetAddress", { "address": encodeURI(document.formAPIDiv.keyword.value), "currentPage": document.formAPIDiv.currentPage.value, "countPerPage": document.formAPIDiv.countPerPage.value },
+                function (xmlData) {
+                    var errCode = $(xmlData).find("errorCode").text();
+                    var errDesc = $(xmlData).find("errorMessage").text();
+                    if (errCode != "0") {
+                        alert(errDesc);
+                    } else {
+                        if (xmlData != null) {
+                            makeListDiv(xmlData);
+                            pageDivMake(xmlData);
+                        }
+                    }
+                })
+            .error(function (jqXHR, status, error) {
+                alert(error);
+            });
+        }
+
+        function jsonpCallback(xmlStr) {
+            if (navigator.appName.indexOf("Microsoft") > -1) {
+                var xmlData = new ActiveXObject("Microsoft.XMLDOM");
+                xmlData.loadXML(xmlStr.returnXml)
+            } else {
+                var xmlData = xmlStr.returnXml;
+            }
+
+            var errCode = $(xmlData).find("errorCode").text();
+            var errDesc = $(xmlData).find("errorMessage").text();
+            if (errCode != "0") {
+                alert(errDesc);
+            } else {
+                if (xmlStr != null) {
+                    makeListDiv(xmlData);
+                    pageDivMake(xmlData);
+                }
+            }
+        }
+
+        //특수문자, 특정문자열(sql예약어의 앞뒤공백포함) 제거
+        function checkSearchedWord(obj) {
+
+            if (obj.value.length > 0) {
+                //특수문자 제거
+                var expText = /[%=><]/;
+                if (expText.test(obj.value) == true) {
+                    alert("특수문자를 입력 할수 없습니다.");
+                    obj.value = obj.value.split(expText).join("");
+                    return false;
+                }
+
+                //특정문자열(sql예약어의 앞뒤공백포함) 제거
+                var sqlArray = new Array(
+			        //sql 예약어
+			        "OR", "SELECT", "INSERT", "DELETE", "UPDATE", "CREATE", "DROP", "EXEC",
+             		         "UNION", "FETCH", "DECLARE", "TRUNCATE"
+		        );
+
+                var regex;
+                var regex_plus;
+                for (var i = 0; i < sqlArray.length; i++) {
+                    regex = new RegExp("\\s" + sqlArray[i] + "\\s", "gi");
+                    if (regex.test(obj.value)) {
+                        alert("\"" + sqlArray[i] + "\"와(과) 같은 특정문자로 검색할 수 없습니다.");
+                        obj.value = obj.value.replace(regex, "");
+                        return false;
+                    }
+
+                    regex_plus = new RegExp("\\+" + sqlArray[i] + "\\+", "gi");
+                    if (regex_plus.test(obj.value)) {
+                        alert("\"" + sqlArray[i] + "\"와(과) 같은 특정문자로 검색할 수 없습니다.");
+                        obj.value = obj.value.replace(regex_plus, "");
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        // 적용예 (api 호출 전에 검색어 체크)
+        function searchJuso() {
+            if (!checkSearchedWord(document.form.keyword)) {
+                return;
+            }
+        }
+
+        /*
+         * 제공받은 주소정보를 화면에 셋팅하기
+         * 사이트에 맞게 화면 구성하기
+         */
+        function makeListDiv(xmlStr) {
+
+            var htmlStr = "<tbody  id='listDiv'>";
+            var tr_index = 0;
+
+            if ($(xmlStr).find("juso").length > 0) {
+                $(xmlStr).find("juso").each(function () {
+
+                    var roadAddr = $(this).find('roadAddr').text().replace(/ /gi, "&nbsp;").replace('&nbsp;&nbsp;', '&nbsp;').replace('\'', '');
+                    var addrDetail = $(this).find('addrDetail').text().replace(/ /gi, "&nbsp;").replace('&nbsp;&nbsp;', '&nbsp;').replace('\'', '');
+                    var roadAddrPart1 = $(this).find('roadAddrPart1').text().replace(/ /gi, "&nbsp;").replace('&nbsp;&nbsp;', '&nbsp;').replace('\'', '');
+                    var roadAddrPart2 = $(this).find('roadAddrPart2').text().replace(/ /gi, "&nbsp;").replace('&nbsp;&nbsp;', '&nbsp;').replace('\'', '');
+                    var engAddr = $(this).find('engAddr').text().replace(/ /gi, "&nbsp;").replace('&nbsp;&nbsp;', '&nbsp;').replace('\'', '');
+                    var jibunAddr = $(this).find('jibunAddr').text().replace(/ /gi, "&nbsp;").replace('&nbsp;&nbsp;', '&nbsp;').replace('\'', '');
+                    var zipNo = $(this).find('zipNo').text().replace(/ /gi, "&nbsp;");
+                    var admCd = $(this).find('admCd').text().replace(/ /gi, "&nbsp;");
+                    var rnMgtSn = $(this).find('rnMgtSn').text().replace(/ /gi, "&nbsp;");
+                    var bdMgtSn = $(this).find('bdMgtSn').text().replace(/ /gi, "&nbsp;");
+                    var detBdNmList = $(this).find('detBdNmList').text().replace(/ /gi, "&nbsp;").replace('&nbsp;&nbsp;', '&nbsp;');
+                    var siNm = $(this).find('siNm').text().replace(/ /gi, "&nbsp;").replace('&nbsp;&nbsp;', '&nbsp;');
+                    var sggNm = $(this).find('sggNm').text().replace(/ /gi, "&nbsp;").replace('&nbsp;&nbsp;', '&nbsp;');
+                    var emdNm = $(this).find('emdNm').text().replace(/ /gi, "&nbsp;").replace('&nbsp;&nbsp;', '&nbsp;');
+
+                    htmlStr += "<tr>";
+                    htmlStr += "<td class='subj' style='text-align:center;'>" + zipNo + "</td>";
+                    htmlStr += "<td class='subj' style='text-align:left; padding-left:50px;'>"
+						        + "<a href = javascript:openApiDivCallBack('" + roadAddr + "','" + roadAddrPart1 + "','" + roadAddrPart2
+															        + "','" + engAddr + "','" + jibunAddr + "','" + zipNo + "','" + admCd + "','" + rnMgtSn + "','" + bdMgtSn + "','" + detBdNmList + "','" + siNm + "','" + sggNm + "','" + emdNm + "')>"
+						        + roadAddr + "</br>" + jibunAddr
+						        + "</a></td>";
+                    htmlStr += "</tr>";
+
+                });
+            } else {
+                htmlStr += "<tr>";
+                htmlStr += "<td align='center' colspan='2'>검색결과가 없습니다.</td>";
+                htmlStr += "</tr>";
+            }
+
+            htmlStr += "</tbody>";
+            $("#listDiv").replaceWith(htmlStr);
+            //$("#listDiv").html(htmlStr);
+        }
+
+        // 페이징 처리
+        function pageDivMake(xmlStr) {
+            var total = $(xmlStr).find("totalCount").text();
+            $('#totalCntDiv').text("(총 " + total + "건)");	 // 총건수 셋팅
+            var pageNum = document.formAPIDiv.currentPage.value;
+            var paggingStr = "<div class='paginate' id='pageApiDiv'>";
+            if (total < 1) {
+            } else {
+                var PAGEBLOCK = 5;
+                var pageSize = document.formAPIDiv.countPerPage.value;
+                var totalPages = Math.floor((total - 1) / pageSize) + 1;
+                var firstPage = Math.floor((pageNum - 1) / PAGEBLOCK) * PAGEBLOCK + 1;
+
+                if (firstPage <= 0) firstPage = 1;
+
+                var lastPage = firstPage - 1 + PAGEBLOCK;
+                if (lastPage > totalPages) lastPage = totalPages;
+
+                var nextPage = lastPage + 1;
+                var prePage = firstPage - 5;
+
+                if (firstPage > PAGEBLOCK) {
+                    paggingStr += "<a title='이전 페이지' href='javascript:goPageDiv(" + prePage + ");'>&lsaquo;</a>&nbsp;&nbsp;";
+                }
+
+                for (i = firstPage; i <= lastPage; i++) {
+                    if (pageNum == i)
+                        paggingStr += "<a title='현재 " + i + "페이지' style='font-weight:bold; color:#4a6cde; font-size:15px; border:1px solid #4a6cde;' href='javascript:goPageDiv(" + i + ");'>" + i + "</a>&nbsp;&nbsp;";
+                    else
+                        paggingStr += "<a title='" + i + "페이지'  href='javascript:goPageDiv(" + i + ");'>" + i + "</a>&nbsp;&nbsp;";
+                }
+
+                if (lastPage < totalPages) {
+                    paggingStr += "<a title='다음 페이지' href='javascript:goPageDiv(" + nextPage + ");'>&rsaquo;</a>";
+                }
+
+                paggingStr += "</div>";
+
+                $("#pageApiDiv").replaceWith(paggingStr);
+            }
+        }
+
+        // 페이지 이동
+        function goPageDiv(pageNum) {
+            document.formAPIDiv.currentPage.value = pageNum;
+            searchDivAddr();
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    
+    <link href="@Url.Content("../../Content/SHOUSE2017/Site.css?version=6")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("../../Content/q200494/Site.css?version=2")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+    <table class="infoTable">
+        <tr>
+            <td class="tdValue" colspan="2" style="text-align:center">
+                <b>이관신청을 진행합니다.</b><br />
+                신청하려는 HID가 맞는지 다시 한 번 확인해주십시오.
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue" width="30%">
+                HID
+            </td>
+            <td class="tdHeader">
+                @Model.HID
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue">
+                가구주 성명
+            </td>
+            <td class="tdHeader">
+                @Model.가구주성명
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue" colspan="2">
+                &nbsp;<br />
+                이관신청 사유를 아래에서 선택해 주십시오
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader" colspan="2">
+                <input type="radio" name="reason" value="이사" id="reason_1" /> <label for="reason_1"> 1. 이사</label><br />
+                <input type="radio" name="reason" value="주소지 입력 오류" id="reason_2" /> <label for="reason_2"> 2. 주소지 입력 오류</label><br />
+                <input type="radio" name="reason" value="기타" id="reason_3" /> <label for="reason_3"> 3. 기타</label> <input class="textbox" id="reasonetc" name="reasonetc" rows="1" size="60" type="text" value="" maxlength="100" /><br />
+
+            </td>
+        </tr>
+
+        <tr>
+            <td class="tdValue" colspan="2">
+                &nbsp;<br />
+                기존 주소 정보
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader" colspan="2">
+                @Model.조사주소
+            </td>
+        </tr>
+
+
+        <tr>
+            <td class="tdValue" colspan="2">변경 주소</td>
+        </tr>
+        <tr>
+            <td class="tdHeader" colspan="2">
+                <input type="button" class="btn-b" value="주소검색" onclick="jusoPopUp();" style=" cursor pointer;" id="searchJusoButton">
+                <input type="text" id="address" class="textbox" placeholder="도로명주소 예) 서울특별시&nbsp;강남구&nbsp;봉은사로&nbsp;179" readonly="readonly" title="도로명주소" style="width:65%">
+                <br /><input type="text" id="dongho" class="textbox" maxlength="50" placeholder="세부주소 예) 105동 123호" title="세부주소" style="width:80%">
+                <input type="hidden" id="address1">
+                <input type="hidden" id="address2">
+                <input type="hidden" id="emdNm" title="읍면동">
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue" colspan="2">특이 사항</td>
+        </tr>
+        <tr>
+            <td class="tdHeader" colspan="2">
+                <input class="textbox" id="etc" name="etc" rows="1" size="60" type="text" value="" maxlength="100" />
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue" colspan="2">
+                기존 연락처 정보
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue">
+                집전화
+            </td>
+            <td class="tdHeader">
+                @Model.집전화
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue">
+                휴대전화
+            </td>
+            <td class="tdHeader">
+                @Model.휴대전화
+            </td>
+        </tr>
+        <tr>
+            <td class="tdValue" colspan="2">최종 연락처 정보</td>
+        </tr>
+        <tr>
+        <tr>
+            <td class="tdValue">
+                집전화
+            </td>
+            
+            <td class="tdHeader">
+                <select id="edit_tel1_1" class="tel_select2">
+                    <option></option>
+                   
+                    <option value="02">서울 02</option>
+                    <option value="051">부산 051</option>
+                    <option value="053">대구 053</option>
+                    <option value="032">인천 032</option>
+                    <option value="062">광주 062</option>
+                    <option value="042">대전 042</option>
+                    <option value="052">울산 052</option>
+                    <option value="044">세종 044</option>
+                    <option value="031">경기 031</option>
+                    <option value="033">강원 033</option>
+                    <option value="043">충북 043</option>
+                    <option value="041">충남 041</option>
+                    <option value="063">전북 063</option>
+                    <option value="061">전남 061</option>
+                    <option value="054">경북 054</option>
+                    <option value="055">경남 055</option>
+                    <option value="064">제주 064</option>
+                    <option value="070">인터넷전화 070</option>
+                    <option value="없음">없음</option>
+                </select>
+                - <input class="textbox" id="edit_tel1_2" type="number" name="numberBox" rows="1" size="4" maxlength="4" style="width:80px;">
+                - <input class="textbox" id="edit_tel1_3" type="number" name="numberBox" rows="1" size="4" maxlength="4" style="width:80px;">
+            </td>
+        </tr>
+       
+        <tr>
+            <td class="tdValue">
+                휴대전화
+            </td>
+            <td class="tdHeader" >
+                <select id="edit_tel2_1" class="tel_select2">
+                    <option></option>
+                    <option value="010">010</option>
+                    <option value="011">011</option>
+                    <option value="016">016</option>
+                    <option value="017">017</option>
+                    <option value="018">018</option>
+                    <option value="019">019</option>
+                    <option value="없음">없음</option>
+                </select>
+                - <input class="textbox" id="edit_tel2_2" type="number" name="numberBox" rows="1" size="4" maxlength="4" style="width:80px;">
+                - <input class="textbox" id="edit_tel2_3" type="number" name="numberBox" rows="1" size="4" maxlength="4" style="width:80px;">
+            </td>
+        </tr>
+    </table>
+    <br />
+    <div class="buttonDiv">
+        <center>
+            <input type="button" id="ok" class="infoButton" value="확인" />
+            <input type="button" id="cancel" class="infoButton" value="취소" />
+        </center>
+    </div>
+
+    <!-- 주소찾기 레이어 팝업 -->
+    <div id="popAddrSearch" class="pop-address-search-wrapper">
+        <form name="formAPIDiv" id="formAPIDiv" method="post">
+            <input type="hidden" id="currentPage" name="currentPage" value="1" style="width:100px">
+            <input type="hidden" id="countPerPage" name="countPerPage" value="3" style="width:100px">
+            <div class="pop-address-search-form pop-address-search-layer3">
+                <div class="pop-address-header">
+                    <h2>주소 검색</h2>
+                    <a class="close" href="javascript:closeLayerPopUp();"><img src="../../images/closebtn.png" alt="닫기"></a>
+                </div>
+                <div class="pop-address-body">
+                    <fieldset class="pop-address-field">
+                        <legend>도로명주소 검색</legend>
+                        <span class="pop-addr-wrap">
+                            <input type="text" id="keyword" name="keyword" variable="q220_op12" onkeydown="enterSearchDiv()" style="width:98%" title="검색어 입력" placeholder="도로명주소, 건물명 또는 지번 입력">
+                            <input type="button" style="cursor:pointer;" id="" onclick="javascript:searchDivButton();" title="검색">
+                        </span>
+                    </fieldset>
+                    <p class="text-guide">· 해당되는 주소를 선택해주세요.</p>
+                    <table class="data-col">
+                        <colgroup>
+                            <col style="width:20%">
+                            <col>
+                        </colgroup>
+                        <thead>
+                            <tr style="display: table-row;">
+                                <th scope="col">우편번호</th>
+                                <th scope="col">도로명주소</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listDiv"></tbody>
+                    </table>
+                    <div class="paginate" id="pageApiDiv"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- //주소찾기 레이어 팝업 -->
+</body>
+
+<style>
+    .tel_select2 {
+        color: black;
+        font-family: "Malgun Gothic";
+        font-size: 20px;
+        width: 200px;
+    }
+</style>
+
+</html >

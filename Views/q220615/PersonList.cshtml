@@ -1,0 +1,373 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q220615_GETPERSONLISTResult>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "2022년 청년 사회 첫 출발 실태조사";
+
+        string[] tel = string.IsNullOrEmpty(ViewBag.가구대표연락처) == true ? new string[] { "" } : ViewBag.가구대표연락처.Trim().Split('-');
+        
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("select[name='hType']").val("@(ViewBag.주택유형)").attr("selected", "selected");
+            $("select[name='tel1']").val("@(tel[0])").attr("selected", "selected");
+            
+
+            $('#save').click(function () {
+                saveInfo('./HouseList?keyid=@(ViewBag.집계구일련번호)', false);
+            });
+
+            $('#exit').click(function () {
+                window.location.href = './HouseList?keyid=@(ViewBag.집계구일련번호)';
+            });
+
+            $('#createPerson').click(function () {
+                saveInfo('./PersonList?keyid=@(ViewBag.집계구일련번호)&hid=@(ViewBag.HID)', true);
+            });
+
+            $('input[type=tel]').keydown(function (event) {
+                var charCode = (event.which) ? event.which : event.keyCode;
+
+                if (isNumeric(charCode, this) == false) {
+                    event.preventDefault();
+                }
+            });
+
+            $('input[type=tel]').keyup(function (event) {
+                sumCount();
+            });
+
+            sumCount();
+        });
+
+        function sumCount()
+        {
+            var personCount1 = parseInt($("#personCount1").val());
+            var personCount2 = parseInt($("#personCount2").val());
+
+            var personCount5 = parseInt($("#personCount5").val());
+            var personCount6 = parseInt($("#personCount6").val());
+            
+            var personCount12 = personCount1 + personCount2;
+
+            if (personCount1 == 99 && personCount2 == 99)
+            {
+                personCount12 = 99;
+            }
+            else if (personCount1 == 99)
+            {
+                personCount12 = personCount2;
+            }
+            else if (personCount2 == 99)
+            {
+                personCount12 = personCount1;
+            }
+
+            $("#personCount12").val(personCount12);
+
+            var personCount56 = personCount5 + personCount6;
+            $("#personCount56").val(personCount56);
+            
+            
+        }
+
+        function saveInfo(href, addPerson) {
+            var hType = $("select[name='hType'] option:selected").val();
+            var tel1 = $("select[name='tel1'] option:selected").val();
+            
+            var tel = tel1;
+            
+           
+            var hTypeEtc = $("#hTypeEtc").val();
+            var pname = $("#pname").val();
+            var personCount1 = $("#personCount1").val();
+            var personCount2 = $("#personCount2").val();
+            
+            var personCount5 = $("#personCount5").val();
+            var personCount6 = $("#personCount6").val();
+
+            if (tel1 != '없음') {
+                tel = tel1 + '-' + $("#tel2").val() + '-' + $("#tel3").val();
+
+                if (isTelePhone(tel) == false &&
+                    isCellPhone(tel) == false) {
+                    $("#tel2").focus();
+                    alert('유효한 연락처를 입력 해 주세요.');
+                    return;
+                }
+            }
+
+
+            if (pname == '') {
+                $("#pname").focus();
+                alert('가구대표 이름을 입력 해 주세요.');
+                return;
+            }
+
+            if (pname.length > 50) {
+                $("#pname").focus();
+                alert('이름을 50자 이내로 입력 해 주세요.');
+                return;
+            }
+
+
+            if (hType == "")
+            {
+                alert("주택유형을 선택 해 주세요.");
+                $('#hType').focus();
+                return;
+            }
+
+            if (hType == "기타" && $.trim(hTypeEtc) == "")
+            {
+                $('#hTypeEtc').focus();
+                alert("주택유형 기타 내용을 입력 해 주세요.");
+                return;
+            }
+
+            
+            if (parseInt(personCount1) != 99 && parseInt(personCount1) < parseInt(personCount5)) {
+                alert('남성 대상 가구원수가 남성 총 가구원 수 보다 큽니다.');
+                return;
+            }
+
+            if (parseInt(personCount2) != 99 && parseInt(personCount2) <  parseInt(personCount6)) {
+                alert('여성 대상 가구원수가 여성 총 가구원 수 보다 큽니다.');
+                return;
+            }
+
+            if (parseInt(personCount1) != 99 && parseInt(personCount2) != 99 && parseInt(personCount1) + parseInt(personCount2) < parseInt(personCount5) + parseInt(personCount6)) {
+                alert('대상 가구원수가 총 가구원 수 보다 큽니다.');
+                return;
+            }
+            
+            if (personCount1 == '' || personCount2 == '' ||
+                personCount5 == '' ||
+                personCount6 == '' ||
+                parseInt(personCount5) + parseInt(personCount6) < 1) 
+            {
+                alert('가구원수를 확인 해 주세요.');
+                return;
+            }
+            
+            if( parseInt(personCount5) + parseInt(personCount6)  > 9)
+            {
+                alert('한 가구에 최대 9명까지 조사 가능합니다.');
+                return;
+            }
+
+            $.post("./SaveInfo", { "keyid": @(ViewBag.집계구일련번호), "hid": @(ViewBag.HID), "hType": hType, "hTypeEtc": hTypeEtc,  "hName": pname, "hTel": tel, "personCount1": personCount1, "personCount2": personCount2, "personCount5": personCount5, "personCount6": personCount6}, function (result) {
+                if (result != '')
+                {
+                    alert(result);
+                }
+                else
+                {
+                    if (addPerson == true)
+                    {
+                        $.post("./CreatePerson", { "keyid": @(ViewBag.집계구일련번호), "hid": @(ViewBag.HID) }, function (result) {
+                            if (result != '')
+                            {
+                                alert(result);
+                            }
+                            else
+                            {
+                                location.reload();
+                            }
+                        }).error(function (jqXHR, status, error) {
+                            alert(status);
+                            alert(error);
+                        });
+                    }
+                    else
+                    {
+                        window.location.href = href;
+                    }
+                }
+            }).error(function (jqXHR, status, error) {
+                alert(status);
+                alert(error);
+            });
+        }
+
+        function isTelePhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^(0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]|70|505))[1-9]+[0-9]{6,7}$/;
+
+            return regPhone.test(p);
+        }
+
+        function isCellPhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/;
+
+            return regPhone.test(p);
+        }
+
+        function runSurvey(pid) {
+            if (pid != null) {
+                window.location.href = './Survey?keyid=@(ViewBag.집계구일련번호)&hid=@(ViewBag.HID)&pid=' + pid;
+            }
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    <div style="width : 100%;display: inline-block;">
+        @Html.Partial("CommonAddressSearchScript")
+
+        <table class="infoTable">
+            <tr>
+                <td class="tdValue">
+                    집계구 일련번호
+                </td>                
+                <td class="tdValue3" colspan="3">
+                    @(ViewBag.집계구일련번호)
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    주소
+                </td>
+                <td class="tdValue3" colspan="2">
+                    @(ViewBag.시군구)
+                </td>
+                
+                <td class="tdValue3">
+                    @(ViewBag.세부주소)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="tdValue">
+                    주택유형
+                </td>
+                <td class="tdValue3" colspan="3">
+                    <select id="hType" name="hType" class="tel_select2">
+                        <option></option>
+                        <option value='단독주택'>단독주택</option>
+                        <option value='아파트'>아파트</option>
+                        <option value='연립/다세대주택'>연립/다세대주택</option>
+                        <option value='기타'>기타</option>
+                    </select>
+                    기타 : <input class="textbox" id="hTypeEtc" rows="1" size="13" type="text" value="@(ViewBag.주택유형기타)">
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    가구대표<br />성명
+                </td>
+                <td class="tdValue3" colspan="3">
+                    <input class="textbox" id="pname" rows="1" size="13" type="text" value="@(ViewBag.가구대표성명)">
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    가구대표<br />연락처
+                </td>
+                <td class="tdValue3" colspan="3">
+                    <select id="tel1" name="tel1" class="tel_select2">
+                        <option></option>
+                        <option value='010'>010</option>
+                        <option value='011'>011</option>
+                        <option value='016'>016</option>
+                        <option value='017'>017</option>
+                        <option value='018'>018</option>
+                        <option value='019'>019</option>
+                        <option value='02'>서울 02</option>
+                        <option value='051'>부산 051</option>
+                        <option value='053'>대구 053</option>
+                        <option value='032'>인천 032</option>
+                        <option value='062'>광주 062</option>
+                        <option value='042'>대전 042</option>
+                        <option value='052'>울산 052</option>
+                        <option value='044'>세종 044</option>
+                        <option value='031'>경기 031</option>
+                        <option value='033'>강원 033</option>
+                        <option value='043'>충북 043</option>
+                        <option value='041'>충남 041</option>
+                        <option value='063'>전북 063</option>
+                        <option value='061'>전남 061</option>
+                        <option value='054'>경북 054</option>
+                        <option value='055'>경남 055</option>
+                        <option value='064'>제주 064</option>
+                        <option value='070'>인터넷전화 070</option>
+                    </select>
+                    - <input class="textbox" id="tel2" rows="1" size="4" type="tel" value="@(tel.Length <= 1 ? "" : tel[1])" maxlength="4">
+                    - <input class="textbox" id="tel3" rows="1" size="4" type="tel" value="@(tel.Length <= 1 ? "" : tel[2])" maxlength="4">
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    구분
+                </td>
+                <td class="tdValue">
+                    남 성
+                </td>
+                <td class="tdValue">
+                    여 성
+                </td>
+                <td class="tdValue">
+                    합 계
+                </td>
+            </tr>
+                 <tr>
+                <td class="tdValue">
+                  총 가구원 수
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="personCount1" rows="1" size="4" type="tel" value="@(ViewBag.총가구원수남)" maxlength="2" />
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="personCount2" rows="1" size="4" type="tel" value="@(ViewBag.총가구원수여)" maxlength="2" />
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="personCount12" rows="1" size="4" type="tel" value="@(ViewBag.총가구원수남 + ViewBag.총가구원수여)" maxlength="2" readonly />
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    만18세~만34세<br />
+                    (1987년 6월 2일~2004년 6월 1일)
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="personCount5" rows="1" size="4" type="tel" value="@(ViewBag.청년가구원수남)" maxlength="2" />
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="personCount6" rows="1" size="4" type="tel" value="@(ViewBag.청년가구원수여)" maxlength="2" />
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="personCount56" rows="1" size="4" type="tel" value="@(ViewBag.청년가구원수남 + ViewBag.청년가구원수여)" maxlength="2" readonly />
+                </td>
+            </tr>
+           
+         
+            <tr>
+                <td class="tdValue" colspan="4">
+                    * 대상 가구원 수를 입력 후 가구원 추가 버튼을 눌러주시고 대상 가구원이 조사를 거절할 경우 진행하기를 눌러 거절 사유를 입력해 주세요. 
+                </td>
+            </tr>
+        </table>
+        <div class="buttonDiv">
+            <center>
+                <input type="button" id="save" class="infoButton" style="margin-right: 60px;" value="저장 후 닫기" />
+                <input type="button" id="createPerson" class="infoButton" style="margin-right: 60px;" value="가구원 추가" />
+                <input type="button" id="exit" class="infoButton" style="margin-right: 60px;" value="닫기" />
+            </center>
+        </div>
+        <div style="overflow-x:scroll;width:100%;">
+            @Html.Partial("PersonListPartial", Model)
+        </div>
+    </div>
+</body>
+</html>

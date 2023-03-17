@@ -1,0 +1,576 @@
+﻿@model TAPI_Interviewer.Models.q220755_HouseList
+
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "2022년 주거실태 시범조사";
+
+        string[] phone = string.IsNullOrEmpty(Model.모바일) == true ? new string[] { "" } : Model.모바일.Trim().Split('-');
+        string[] tel = string.IsNullOrEmpty(Model.유선전화) == true ? new string[] { "" } : Model.유선전화.Trim().Split('-');
+        string[] email = string.IsNullOrEmpty(Model.이메일) == true ? new string[] { "" } : Model.이메일.Trim().Split('@');
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("select[name='phone1']").val("@(phone[0])").attr("selected", "selected");
+            $("select[name='tel1']").val("@(tel[0])").attr("selected", "selected");
+            $("select[name='gender']").val("@Model.응답자성별").attr("selected", "selected");
+            $("select[name='ftype']").val("@Model.가구주여부").attr("selected", "selected");
+
+
+            $('#exit').click(function () {
+                if (confirm('저장 버튼을 눌러주셔야 입력하신 기본정보가 저장됩니다.\r저장하셨다면 확인을 눌러주세요.\r저장하지 않았다면 취소를 눌러서 저장 버튼을 누른 후에 닫아주세요') == false) {
+                    return;
+
+                }
+                window.location.href = './HouseList?keyid=@Model.일련번호';
+            });
+
+
+
+            $('#save').click(function () {
+
+                if (insertCheck() != '성공') {
+                    return;
+                }
+
+
+                var name = $("#name").val();
+
+                var gender = $("select[name='gender'] option:selected").val();
+                var ftype = $("select[name='ftype'] option:selected").val();
+
+
+
+                var addr2 = $("#addr2").val();
+
+                var phone1 = $("select[name='phone1'] option:selected").val();
+                var phone = '';
+                if (phone1 != '') {
+                    phone = phone1 + '-' + $("#phone2").val() + '-' + $("#phone3").val();
+                }
+
+
+
+                var email1 = $("#email1").val();
+                var email2 = $("#email2").val();
+
+                var tel1 = $("select[name='tel1'] option:selected").val();
+                var tel = '';
+                if (tel1 != '') {
+                    tel = tel1 + '-' + $("#tel2").val() + '-' + $("#tel3").val();
+                }
+
+                var times = $("#times").val();
+
+                $.post("./SaveHouseInfo", {
+                    "hid": '@Model.HID', "name": name, "gender": gender, "ftype": ftype, "addr2": addr2, "phone": phone, "email1": email1, "email2": email2, "tel": tel, "times": times
+                }, function (result) {
+                    if (result == '저장') {
+                        alert('저장 되었습니다.');
+                        window.location.reload();
+                    }
+                    else {
+                        alert(result);
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+
+            });
+
+            $('#goSurvey').click(function () {
+
+
+                if (insertCheck() != '성공') {
+                    return;
+                }
+
+                var name = $("#name").val();
+                var gender = $("select[name='gender'] option:selected").val();
+                var ftype = $("select[name='ftype'] option:selected").val();
+                var addr2 = $("#addr2").val();
+
+
+                var phone1 = $("select[name='phone1'] option:selected").val();
+                var phone = '';
+                if (phone1 != '') {
+                    phone = phone1 + '-' + $("#phone2").val() + '-' + $("#phone3").val();
+                }
+
+                var email1 = $("#email1").val();
+                var email2 = $("#email2").val();
+
+                var tel1 = $("select[name='tel1'] option:selected").val();
+                var tel = '';
+                if (tel1 != '') {
+                    tel = tel1 + '-' + $("#tel2").val() + '-' + $("#tel3").val();
+                }
+
+                var times = $("#times").val();
+
+                var addr = '@(Model.도로명주소.Replace('&', '＆').Replace('\'', '’'))';
+                var infoText = addr + '\r' + phone + ' \r주소와 연락처가 맞습니까?';
+                if (confirm(infoText) == false) {
+                    return;
+                }
+
+                @*if ('@Model.진행상태' == '완료' && '@Model.조사방법' != 'TAPI')
+                {
+                    alert('')
+                }*@
+
+                $.post("./SaveHouseInfo", {
+                    "hid": '@Model.HID', "phone": phone, "name": name, "gender": gender, "ftype": ftype, "addr2": addr2, "email1": email1, "email2": email2, "tel": tel, "times": times
+                }, function (result) {
+
+                    if (result == '저장') {
+                        window.location.href = './Survey?hid=@Model.HID';
+                    }
+                    else {
+                        alert(result);
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+            $('#sendMsg').click(function () {
+
+                var phone1 = $("select[name='phone1'] option:selected").val();
+                var phone = phone1;
+
+                if (phone1 == '') {
+                    alert('휴대전화 번호를 입력 해 주세요.');
+                    return;
+                }
+                phone = phone1 + '-' + $("#phone2").val() + '-' + $("#phone3").val();
+
+                if (insertCheck() != '성공') {
+                    return;
+                }
+
+                var name = $("#name").val();
+                var gender = $("select[name='gender'] option:selected").val();
+                var ftype = $("select[name='ftype'] option:selected").val();
+                var addr2 = $("#addr2").val();
+
+
+
+                var email1 = $("#email1").val();
+                var email2 = $("#email2").val();
+
+                var tel1 = $("select[name='tel1'] option:selected").val();
+                var tel = '';
+                if (tel1 != '') {
+                    tel = tel1 + '-' + $("#tel2").val() + '-' + $("#tel3").val();
+                }
+
+                var times = $("#times").val();
+
+
+                var infoText = '@(Model.도로명주소) \r' + phone + ' \r주소와 연락처가 맞습니까?';
+                if (confirm(infoText) == false) {
+                    return;
+                }
+
+
+                $.post("./SendMSG", {
+                    "hid": '@Model.HID', "phone": phone, "name": name, "gender": gender, "ftype": ftype, "addr2": addr2, "email1": email1, "email2": email2, "tel": tel, "times": times
+                }, function (result) {
+
+                    if (result == '성공') {
+                        alert('문자 발송 완료');
+                        window.location.reload();
+                    }
+                    else {
+                        alert(result);
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+            $('#sendEmail').click(function () {
+
+                var email1 = $("#email1").val();
+                var email2 = $("#email2").val();
+
+                if (email1 == '' || email2 == '') {
+                    alert('이메일 주소를 입력 해 주세요.');
+                    return;
+                }
+
+                if (insertCheck() != '성공') {
+                    return;
+                }
+
+                var name = $("#name").val();
+                var gender = $("select[name='gender'] option:selected").val();
+                var ftype = $("select[name='ftype'] option:selected").val();
+                var addr2 = $("#addr2").val();
+
+                var phone1 = $("select[name='phone1'] option:selected").val();
+                var phone = '';
+                if (phone1 != '') {
+                    phone = phone1 + '-' + $("#phone2").val() + '-' + $("#phone3").val();
+                }
+
+                var tel1 = $("select[name='tel1'] option:selected").val();
+                var tel = '';
+                if (tel1 != '') {
+                    tel = tel1 + '-' + $("#tel2").val() + '-' + $("#tel3").val();
+                }
+
+                var times = $("#times").val();
+
+
+
+                var infoText = '@(Model.도로명주소) \r' + email1 + '＠' + email2 + ' \r주소와 연락처가 맞습니까?';
+                if (confirm(infoText) == false) {
+                    return;
+                }
+
+                $.post("./SendEmail", {
+                    "hid": '@Model.HID', "email1": email1, "email2": email2, "name": name, "gender": gender, "ftype": ftype, "addr2": addr2, "phone": phone, "tel": tel, "times": times
+                }, function (result) {
+
+                    if (result == '성공') {
+                        alert('메일 발송 완료');
+                        window.location.reload();
+                    }
+                    else {
+                        alert(result);
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+        });
+
+        function insertCheck() {
+
+            var name = $("#name").val();
+            if (name == '') {
+                alert('이름을 입력 해 주세요.');
+                return;
+            }
+
+            var gender = $("select[name='gender'] option:selected").val();
+            if (gender == '') {
+                alert('성별을 입력 해 주세요.');
+                return;
+            }
+
+            var ftype = $("select[name='ftype'] option:selected").val();
+            if (ftype == '') {
+                alert('가구주 여부를 선택 해 주세요.');
+                return;
+            }
+
+            //var addr2 = $("#addr2").val();
+            //if (addr2 == '')
+            //{
+            //    alert('세부 주소(건물명)를 입력해 주세요.');
+            //    return;
+            //}
+
+            var phone1 = $("select[name='phone1'] option:selected").val();
+            var phone = phone1;
+
+
+            if (phone1 != '') {
+                phone = phone1 + '-' + $("#phone2").val() + '-' + $("#phone3").val();
+
+                if (isCellPhone(phone) == false) {
+                    $("#phone2").focus();
+                    alert('입력한 휴대전화 번호를 확인해 주세요.');
+                    return;
+                }
+            }
+
+            var tel1 = $("select[name='tel1'] option:selected").val();
+            var tel = tel1;
+            if (tel1 != '없음' && tel1 != '') {
+                tel = tel1 + '-' + $("#tel2").val() + '-' + $("#tel3").val();
+
+                if (tel != '02-000-0000' && tel != '02-0000-0000' && isTelePhone(tel) == false) {
+                    $("#tel2").focus();
+                    alert('유효한 집전화 번호를 입력 해 주세요.');
+                    return;
+                }
+            }
+
+            var email1 = $("#email1").val();
+            var email2 = $("#email2").val();
+
+
+            if (phone1 == '' && (email1 == '' || email2 == '') && (tel1 == '' || tel1 == '없음')) {
+                alert('연락처 중 하나는 입력해 주세요.');
+                return;
+            }
+            var times = $("#times").val();
+            if (times == '' || times == '0') {
+                alert('총 방문 횟수를 입력해 주세요.');
+                return;
+            }
+
+
+            return '성공';
+
+        }
+
+        function chageEmail() {
+            var emailAddr = $("select[name='email3'] option:selected").val();
+            $("#email2").val(emailAddr);
+
+        }
+
+        function isTelePhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^(0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]|70|505))[1-9]+[0-9]{6,7}$/;
+
+            return regPhone.test(p);
+        }
+
+        function isCellPhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/;
+
+            return regPhone.test(p);
+        }
+
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("../../Content/q210801/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js" )"></script>
+
+</head>
+<body>
+    @Html.Partial("CommonAddressSearchScript")
+
+    <div style="width : 100%;display: inline-block;">
+        <table class="infoTable">
+            <tr>
+                <td class="tdValue" style="width:30%;">
+                    가구일련번호
+                </td>
+                <td class="tdValue3" style="width:70%;">
+                    <input class="textbox" type="text" style="width:50%" value="@(Model.HID)" disabled="disabled">
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue" style="width:30%;">
+                    거처번호
+                </td>
+                <td class="tdValue3" style="width:70%;">
+                    <input class="textbox" type="text" style="width:50%" value="@(Model.거처번호)" disabled="disabled">
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    가구번호
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" type="text" style="width:50%" value="@(Model.가구번호)" disabled="disabled">
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    세부주소
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" type="text" style="width:100%" value="@(Model.도로명주소)" disabled="disabled">
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    세부주소(건물명)
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" type="text" id="addr2" style="width:80%" value="@(Model.입력건물명)">
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue" rowspan="2">
+                    가구주/가구주 배우자 여부
+                </td>
+                <td class="tdValue3">
+                    <select id="ftype" name="ftype" class="addr_select">
+                        <option></option>
+                        <option value='가구주/가구주의 배우자임'>1. 가구주/가구주의 배우자임</option>
+                        <option value='기타 다른 가구원임'>2. 기타 다른 가구원임</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    가구주란?<br />
+                    주민등록 기준 세대주와 관계 없이 실질적으로 가구를 대표하는 사람
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    가구주/배우자 이름
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" type="text" id="name" style="width:50%" value="@(Model.응답자이름)">
+                </td>
+            </tr>
+
+            <tr>
+                <td class="tdValue">
+                    가구주/배우자 성별
+                </td>
+                <td class="tdValue3">
+                    <select id="gender" name="gender" class="tel_select2">
+                        <option></option>
+                        <option value='남자'>남자</option>
+                        <option value='여자'>여자</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    가구주/배우자 연락처1 모바일
+                </td>
+                <td class="tdValue3">
+
+                    <select id="phone1" name="phone1" class="tel_select2">
+                        <option></option>
+                        <option value='010'>010</option>
+                        <option value='011'>011</option>
+                        <option value='016'>016</option>
+                        <option value='017'>017</option>
+                        <option value='018'>018</option>
+                        <option value='019'>019</option>
+                    </select>
+                    - <input class="textbox" id="phone2" rows="1" size="4" type="tel" value="@(phone.Length <= 1 ? "" : phone[1])" maxlength="4">
+                    - <input class="textbox" id="phone3" rows="1" size="4" type="tel" value="@(phone.Length <= 1 ? "" : phone[2])" maxlength="4">
+                    <br /><input type="submit" id="sendMsg" class="infoButtonT" style="margin-right: 10px;" value="문자 발송" />
+                    &nbsp;
+                    @if (Model.모바일수정 == "콜센터")
+                    {
+                        <font color=blue>콜센터 수정</font>
+                    }
+                </td>
+            </tr>
+
+            <tr>
+                <td class="tdValue">
+                    가구주/배우자 연락처2 이메일
+                </td>
+                <td class="tdValue3">
+
+                    <input class="textbox" id="email1" rows="1" size="15" value="@(email.Length <= 1 ? "" : email[0])">
+                    ＠
+                    <input class="textbox" id="email2" rows="1" size="15" value="@(email.Length <= 1 ? "" : email[1])">
+                    <select id="email3" name="email3" class="tel_select2" onchange="chageEmail()">
+                        <option></option>
+                        <option value='hanmail.net'>hanmail.net</option>
+                        <option value='daum.net'>daum.net</option>
+                        <option value='naver.com'>naver.com</option>
+                        <option value='nate.com'>nate.com</option>
+                        <option value='yahoo.co.kr'>yahoo.co.kr</option>
+                        <option value='hotmail.com'>hotmail.com</option>
+                        <option value='paran.com'>paran.com</option>
+                        <option value='korea.com'>korea.com</option>
+                        <option value='lycos.co.kr'>lycos.co.kr</option>
+                        <option value='empal.com'>empal.com</option>
+                        <option value='hanafos.com'>hanafos.com</option>
+                        <option value='hanmir.com'>hanmir.com</option>
+                        <option value='chol.com'>chol.com</option>
+                        <option value='freechal.com'>freechal.com</option>
+                        <option value='gmail.com'>gmail.com</option>
+                        <option value='msn.com'>msn.com</option>
+                    </select><br />
+                    <input type="submit" id="sendEmail" class="infoButtonT" style="margin-right: 10px;" value="이메일 발송" />
+                    &nbsp;
+                    @if (Model.이메일수정 == "콜센터")
+                    {
+                        <font color=blue>콜센터 수정</font>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    가구주/배우자 연락처3 유선전화
+                </td>
+                <td class="tdValue3">
+
+                    <select id="tel1" name="tel1" class="tel_select2">
+                        <option></option>  
+                        <option value='02'>서울 02</option>
+                        <option value='051'>부산 051</option>
+                        <option value='053'>대구 053</option>
+                        <option value='032'>인천 032</option>
+                        <option value='062'>광주 062</option>
+                        <option value='042'>대전 042</option>
+                        <option value='052'>울산 052</option>
+                        <option value='044'>세종 044</option>
+                        <option value='031'>경기 031</option>
+                        <option value='033'>강원 033</option>
+                        <option value='043'>충북 043</option>
+                        <option value='041'>충남 041</option>
+                        <option value='063'>전북 063</option>
+                        <option value='061'>전남 061</option>
+                        <option value='054'>경북 054</option>
+                        <option value='055'>경남 055</option>
+                        <option value='064'>제주 064</option>
+                        <option value='070'>인터넷전화 070</option>
+                    </select>
+                    - <input class="textbox" id="tel2" rows="1" size="4" type="tel" value="@(tel.Length <= 1 ? "" : tel[1])" maxlength="4">
+                    - <input class="textbox" id="tel3" rows="1" size="4" type="tel" value="@(tel.Length <= 1 ? "" : tel[2])" maxlength="4">
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    진행 상황
+                </td>
+                <td class="tdValue3">
+                    @Model.진행상태
+                </td>
+            </tr>
+            <tr><td colspan="2">&nbsp; </td></tr>
+            <tr>
+                <td class="tdValue">
+                    총 방문 횟수
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" type="text" id="times" style="width:50%" value="@(Model.총방문횟수)">
+                </td>
+            </tr>
+            <tr><td colspan="2">&nbsp; </td></tr>
+            <tr>
+                <td class="tdValue">
+                    조사 하기
+                </td>
+                <td class="tdValue3">
+                    <input type="submit" id="goSurvey" class="infoButtonT" style="margin-right: 10px;" value="조사 시작" />
+                </td>
+            </tr>
+
+           
+
+        </table>
+    </div>
+    <div class="buttonDiv">
+        <center>
+            <input type="button" id="save" class="infoButton" style="margin-right: 10px;" value="저장" />
+            <input type="button" id="exit" class="infoButton" style="margin-right: 10px;" value="닫기" />
+        </center>
+    </div>
+</body>
+</html>

@@ -1,0 +1,444 @@
+﻿@model TAPI_Interviewer.Models.q221268_List
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "2022년 디지털 산업 통계조사 - 기본 정보 입력";
+
+        string[] tel = string.IsNullOrEmpty(Model.핸드폰) == true ? new string[] { "" } : Model.핸드폰.Trim().Split('-');
+        string[] email = string.IsNullOrEmpty(Model.이메일주소) == true ? new string[] { "" } : Model.이메일주소.Trim().Split('@');
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+            $("select[name='uid']").val("@(ViewBag.담당면접원)").attr("selected", "selected");
+            $(":radio[name='contact']").filter('[value="@(Model.컨택현황)"]').prop('checked', true);
+            $("select[name='tel1']").val("@(tel[0])").attr("selected", "selected");
+
+            $('#save').click(function () {
+                saveInfo(0);
+            });
+
+
+            $('#sendEmail').click(function () {
+                if( '@(Model.진행상태)' == '완료')
+                {
+                    alert('설문을 완료한 응답자 입니다.');
+                    return;
+                }
+
+                var email1 = $("#email1").val();
+                var email2 = $("#email2").val();
+
+                if (email1 == '' || email2 == '') {
+                    alert('이메일 주소를 입력 해 주세요.');
+                    return;
+                }
+
+                saveInfo(2);
+            });
+
+            $('#goSurvey').click(function () {
+                if( '@(Model.진행상태)' == '완료')
+                {
+                    alert('설문을 완료한 응답자 입니다.');
+                    return;
+                }
+                window.location.href = 'https://survey.hrcglobal.com/kisdi/?gb=1&pid=@(Model.PID)';
+            });
+
+            $('#sendMsg').click(function(){
+
+                if( '@(Model.진행상태)' == '완료')
+                {
+                    alert('설문을 완료한 응답자 입니다.');
+                    return;
+                }
+
+                var tel1 = $("select[name='tel1'] option:selected").val();
+                if (tel1=='') {
+                    alert('핸드폰 번호를 입력해 주세요.');
+                    return;
+                }
+
+                if (tel1 != '') {
+                    var tel = tel1 + '-' + $("#tel2").val() + '-' + $("#tel3").val();
+
+                    if ( isCellPhone(tel) == false) {
+                        $("#tel2").focus();
+                        alert('유효한 핸드폰 번호를 입력 해 주세요.');
+                        return;
+                    }
+                }
+
+                saveInfo(1);
+            });
+
+            $('#exit').click(function () {
+                window.location.href = './List?pid=@(Model.PID)';
+            });
+
+            $('#distributionUID').click(function () {
+
+                var uid = $("select[name='uid'] option:selected").val();
+
+                if (uid == '' ) {
+                    alert('배부할 면접원을 선택해 주세요.');
+                    return;
+                }
+
+
+                $.post("./distributionUID", {
+                    "pid": '@Model.PID', "uidIDX": uid
+                }, function (result) {
+
+                    if (result == '') {
+                        alert('배부 되었습니다.');
+                        window.location.reload();
+                    }
+                    else {
+                        alert(result);
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+
+
+        });
+
+
+
+        function saveInfo(sendType) {
+
+
+
+            var contact = $(":radio[name='contact']:checked").val();
+            if (contact == undefined)
+            {
+                contact= '';
+            }
+            var pname = $("#pname").val();
+            var grade = $("#grade").val();
+            var company = $("#company").val();
+            var tel1 = $("select[name='tel1'] option:selected").val();
+            var tel;
+            if (tel1 != '없음'  && tel1 != '') {
+                tel = tel1 + '-' + $("#tel2").val() + '-' + $("#tel3").val();
+
+                if ( isCellPhone(tel) == false) {
+                    $("#tel2").focus();
+                    alert('유효한 핸드폰 번호를 입력 해 주세요.');
+                    return;
+                }
+            }
+
+            var email1 = $("#email1").val();
+            var email2 = $("#email2").val();
+            var etc = $("#etc").val();
+
+
+            $.post("./SaveInfo", { "pid": @(Model.PID), "contact":contact, "name": pname, "grade":grade, "company": company, "phone": tel, "email1":email1,"email2":email2, "etc":etc, "sendType":sendType}, function (result) {
+                if (result != '')
+                {
+                    alert(result);
+                }
+                else
+                {
+                    if(sendType == 0)
+                    {
+                        alert('저장 되었습니다.');
+                    }
+                    else if(sendType == 1)
+                    {
+                        alert('문자가 발송 되었습니다.');
+                    }
+                    if(sendType == 2)
+                    {
+                        alert('메일이 발송 되었습니다.');
+                    }
+                    window.location.reload();
+                }
+            }).error(function (jqXHR, status, error) {
+                alert(status);
+                alert(error);
+            });
+        }
+
+        function isTelePhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^(0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]|70|505))[1-9]+[0-9]{6,7}$/;
+
+            return regPhone.test(p);
+        }
+
+        function isCellPhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/;
+
+            return regPhone.test(p);
+        }
+
+        function chageEmail() {
+            var emailAddr = $("select[name='email3'] option:selected").val();
+            $("#email2").val(emailAddr);
+
+        }
+
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css?version=5")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("../../Content/q210801/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/jquery.chained.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    @Html.Partial("CommonAddressSearchScript")
+
+    <div id="main" style="width:100%;">    
+        <table class="infoTable">
+            <tr>
+                <td class="tdValue">
+                    PID
+                </td>
+                <td class="tdValue3">
+                    @(Model.PID)
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    사업체명
+                </td>
+                <td class="tdValue3">
+                    @(Model.사업체명)
+                    
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    대표자명
+                </td>
+                <td class="tdValue3">
+                    @(Model.대표자명)
+
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    지역
+                </td>
+                <td class="tdValue3">
+                    @(Model.지역)
+
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    주소
+                </td>
+                <td class="tdValue3">
+                    @(Model.주소)
+
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    전화번호1
+                </td>
+                <td class="tdValue3">
+                    @(Model.전화번호1)
+
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    전화번호2
+                </td>
+                <td class="tdValue3">
+                    @(Model.전화번호2)
+
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    팩스
+                </td>
+                <td class="tdValue3">
+                    @(Model.팩스)
+
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue3" colspan="2">
+                    <b> 컨택 정보 기입</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    컨택 현황
+                </td>
+                <td class="tdValue3">
+                    <input type="radio" name="contact" id="contact_1" value="성공" /><label for="contact_1"> 1. 성공 </label><br />
+                    <input type="radio" name="contact" id="contact_2" value="거절" /><label for="contact_2"> 2. 거절  </label><br />
+                    <input type="radio" name="contact" id="contact_3" value="결번" /><label for="contact_3"> 3. 결번 </label><br />
+                    <input type="radio" name="contact" id="contact_4" value="비수신" /><label for="contact_4"> 4. 비수신  </label><br />
+                    <input type="radio" name="contact" id="contact_5" value="부재/재컨택" /><label for="contact_5"> 5. 부재/재컨택 </label><br />
+                    <input type="radio" name="contact" id="contact_6" value="휴업/폐업" /><label for="contact_6"> 6. 휴업/폐업 </label><br />
+                    <input type="radio" name="contact" id="contact_7" value="4인이하" /><label for="contact_7"> 7. 4인이하  </label><br />
+                    <input type="radio" name="contact" id="contact_8" value="중복" /><label for="contact_8"> 8. 중복  </label><br />
+                    <input type="radio" name="contact" id="contact_9" value="기타" /><label for="contact_9"> 9. 기타 </label>  
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    이름
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="pname" rows="1" size="13" type="text" value="@(Model.이름)">
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    직위
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="grade" rows="1" size="13" type="text" value="@(Model.직위)">
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    사무실
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="company" rows="1" size="13" type="text" value="@(Model.사무실)">
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                   핸드폰
+                </td>
+                <td class="tdValue3">
+                    <select id="tel1" name="tel1" class="tel_select2">
+                        <option></option>
+                        <option value='010'>010</option>
+                    </select>
+                    - <input class="textbox" id="tel2" rows="1" size="4" type="tel" value="@(tel.Length <= 1 ? "" : tel[1])" maxlength="4">
+                    - <input class="textbox" id="tel3" rows="1" size="4" type="tel" value="@(tel.Length <= 1 ? "" : tel[2])" maxlength="4">
+                    &nbsp;<input type="submit" id="sendMsg" class="infoButtonT" style="margin-right: 10px;" value="문자 발송" />
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    이메일 주소
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="email1" rows="1" size="20" value="@(email.Length <= 1 ? "" : email[0])">
+                    ＠
+                    <input class="textbox" id="email2" rows="1" size="20" value="@(email.Length <= 1 ? "" : email[1])">
+                    <select id="email3" name="email3" class="tel_select2" onchange="chageEmail()">
+                        <option></option>
+                        <option value='hanmail.net'>hanmail.net</option>
+                        <option value='daum.net'>daum.net</option>
+                        <option value='naver.com'>naver.com</option>
+                        <option value='nate.com'>nate.com</option>
+                        <option value='yahoo.co.kr'>yahoo.co.kr</option>
+                        <option value='hotmail.com'>hotmail.com</option>
+                        <option value='paran.com'>paran.com</option>
+                        <option value='korea.com'>korea.com</option>
+                        <option value='lycos.co.kr'>lycos.co.kr</option>
+                        <option value='empal.com'>empal.com</option>
+                        <option value='hanafos.com'>hanafos.com</option>
+                        <option value='hanmir.com'>hanmir.com</option>
+                        <option value='chol.com'>chol.com</option>
+                        <option value='freechal.com'>freechal.com</option>
+                        <option value='gmail.com'>gmail.com</option>
+                        <option value='msn.com'>msn.com</option>
+                    </select>
+                    &nbsp;<input type="submit" id="sendEmail" class="infoButtonT" style="margin-right: 10px;" value="이메일 발송" />
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    현장 조사
+                </td>
+                <td class="tdValue3">
+                    <input type="submit" id="goSurvey" class="infoButtonT" style="margin-right: 10px;" value="조사 하기" />
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    비고
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="etc" rows="1" size="50" type="text" value="@(Model.비고)">
+                </td>
+            </tr>
+
+            @{ if (ViewBag.마스터계정 == 1)
+                {
+                    <tr>
+                        <td class="tdValue3" colspan="2">
+                            <b> 배부하기</b><br />
+                    <label>* 배부 할 면접원을 선택 후 "배부" 버튼을 눌러서 배부해 주세요.</label>
+                    
+                        </td>
+                    </tr>
+            <tr>
+                <td class="tdValue">
+                    배부 된 면접원
+                </td>
+                <td class="tdValue3">
+                    <select id="uid" name="uid" class="tel_select2">
+                        <option></option>
+                        <option value='1'>면접원1</option>
+                        <option value='2'>면접원2</option>
+                        <option value='3'>면접원3</option>
+                        <option value='4'>면접원4</option>
+                        <option value='5'>면접원5</option>
+                        <option value='6'>면접원6</option>
+                        <option value='7'>면접원7</option>
+                        <option value='8'>면접원8</option>
+                        <option value='9'>면접원9</option>
+                        <option value='10'>면접원10</option>
+                        <option value='11'>면접원11</option>
+                        <option value='12'>면접원12</option>
+                        <option value='13'>면접원13</option>
+                        <option value='14'>면접원14</option>
+                        <option value='15'>면접원15</option>
+
+                    </select> 
+                    &nbsp;<input type="submit" id="distributionUID" class="infoButtonT" style="margin-right: 10px;" value="배부" />
+                </td>
+                
+            </tr>
+                    }
+                }
+            <tr>
+                <td class="tdValue">
+                    조사 진행상태
+                </td>
+                <td class="tdValue3">
+                    @Model.진행상태
+                </td>
+            </tr>
+        </table>
+       
+        <div class="buttonDiv">
+
+            <center>
+                <input type="button" id="save" class="infoButton" style="margin-right: 60px;" value="저장" />
+                <input type="button" id="exit" class="infoButton" style="margin-right: 60px;" value="나가기" />
+            </center>
+     </div>
+</body>
+</html>

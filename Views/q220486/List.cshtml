@@ -1,0 +1,169 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q220486_GETLISTResult>
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        @{
+            ViewBag.Title = "아동보호통합패널조사 인터뷰어";
+        }
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+        <link href="@Url.Content("../../Content/q200494/Site.css?version=4")" rel="stylesheet" type="text/css" />
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                PageIndex
+                setStatus();
+            });
+
+            function goAnswerInfo(pid, status) {
+
+                //alert("아직 사용할 수 없는 기능입니다.");
+                //return;
+
+                if (status == '이관요청') {
+                    alert('이관요청 하셨습니다.');
+                    return;
+                }
+
+                // info 안에서 설문 진입 못하도록 수정 
+                //if (status == '대체요청') {
+                //    alert('대체요청 하셨습니다.');
+                //    return;
+                //}
+
+              
+
+                if (pid != null) {
+                    window.location.href = './AnswerInfo?pid=' + pid;
+                }
+            }
+
+            function goPreSurvey(pid, status, status2) {
+              
+
+                //if (status == '대체요청') {
+                //    alert('대체요청 하셨습니다.');
+                //    return;
+                //}
+
+                if (status == '이관요청') {
+                    alert('이관요청 하셨습니다.');
+                    return;
+                }
+
+                if (status2 == '완료') {
+                    alert('사전 설문은 이미 응답하셨습니다.');
+                    return;
+                }
+
+                if (pid != null) {
+                    window.location.href = './Contact?pid=' + pid+'&isPreSurveyCall=1';
+                }
+            }
+
+            function goSendPreInfo(pid, status) {
+                if (status == '대체요청') {
+                    alert('대체요청 하셨습니다.');
+                    return;
+                }
+
+                if (status == '이관요청') {
+                    alert('이관요청 하셨습니다.');
+                    return;
+                }
+
+                if (pid != null) {
+                    window.location.href = './SendInfo?pid=' + pid;
+                }
+            }
+
+            function goReplace(pid, status) {
+
+                //alert("아직 사용할 수 없는 기능입니다.");
+                //return;
+
+                if (status == '완료') {
+                    alert('조사가 완료되었습니다. ');
+                    return;
+                }
+                if (status == '대체요청') {
+                    alert('대체요청 하셨습니다.');
+                    return;
+                }
+                if (status == '이관요청') {
+                    alert('이관요청 하셨습니다.');
+                    return;
+                }
+
+                if (pid != null) {
+                    window.location.href = './Replace?pid=' + pid;
+                }
+            }
+
+            function goTransfer(pid, status) {
+
+               // var pageN = $('#PanelList').find('> tbody > tr:first > td:first> div:first> div:first>b').attr('name');
+                var pageN = $('.dxp-num dxp-current').attr('name');
+                alert(pageN);
+                //const url = new URL(window.location.href);
+
+                //// URLSearchParams 객체
+                //const urlParams = url.searchParams;
+                //alert(urlParams.get('seoPanelList'));
+                //var a = urlParams.get('seoPanelList');
+                
+                //alert("아직 사용할 수 없는 기능입니다.");
+                //return;
+
+                if (status == '완료') {
+                    alert('조사가 완료되었습니다. ');
+                    return;
+                }
+
+                if (status == '대체요청') {
+                    alert('대체요청 하셨습니다.');
+                    return;
+                }
+
+                if (status == '이관요청') {
+                    alert('이관요청 하셨습니다.');
+                    return;
+                }
+
+                if (pid != null) {
+                    window.location.href = './Transfer?pid=' + pid;
+                }
+            }
+
+
+            function setStatus() {
+                $.post("./ProgressPartial", null, function (result) {
+                    $("#Progress").replaceWith(result);
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            }
+
+            function Refresh() {
+                location.reload();
+            }
+        </script>
+    </head>
+    <body>
+        <div style="width : 100%;display: inline-block;">
+            <label id="title">@ViewBag.Title</label>
+            <p/>
+            <input type="button" class="infoButtonOrange" onclick="Refresh()" value="새로고침" />
+             <div id="Progress">
+                @*@Html.Partial("ProgressPartial", Model)*@
+            </div>
+            <p/>
+                @Html.Partial("ListPartial", Model)
+            
+        </div>
+    </body>
+</html>

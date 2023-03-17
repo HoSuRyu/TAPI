@@ -1,0 +1,42 @@
+﻿@model List<TAPI_Interviewer.Models.Project.AnswerList>
+@{
+    ViewBag.Title = "응답 정보";
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ('@ViewBag.C' != '') {
+                window.location.href = '../../?c=@ViewBag.C';
+                //window.opener.Refresh();
+            }
+
+            $('#exit').click(function () {
+                window.location.href = './HouseList?keyid=@(ViewBag.HRC일련번호)';
+            });
+        });
+    </script>
+    <link href="@Url.Content("../../Content/p170980/Site.css?version=4")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div style="width : 100%;display: inline-block;">
+        <label>수정 할 문항을 터치 해 주세요. 수정 후 꼭 '끝으로' 버튼을 터치해서 완료 하셔야 합니다.</label>
+        <input type="button" id="exit" class="infoButton" value="나가기" />
+        <p />
+        <table class="infoTable">
+            @foreach (TAPI_Interviewer.Models.Project.AnswerList answerList in Model)
+            {
+                <tr>
+                    <td class="tdValue">
+                        <a href="../../?c=@answerList.Url" style="color:blue;">@(new HtmlString(answerList.Title))</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>

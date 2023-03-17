@@ -1,0 +1,186 @@
+.wf-active body {
+ font-family: 'Nanum Gothic';
+}
+
+* { margin: 0; padding: 0;}
+body,th,td {
+	font-family: "Nanum Gothic";
+	font-size: 23px;
+	color: #666;
+}
+body,html {height:100%;}
+a { color: #666; text-decoration: none;}
+a:hover { color: #7d9351; text-decoration: underline; }
+/* 링크 걸었을때 주위에 테두리 점선 없애기 */
+a,img {outline: none; selector-dummy: expression(this.hideFocus=true);}
+
+input{  
+	vertical-align:middle;
+}
+
+textarea {
+	border:1px solid #dbdbdb;
+	background-color:#fff;
+	padding:2px 3px 1px;
+	font-family:"Nanum Gothic";
+}
+
+select {
+	border:1px solid #dbdbdb;
+	vertical-align:middle;
+	height:40px;
+	padding:1px 1px 2px;
+	font-size:23px;
+	font-family:"Nanum Gothic";
+}
+
+input[type='radio'] {
+	width:23px;
+	height:23px;
+	border:0px;
+	background-color:transparent;
+	margin-right:5px;
+	vertical-align:middle;
+	Cursor: pointer;
+}
+
+input[type='radio']:focus {
+	width:23px;
+	height:23px;
+	border:0px;
+	background-color:transparent;
+	margin-right:5px;
+	vertical-align:middle;
+	Cursor: pointer;
+	outline:0px;
+}
+
+input[type='checkbox'] {
+	width:23px;
+	height:23px;
+	border:0px;
+	background-color:transparent;
+	margin-right:5px;
+	vertical-align:middle;
+	Cursor: pointer;
+}
+
+input[type='text'] 
+{
+    font-size:23px;
+	font-family:"Nanum Gothic";
+}
+
+td[clickID],div[clickID]
+{
+    Cursor: pointer;
+}
+
+img { vertical-align: top; border: 0;}
+h1 img,h2 img,h3 img { vertical-align: top; }
+h1,h2,h3,h4,h5 { font-size: 23px; line-height: 16px;}
+ol,ul,li { list-style: none;}
+.clr{clear:both;}
+
+table { border-collapse: collapse;}
+em { font-style: normal;}
+
+
+/*********기본 폰트정의********************************************************************************************/
+
+
+.b {font-weight:bold;}
+.center {text-align:center;}
+.s {letter-spacing:-0.1em;}
+
+.tahome {font-family:"tahoma";font-size:7pt;}
+
+.orange {color:#ff5a00;}
+.black {color:#0e0e0e;}
+.pink {color:#f32e64;}
+.red {color:#e80000;}
+.blush {color:#00a4d3;}
+.green {color:#83b300;}
+
+
+/********************** layout ************************/
+
+:-webkit-full-screen {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background: none;
+}
+
+#QuestionView { width:100%; position:relative;word-break:keep-all;}
+
+#header {background:url(https://rpssurvey.hrcglobal.com/images/thead.jpg) repeat-x; height:70px; width:100%; position: fixed ; top: 0px;display:inline-block;z-index:998;}
+#header .hinner {width:950px; margin:0 auto;}
+#header #logo {float:left; position: fixed; top: 0px; left:30%;}
+
+#container { position:relative; width:1000px; top:70px; padding-bottom:70px; background:url(https://rpssurvey.hrcglobal.com/images/con_bg_bottom.jpg) center bottom no-repeat,url(https://rpssurvey.hrcglobal.com/images/con_bg_side.jpg) center bottom repeat; margin:auto;}
+#containerpage { position:relative; width:1000px; background:url(https://rpssurvey.hrcglobal.com/images/page_bg.jpg) center bottom no-repeat;}
+#content { padding-bottom:30px; }
+
+#Save
+{
+    background-color:#0094ff;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:@맑은 고딕;
+	font-size:32px;
+	font-weight:bold;
+	text-decoration:none;
+	border: none;
+	width:100px;
+	height:52px;
+	margin:0 0 5px 0;
+}
+
+#Cancel
+{
+    background-color:#909090;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:@맑은 고딕;
+	font-size:32px;
+	font-weight:bold;
+	text-decoration:none;
+	border: none;
+	width:100px;
+	height:52px;
+	margin:0 0 5px 0;
+}
+
+#navbtnNE
+{
+    z-index:999;
+    position: fixed;
+    right: 50%;
+    top: 5px;
+    margin-right: -490px;
+    text-align:center;
+    width:220px;
+    height:70px;
+}
+
+/*#navbtn #Previous { background : url(https://rpssurvey.hrcglobal.com/images/btn_prev.jpg) no-repeat; cursor:pointer; border: none; width:132px; height:52px;}
+#navbtn #Next { background : url(https://rpssurvey.hrcglobal.com/images/btn_next.jpg) no-repeat; cursor:pointer; border: none; width:132px; height:52px;}
+#navbtn #End { background : url(https://rpssurvey.hrcglobal.com/images/btn_next.jpg) no-repeat; cursor:pointer; border: none; width:132px; height:52px;}*/
+#navbtn {position:absolute; width:100%; height:auto; text-align:center;}
+
+#question {background:url(https://rpssurvey.hrcglobal.com/images/q_shadow.jpg) center bottom no-repeat; padding-bottom:20px; text-align:left; overflow:hidden; margin-bottom:20px;}
+#question .qbox {border:1px solid #c8c8c8; background-color:#fff; text-align:left; font:bold 23pt "Nanum Gothic"; color:#222; padding:15px 0px 13px 0px; width:967px; margin:0 auto; overflow:hidden; vertical-align:middle;}
+#question .qicon {width:35px; padding-right:10px; display:inline-block; float:left; margin-top:5px}
+#question .qnum {color:#f4001d; float:left;}
+#question .qtxt {display:inline-block; float:left; width:920px; line-height:100%; padding-top:5px;}
+
+#content .textbox { border:1px solid #ccc; padding:3px; vertical-align:middle;}
+#content label {vertical-align:top; display:inline-block; padding:0px 0px 0px 0px; } 
+#content .for {vertical-align:top; display:inline-block; padding:0px 0px 0px 0px; Cursor: pointer;} 
+
+#content .exTable { position:relative; width:860px; margin:0 auto; color:#545454;}
+#content .exTable th {font:bold 23pt "Nanum Gothic"; color:#222; line-height:180%; vertical-align:middle; padding-top:2px; text-align:left;}
+#content .exTable td { padding:5px 0px;}

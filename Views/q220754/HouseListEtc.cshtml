@@ -1,0 +1,59 @@
+﻿@model List<TAPI_Interviewer.Models.SP_H2022_GETETCHOUSELISTResult>
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            $('#sendReplace').click(function () {
+                window.location.href = './Replace?keyid=@ViewBag.HRC일련번호&listType=3';
+            });
+
+            $('#exit').click(function () {
+                window.location.href = './ListEtc';
+            });
+
+            $('input[type=tel]').keydown(function (event) {
+                var charCode = (event.which) ? event.which : event.keyCode;
+
+                if (isNumeric(charCode, this) == false) {
+                    event.preventDefault();
+                }
+            });
+        });
+
+        function goAnswerInfo(hid) {
+            if (hid != null) {
+                window.location.href = './AnswerInfoEtc?keyid=@ViewBag.HRC일련번호&hid=' + hid;
+            }
+        }
+</script>
+@Html.Partial("header")
+<div id="contwrap">
+    <div class="contentbox">
+        <div class="boardbox">
+            
+                <div class="bd_contbox">
+                    <div class="bd_titbox">
+                        @if (ViewBag.표본구분 == "본표본")
+                        {
+                            <div class="btnbox">
+                                <button type="button" class="btnsty02" id="sendReplace">대체요청</button>
+                            </div>
+                        }
+                        <div class="filterbox">
+                            <button type="button" class="btnsty03" id="exit">닫기</button>
+                        </div>
+                    </div>
+                        <div class="tablebox" style="overflow-x:scroll;width:100%;">
+                            @Html.Partial("HouseListEtcPartial", Model)
+                        </div>
+
+                    </div>
+        </div>
+
+    </div>
+    @Html.Partial("footer")
+</div>
+
+
+    </body>
+</html>
+

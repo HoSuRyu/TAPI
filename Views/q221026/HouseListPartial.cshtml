@@ -1,0 +1,111 @@
+﻿@Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "PanelList";
+        //settings.KeyFieldName = "pid";
+        settings.KeyFieldName = "단지코드";
+        settings.CallbackRouteValues = new { Controller = "q221026", Action = "ListPartial" };
+        settings.Width = System.Web.UI.WebControls.Unit.Pixel(1900);
+
+        //settings.Columns.Add(column =>
+        //{
+        //    column.FieldName = "pid";
+        //    column.Caption = "ID";
+        //    column.Width = System.Web.UI.WebControls.Unit.Pixel(60);
+        //    column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        //});
+
+
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "단지코드";
+            column.Caption = "단지코드";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(50);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "단지명";
+            column.Caption = "단지명";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(100);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        //settings.Columns.Add(column =>
+        //{
+        //    column.FieldName = "pid";
+        //    column.Caption = "입주민pid";
+        //    column.Width = System.Web.UI.WebControls.Unit.Pixel(60);
+        //    column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        //});
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = "진행하기";
+            column.SetDataItemTemplateContent(c =>
+            {
+                Html.DevExpress().Button(
+                    buttonSettings =>
+                    {
+                        buttonSettings.Name = Guid.NewGuid().ToString();
+                        buttonSettings.Text = "진행하기";
+                        //buttonSettings.ClientSideEvents.Click = string.Format("function(s, e) {{ runSurvey('{0}', '{1}'); }}", DataBinder.Eval(c.DataItem, "PID"), DataBinder.Eval(c.DataItem, "개별진행상태"));
+                        buttonSettings.ClientSideEvents.Click = string.Format("function(s, e) {{ runSurvey('{0}', '{1}'); }}", DataBinder.Eval(c.DataItem, "pid"), DataBinder.Eval(c.DataItem, "단지코드"));
+                        buttonSettings.ControlStyle.Font.Size = System.Web.UI.WebControls.FontUnit.Point(11);
+                        buttonSettings.ControlStyle.Font.Name = "맑은 고딕";
+                    }).Render();
+            });
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(60);
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "표본수";
+            column.Caption = "표본수";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(30);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "진행상태";
+            column.Caption = "진행상태";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(50);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "완료수";
+            column.Caption = "완료수";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(30);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+
+
+        settings.Styles.Header.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+        settings.Styles.Cell.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+
+        settings.Settings.ShowFilterRow = true;
+        settings.Settings.ShowFilterRowMenu = false;
+        settings.Settings.VerticalScrollableHeight = 650;
+        settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
+        settings.SettingsBehavior.AllowDragDrop = false;
+
+        //settings.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+        settings.SettingsPager.Mode = GridViewPagerMode.ShowPager;
+        settings.SettingsPager.Position = System.Web.UI.WebControls.PagerPosition.Top;
+        settings.SettingsPager.PageSize = 30;
+        settings.SettingsPager.FirstPageButton.Visible = true;
+        settings.SettingsPager.LastPageButton.Visible = true;
+
+
+
+        settings.SettingsBehavior.AllowFocusedRow = false;
+        settings.ControlStyle.Font.Size = System.Web.UI.WebControls.FontUnit.Point(11);
+        settings.ControlStyle.Font.Name = "맑은 고딕";
+        settings.SettingsBehavior.AllowSort = true;
+    }).Bind(Model).GetHtml()

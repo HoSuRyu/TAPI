@@ -1,0 +1,30 @@
+﻿@model TAPI_Interviewer.Models.Project.ProgressCount
+
+<table style="width:100%;">
+    @{
+        if (Model != null)
+        {
+    <tr>
+        <td style="width:60%;"></td>
+        <td style="width:5%;">배부</td>
+        <td style="width:5%;">@Model.All</td>
+        <td style="width:5%;">진행</td>
+        <td style="width:5%;">@Model.Ing</td>
+        <td style="width:5%;">완료</td>
+        <td style="width:5%;">@Model.End</td>
+    </tr>
+        }
+        else
+        {
+    <tr>
+        <td style="width:60%;"></td>
+        <td style="width:5%;">배부</td>
+        <td style="width:5%;">0</td>
+        <td style="width:5%;">진행</td>
+        <td style="width:5%;">0</td>
+        <td style="width:5%;">완료</td>
+        <td style="width:5%;">0</td>
+    </tr>
+        }
+    }
+</table>

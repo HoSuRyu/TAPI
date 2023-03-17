@@ -1,0 +1,155 @@
+﻿@model List<TAPI_Interviewer.Models.SP_H2022_GETAPTHOUSELISTResult>
+
+<script type="text/javascript">
+        $(document).ready(function () {
+
+
+
+            $('#createHouse').click(function () {
+                var param1 = $('#param1').val();
+                var param2 = $('#param2').val();
+
+                if ($.trim(param1) == "")
+                {
+                    $('#param1').focus();
+                    alert("동을 입력 해 주세요.")
+                    return;
+                }
+
+                if ($.trim(param2) == "")
+                {
+                    $('#param2').focus();
+                    alert("가구수를 입력 해 주세요.")
+                    return;
+                }
+                if( param2 > 500)
+                {
+                    $('#param2').focus();
+                    alert("입력한 가구수를 확인해 주세요.")
+                    return;
+                }
+
+                if( @(ViewBag.가구수) >param2)
+                {
+                    $('#param2').focus();
+                    alert("생성된 가구수보다 작은 수는 입력할 수 없습니다.")
+                    return;
+                }
+
+                $.post("./CreateHouse", { "keyid": @ViewBag.HRC일련번호, "dong": param1, "houseCnt": param2 }, function (result) {
+                    if (result != '')
+                    {
+                        alert(result);
+                    }
+                    else
+                    {
+                        location.reload();
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+            $('#exit').click(function () {
+                window.location.href = './ListAPT';
+            });
+
+            $('input[type=tel]').keydown(function (event) {
+                var charCode = (event.which) ? event.which : event.keyCode;
+
+                if (isNumeric(charCode, this) == false) {
+                    event.preventDefault();
+                }
+            });
+        });
+
+        function goAnswerInfo(hid) {
+            if (hid != null) {
+                window.location.href = './AnswerInfoAPT?keyid=@ViewBag.HRC일련번호&hid=' + hid;
+            }
+        }
+
+        function contact(hid, status)
+        {
+            if (status == '완료') {
+                alert("조사를 완료했습니다. \r접촉일지를 작성할 수 없습니다.");
+                return;
+            }
+            if (hid != null) {
+                window.location.href = './ContactAPT?hid=' + hid;
+            }
+        }
+
+</script>
+
+
+@Html.Partial("header")
+<div id="contwrap">
+    <div class="contentbox">
+        <div class="boardbox">
+            <div class="bd_contbox">
+                <div class="bd_titbox">
+                    <div class="filterbox">
+                        <button type="button" class="btnsty03" id="exit">닫기</button>
+                    </div>
+                </div>     
+                <div class="tablebox">
+                    <table class="tbl_sty01" cellpadding="0" cellspacing="0" border="0" style="width:100%;">
+                        <tbody>
+                            <tr>
+                                <td class="td_th txt_center">일련번호</td>
+                                <td>@(ViewBag.HRC일련번호)</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">주소</td>
+                                <td>@(ViewBag.주소)</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">단지명</td>
+                                <td>@(ViewBag.단지명)</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">단지명</td>
+                                <td>@(ViewBag.단지명)</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">동</td>
+                                <td>
+                                    <input class="form_ctrl" type="text" maxlength="5"  size="13" id="param1" value="@(ViewBag.동)">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">조사 대상 동 전체 가구 수</td>
+                                <td>
+                                    <input class="form_ctrl" type="text" maxlength="5" size="13" id="param2" value="@(ViewBag.가구수)">
+                                </td>
+                            </tr>
+                            <tr>                                
+                                <td colspan="2" class="txt_center">
+                                    ※ 해당 동의 가구수를 직접 입력해주세요.<br />예시: 101동 1층에 2가구씩 20개층이 있는 경우 => 40으로 입력
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="bot_btnbox">
+                        <button type="button" class="btnsty01" id="createHouse">가구생성</button>
+                        <button type="button" class="btnsty03" id="exit">닫기</button>
+                    </div>
+
+                </div>
+                <br />
+                <div class="tablebox" style="overflow-x:scroll;width:100%;">
+                    @Html.Partial("HouseListAPTPartial", Model)
+                </div>
+            </div>
+        </div>
+
+    </div>
+    @Html.Partial("footer")
+</div>
+
+
+    </body>
+</html>
+

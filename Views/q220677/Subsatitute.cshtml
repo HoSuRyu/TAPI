@@ -1,0 +1,527 @@
+﻿@model TAPI_Interviewer.Models.q220677_List
+
+@{
+    
+    string[] tel = string.IsNullOrEmpty(Model.대리응답자전화번호) == true ? new string[] { "" } : Model.대리응답자전화번호.Trim().Split('-');
+
+    string issub = Model.대리응답여부;
+
+    string isreason = Model.대리응답이유;
+    string isrelation = Model.대리응답자와의관계;
+    string iswith = Model.동석여부;
+}
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        $('input:radio[name=isSubsatitute]:input[value="@(issub)"]').attr("checked", true);
+
+        $("select[name='tel1']").val("@(tel[0])").attr("selected", "selected");
+
+
+        $('input:radio[name=reason]:input[value="@(isreason)"]').attr("checked", true);
+        $('input:radio[name=relation]:input[value="@(isrelation)"]').attr("checked", true);
+        $('input:radio[name=withAnswer]:input[value="@(iswith)"]').attr("checked", true);
+
+
+
+        $(":radio[name='isSubsatitute']").change(function () {
+            setDisabled();
+        });
+
+        $(":checkbox[name='sameContact']").change(function () {
+            if ($(":checkbox[name='sameContact']:checked").val() == "컨택연락처와동일")
+            {
+                $('#tel1').val('');
+                $('#tel1').prop('disabled', true);
+                $('#tel2').prop('disabled', true);
+                $('#tel2').val('');
+                $('#tel3').prop('disabled', true);
+                $('#tel3').val('');
+            }
+            else {
+                $("#tel1").removeAttr('disabled');
+                $("#tel2").removeAttr('disabled');
+                $("#tel3").removeAttr('disabled');
+            }
+
+        });
+
+
+        $(":radio[name='reason']").change(function () {
+            var isReason = $(":radio[name='reason']:checked").val();
+            if (isReason == "기타") {
+                $('input:text[name="reasonEtc"]').prop('disabled', false);
+            }
+            else {
+                $('input:text[name="reasonEtc"]').prop('disabled', true);
+                $('input:text[name="reasonEtc"]').val('');
+            }
+        });
+
+        $(":radio[name='relation']").change(function () {
+
+            var isRelation = $(":radio[name='relation']:checked").val();
+            if (isRelation == "기타") {
+                $('input:text[name="relationEtc"]').prop('disabled', false);
+            }
+            else {
+                $('input:text[name="relationEtc"]').prop('disabled', true);
+                $('input:text[name="relationEtc"]').val('');
+            }
+        });
+
+
+        $('#survey').click(function () {
+            saveInfo('./Survey?pid=@(Model.PID)');
+        });
+
+        $('#exit').click(function () {
+            window.location.href = './List';
+        });
+
+
+        $(document).on('keypress keyup blur focusout', 'input[type=tel]', function () {
+            $(this).val($(this).val().replace(/[^0-9]/g, ''));
+        });
+
+        setDisabled();
+    });
+
+    function saveInfo(href) {
+        
+        var pid = '@(Model.PID)';
+        
+        var name = '';
+        var tel = '';
+        var reason = '';
+        var reasonEtc = '';
+        var relation = '';
+        var relationEtc = '';
+        var isSubsatitute = $(":radio[name='isSubsatitute']:checked").val();
+        var withAnswer = ''; 
+
+        if (isSubsatitute == undefined  || isSubsatitute == '')
+        {
+            alert('대리응답자 여부를 응답해 주세요.');
+            return;
+        }
+
+        if (isSubsatitute == "예")
+        {
+            name = $('#name').val();
+            if (name == "")
+            {
+                alert('대리응답자 성명을 입력해 주세요.');
+                return;
+            }
+
+            var tel1 = $("select[name='tel1'] option:selected").val();
+            var sameContact = $(":checkbox[name='sameContact']:checked").val();
+
+            if (sameContact != "컨택연락처와동일")
+            {
+                    
+                    
+                sameContact = '';
+                if (tel1 == '' && $("#tel2").val() == '' && $("#tel3").val() == '')
+                {
+                    alert('전화번호 입력해 주세요');
+                    return;
+                }
+
+                tel = tel1 + '-' + $("#tel2").val() + '-' + $("#tel3").val();
+                if (tel1 != '' && (isTelePhone(tel) == false && isCellPhone(tel) == false)) {
+                    $("#tel2").focus();
+                    alert('유효한 전화번호를 입력해 주세요. ');
+                    return;
+                }
+            }
+            else
+            {
+                tel = '';
+            }
+
+            reason = $(":radio[name='reason']:checked").val();
+            if (reason == "" || reason == undefined)
+            {
+                alert('대리 응답 이유를 응답해 주세요');
+                return;
+            }
+            reasonEtc =  $("#reasonEtc").val();
+            if (reason == "기타" && reasonEtc == "")
+            {
+                alert('대리 응답 이유 기타를 응답해 주세요');
+                return;
+            }
+
+            relation = $(":radio[name='relation']:checked").val();
+            if (relation == "" || relation == undefined) {
+                alert('응답자와의 관계를 응답해 주세요');
+                return;
+            }
+            relationEtc = $("#relationEtc").val();
+            if (relation == "기타" && relationEtc == "") {
+                alert('관계 기타를 응답해 주세요');
+                return;
+            }
+
+            withAnswer = $(":radio[name='withAnswer']:checked").val();
+            if (withAnswer == "" || withAnswer == undefined) {
+                alert('응답 시 동석여부를 응답해 주세요');
+                return;
+            }
+
+
+
+        }
+
+
+        $.post("./SaveSub", {
+            "pid": pid, "isSubsatitute": isSubsatitute, "name": name, "tel": tel, "sameContact": sameContact, "reason": reason, "reasonEtc": reasonEtc, "relation": relation, "relationEtc": relationEtc, "withAnswer": withAnswer
+        }, function (result) {
+                if (result != '')
+                {
+                    alert(result);
+                }
+                else
+                {
+                    window.location.href = href;
+                }
+            }).error(function (jqXHR, status, error) {
+                alert(status);
+                alert(error);
+            });
+    }
+
+    function isTelePhone(p) {
+        p = p.split('-').join('');
+
+        var regPhone = /^(0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]|70|505))[1-9]+[0-9]{6,7}$/;
+
+        return regPhone.test(p);
+    }
+
+    function isCellPhone(p) {
+        p = p.split('-').join('');
+
+        var regPhone = /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/;
+
+        return regPhone.test(p);
+    }
+
+    function setDisabled()
+    {
+
+        var isSubsatitute = $(":radio[name='isSubsatitute']:checked").val();
+
+
+        if (isSubsatitute == "예")
+        {
+            $('input:text[name="name"]').prop('disabled', false);
+
+            $('input:checkbox[name="sameContact"]').prop('disabled', false);
+            $("#tel1").removeAttr('disabled');
+            $("#tel2").removeAttr('disabled');
+            $("#tel3").removeAttr('disabled');
+
+            $('input:radio[name="reason"]').prop('disabled', false);
+            $('input:radio[name="relation"]').prop('disabled', false);
+            $('input:radio[name="withAnswer"]').prop('disabled', false);
+
+        }
+        else
+        {
+            $('#name').prop('disabled', true);
+            $('#name').val('');
+
+            $('input:checkbox[name="sameContact"]').prop('disabled', true);
+            $('input:checkbox[name="sameContact"]').prop("checked", false);
+            $('#tel1').val('');
+            $('#tel1').prop('disabled', true);
+            $('#tel2').prop('disabled', true);
+            $('#tel2').val('');
+            $('#tel3').prop('disabled', true);
+            $('#tel3').val('');
+
+            $('input:radio[name="reason"]').prop('disabled', true);
+            $('input:radio[name="reason"]').prop("checked", false);
+            $('#reasonEtc').prop('disabled', true);
+            $('#reasonEtc').val('');
+
+            $('input:radio[name="relation"]').prop('disabled', true);
+            $('input:radio[name="relation"]').prop("checked", false);
+            $('#relationEtc').prop('disabled', true);
+            $('#relationEtc').val('');
+
+            $('input:radio[name="withAnswer"]').prop('disabled', true);
+            $('input:radio[name="withAnswer"]').prop("checked", false);
+
+        }
+    }
+</script>
+
+
+@Html.Partial("header")
+    
+<!--contents -->
+<div id="contwrap">
+    <div class="contentbox">
+        <div class="boardbox">
+            <div class="bd_contbox">
+                <div class="tablebox">
+                    <table class="tbl_sty01" cellpadding="0" cellspacing="0" border="0" style="width:100%;">
+                        <tbody>
+                            <tr>
+                                <td class="td_th txt_center" style="width:240px;">대리응답 여부</td>
+                                <td>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="isSubsatitute" id="isSubsatitute_1" value="예">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">예</span>
+                                    </label>
+                                    &nbsp;&nbsp;
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="isSubsatitute" id="isSubsatitute_2" value="아니오">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">아니오</span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">대리응답자 성명</td>
+                                <td><input type="text" class="form_ctrl" size="5" value="@(Model.대리응답자성명)" name="name" id="name"  ></td>
+                            </tr>                            
+                            <tr>
+                                <td class="td_th txt_center">전화번호</td>
+                                <td>
+                                    <label class="check_btn">
+                                        <input type="checkbox" class="inp_chk"  name="sameContact" id="sameContact" value="컨택연락처와동일" >
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewBox="0 0 20 20">
+                                            <rect class="chk_bg" width="18" height="18" x="1" y="1" rx="4" ry="4" stroke-width="0"></rect>
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5"></polyline>
+                                        </svg>
+                                        <span class="chk_txt">컨택 연락처와 동일</span>
+                                    </label>
+                                    <select class="form_ctrl" style="width:100px;" id="tel1" name="tel1">
+                                        <option value=''></option>
+                                        <option value='010'>010</option>
+                                        <option value='02'>서울 02</option>
+                                        <option value='051'>부산 051</option>
+                                        <option value='053'>대구 053</option>
+                                        <option value='032'>인천 032</option>
+                                        <option value='062'>광주 062</option>
+                                        <option value='042'>대전 042</option>
+                                        <option value='052'>울산 052</option>
+                                        <option value='044'>세종 044</option>
+                                        <option value='031'>경기 031</option>
+                                        <option value='033'>강원 033</option>
+                                        <option value='043'>충북 043</option>
+                                        <option value='041'>충남 041</option>
+                                        <option value='063'>전북 063</option>
+                                        <option value='061'>전남 061</option>
+                                        <option value='054'>경북 054</option>
+                                        <option value='055'>경남 055</option>
+                                        <option value='064'>제주 064</option>
+                                        <option value='070'>인터넷전화 070</option>
+                                    </select>
+                                    -
+                                    <input type="text" class="form_ctrl" size="4" value="@(tel.Length <= 1 ? "" : tel[1])" id="tel2" name="tel2" >
+                                    -
+                                    <input type="text" class="form_ctrl" size="4" value="@(tel.Length <= 1 ? "" : tel[2])" id="tel3" name="tel3">                                  
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td class="td_th txt_center">대리 응답 이유</td>
+                                <td>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="reason" value="심한 장애로 의사소통 어려움">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">1. 심한 장애로 의사소통 어려움</span>
+                                    </label>
+                                    <br />
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="reason" value="건강 악화로 의사소통 어려움" >
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">2. 건강 악화로 의사소통 어려움</span>
+                                    </label>
+                                    <br />
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="reason" value="대인 기피로 의사소통 어려움">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">3. 대인 기피로 의사소통 어려움</span>
+                                    </label>
+                                    <br />
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="reason" value="기타">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">4. 기타</span>
+                                    </label>
+                                    &nbsp;
+                                    <input class="form_ctrl" type="text" id="reasonEtc" name="reasonEtc"  style="width:90%"  value="@(Model.대리응답이유기타)">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">응답자와의 관계</td>
+                                <td>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="relation" value="부모">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">1. 부모</span>
+                                    </label>
+                                    <br />
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="relation" value="배우자">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">2. 배우자</span>
+                                    </label>
+                                    <br />
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="relation" value="자녀">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">3. 자녀</span>
+                                    </label>
+                                    <br />
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="relation" value="형제자매">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">4. 형제자매</span>
+                                    </label>
+                                    <br />
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="relation" value="자녀의 배우자(며느리, 사위)">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">5. 자녀의 배우자(며느리, 사위)</span>
+                                    </label>
+                                    <br />
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="relation" value="친인척">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">6. 친인척</span>
+                                    </label>
+                                    <br />
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="relation" value="손자녀">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">7. 손자녀</span>
+                                    </label>
+                                    <br />
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="relation" value="시설관계자">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">8. 시설관계자</span>
+                                    </label>
+                                    <br />
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="relation" value="활동보조인">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">9. 활동보조인</span>
+                                    </label>
+                                    <br />
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="relation" value="요양보호사">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">10. 요양보호사</span>
+                                    </label>
+                                    <br />
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="relation" value="기타">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">11. 기타</span>
+                                    </label>
+                                    &nbsp;
+                                    <input class="form_ctrl" type="text" id="relationEtc" name="relationEtc" style="width:90%" value="@(Model.대리응답자와의관계기타)">
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td class="td_th txt_center">대리응답 시 동석 여부</td>
+                                <td>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="withAnswer" value="동석">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">1. 동석</span>
+                                    </label>
+                                    <br />
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="withAnswer" value="비동석">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt">2. 비동석</span>
+                                    </label>
+                                </td>
+                            </tr>                            
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bot_btnbox">
+                    <button type="button" class="btnsty01" id="survey">설문시작</button>
+                    <button type="button" class="btnsty03" id="exit">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("footer")
+
+</div>
+</body>
+</html>

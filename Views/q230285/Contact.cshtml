@@ -1,0 +1,369 @@
+﻿@model List<TAPI_Interviewer.Models.KLIPS2023_Contact>
+   
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $("select[name='contactMonth']").val("@ViewBag.contactMonth").attr("selected", "selected");
+        $("select[name='contactDay']").val("@ViewBag.contactDay").attr("selected", "selected");
+
+        //$(":radio[name='contact']").change(function () {
+        //    setDisabled();
+        //});
+
+
+        $('#exit').click(function () {
+            window.location.href = './AnswerInfo?hid='+@ViewBag.HID+ '&page=@ViewBag.seoPage';;
+        });
+
+        $('#save').click(function () {
+
+            var ranking = $(":hidden[name='ranking']").val();
+            var contactMonth = $("select[name='contactMonth'] option:selected").text();
+            var contactDay = $("select[name='contactDay'] option:selected").text();
+            var contactTime = $("select[name='contactTime'] option:selected").val();
+
+            var contact = $(":radio[name='contact']:checked").val();
+            var etc8 = $(":text[name='etc8']").val();
+
+
+            if (contactTime == undefined || contactTime == '') {
+                alert("접촉 시간을 선택해 주세요.")
+                return;
+            }
+
+            if (contact == undefined || contact == '') {
+                alert("접촉 결과를 선택해 주세요.")
+                return;
+            }
+            if (etc8 == "" && contact=='약속') {
+                alert("'약속' 세부 내용을입력해 주세요.");
+                $("#etc8").focus();
+                return;
+            }
+
+            if (etc8 == "" && (contact=='기타' || contact == '사망')) {
+                alert("'기타' 세부 내용을입력해 주세요.");
+                $("#etc8").focus();
+                return;
+            }
+
+
+            $.post("./ContactOK", {
+                "hid": '@ViewBag.HID', "ranking": ranking, "contact": contact, "contactMonth": contactMonth, "contactDay": contactDay, "contactTime": contactTime, "etc7":'', "etc8":etc8
+            }, function (result) {
+
+
+                if (result == '저장') {
+                    alert('저장 되었습니다.');
+                    window.location.href = './AnswerInfo?hid='+@ViewBag.HID+ '&page=@ViewBag.seoPage';
+                }
+                else{
+                    alert(result);
+                }
+            }).error(function (jqXHR, status, error) {
+                alert(status);
+                alert(error);
+            });
+        });
+
+
+
+    });
+
+
+
+</script>
+
+
+
+@Html.Partial("header")
+<div id="contwrap">
+    <div class="contentbox">
+        <div class="boardbox">
+            <div class="bd_titbox">
+                <h3>접촉 일지</h3>
+            </div>
+            <div class="bd_contbox">
+                <div class="tablebox">
+                    <table class="tbl_sty02" cellpadding="0" cellspacing="0" border="0" style="width:100%;">
+                        <tbody>
+                            <tr>
+                                <td class="td_th" style="width:200px;">HID</td>
+                                <td>@ViewBag.HID</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th"> 가구주 성함</td>
+                                <td>@ViewBag.가구주</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th">주소</td>
+                                <td>@ViewBag.주소</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th">집전화 번호</td>
+                                <td>@ViewBag.집전화</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th">휴대전화 번호</td>
+                                <td>@ViewBag.휴대전화</td>
+                            </tr>
+                    </table>
+
+                    @Html.DevExpress().GridView(
+                    settings =>
+                    {
+                        settings.Name = "방문리스트";
+                        settings.KeyFieldName = "접촉 리스트";
+                        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+
+                        settings.Columns.Add(column =>
+                        {
+                            column.FieldName = "방문횟수";
+                            column.Caption = "접촉 횟수";
+                            column.Width = System.Web.UI.WebControls.Unit.Pixel(100);
+                        });
+                        settings.Columns.Add(column =>
+                        {
+                            column.FieldName = "방문일자";
+                            column.Caption = "접촉 일자";
+                            column.Width = System.Web.UI.WebControls.Unit.Pixel(130);
+                        });
+                        settings.Columns.Add(column =>
+                        {
+                            column.FieldName = "방문시간";
+                            column.Caption = "접촉 시간";
+                            column.Width = System.Web.UI.WebControls.Unit.Pixel(180);
+                        });
+                        settings.Columns.Add(column =>
+                        {
+                            column.FieldName = "비성공사유";
+                            column.Caption = "접촉 결과";
+                            column.CellStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Left;
+                            column.Width = System.Web.UI.WebControls.Unit.Pixel(400);
+                        });
+                        settings.Columns.Add(column =>
+                        {
+                            column.FieldName = "세부사유";
+                            column.Caption = "세부 사유";
+                            column.CellStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Left;
+                            column.Width = System.Web.UI.WebControls.Unit.Pixel(400);
+                        });
+
+                        settings.Styles.Cell.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+
+                        settings.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+
+                        settings.Settings.ShowFilterRow = false;
+                        settings.Settings.ShowFilterRowMenu = false;
+                        settings.Settings.VerticalScrollableHeight = 150;
+                        settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
+                        settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+                    }).Bind(Model).GetHtml()
+
+                    <table class="tbl_sty02" cellpadding="0" cellspacing="0" border="0" style="width:100%;">
+                        <tbody>
+                            <tr>
+                                <td class="td_th">접촉횟수</td>
+                                <td><b>@ViewBag.Ranking</b> 회<input type="hidden" name="ranking" value="@ViewBag.Ranking" /></td>
+                                <td class="td_th">접촉일자</td>
+                                <td>
+                                    <select class="form_ctrl" style="width:60px;" id="contactMonth" name="contactMonth">
+                                        <option value="01">01</option>
+                                        <option value="02">02</option>
+                                        <option value="03">03</option>
+                                        <option value="04">04</option>
+                                        <option value="05">05</option>
+                                        <option value="06">06</option>
+                                        <option value="07">07</option>
+                                        <option value="08">08</option>
+                                        <option value="09">09</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                    </select>
+                                    월&nbsp;
+                                    <select class="form_ctrl" style="width:60px;" id="contactDay" name="contactDay">
+                                        <option value="01">01</option>
+                                        <option value="02">02</option>
+                                        <option value="03">03</option>
+                                        <option value="04">04</option>
+                                        <option value="05">05</option>
+                                        <option value="06">06</option>
+                                        <option value="07">07</option>
+                                        <option value="08">08</option>
+                                        <option value="09">09</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                        <option value="13">13</option>
+                                        <option value="14">14</option>
+                                        <option value="15">15</option>
+                                        <option value="16">16</option>
+                                        <option value="17">17</option>
+                                        <option value="18">18</option>
+                                        <option value="19">19</option>
+                                        <option value="20">20</option>
+                                        <option value="21">21</option>
+                                        <option value="22">22</option>
+                                        <option value="23">23</option>
+                                        <option value="24">24</option>
+                                        <option value="25">25</option>
+                                        <option value="26">26</option>
+                                        <option value="27">27</option>
+                                        <option value="28">28</option>
+                                        <option value="29">29</option>
+                                        <option value="30">30</option>
+                                        <option value="31">31</option>
+                                    </select>
+                                    일
+                                </td>
+                                <td class="td_th">접촉시간</td>
+                                <td>
+                                    <select class="form_ctrl" style="width:300px;" id="contactTime" name="contactTime">
+                                        <option value=""></option>
+                                        <option value="자정12시-오전1시">자정12시-오전1시</option>
+                                        <option value="오전1시-오전2시">오전1시-오전2시</option>
+                                        <option value="오전2시-오전3시">오전2시-오전3시</option>
+                                        <option value="오전3시-오전4시">오전3시-오전4시</option>
+                                        <option value="오전4시-오전5시">오전4시-오전5시</option>
+                                        <option value="오전5시-오전6시">오전5시-오전6시</option>
+                                        <option value="오전6시-오전7시">오전6시-오전7시</option>
+                                        <option value="오전7시-오전8시">오전7시-오전8시</option>
+                                        <option value="오전8시-오전9시">오전8시-오전9시</option>
+                                        <option value="오전9시-오전10시">오전9시-오전10시</option>
+                                        <option value="오전10시-오전11시">오전10시-오전11시</option>
+                                        <option value="오전11시-정오12시">오전11시-정오12시</option>
+                                        <option value="정오12시-오후1시">정오12시-오후1시</option>
+                                        <option value="오후1시-오후2시">오후1시-오후2시</option>
+                                        <option value="오후2시-오후3시">오후2시-오후3시</option>
+                                        <option value="오후3시-오후4시">오후3시-오후4시</option>
+                                        <option value="오후4시-오후5시">오후4시-오후5시</option>
+                                        <option value="오후5시-오후6시">오후5시-오후6시</option>
+                                        <option value="오후6시-오후7시">오후6시-오후7시</option>
+                                        <option value="오후7시-오후8시">오후7시-오후8시</option>
+                                        <option value="오후8시-오후9시">오후8시-오후9시</option>
+                                        <option value="오후9시-오후10시">오후9시-오후10시</option>
+                                        <option value="오후10시-오후11시">오후10시-오후11시</option>
+                                        <option value="오후11시-자정12시">오후11시-자정12시</option>  
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td_th" colspan="6"> 접촉 결과</td>                                
+                            </tr>
+                            <tr>
+                                <td colspan="6">
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" id="contact_1" value="조사협조" disabled="disabled">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 1. 조사협조 (자동생성)</span>
+                                    </label>
+                                    <br>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" id="contact_2" value="거절">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 2. 거절</span>
+                                    </label>
+                                    <br>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" id="contact_3" value="접촉안됨(부재)">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 3. 접촉안됨(부재)</span>
+                                    </label>
+                                    <br>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" id="contact_4" value="이사추적중">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 4. 이사추적중</span>
+                                    </label>
+                                    <br>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" id="contact_5" value="추적불가">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 5. 추적불가</span>
+                                    </label>
+                                    <br>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" id="contact_6" value="강력거절(고소, 고발 등 협박 수준으로 거절)">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 6. 강력거절(고소, 고발 등 협박 수준으로 거절)</span>
+                                    </label>
+                                    <br>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" id="contact_7" value="약속">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 7. 약속</span>
+                                    </label>
+                                    <br>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" id="contact_8" value="기타">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 8. 기타</span>
+                                    </label>
+                                    <br>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" id="contact_9" value="사망(사망일시 년/월을 아래 세부 사유에 작성해주세요)">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 9. 사망(사망일시 년/월을 아래 세부 사유에 작성해주세요)</span>
+                                    </label>
+                                    <br>
+                                    <label class="check_btn">
+                                        <input type="radio" class="inp_chk" name="contact" id="contact_10" value="최종응답거절">
+                                        <svg width="20" height="20" xmlns="http://w3.org/2000/svg" version="1.1" viewbox="0 0 20 20">
+                                            <ellipse class="chk_bg" cx="10" cy="10" rx="9" ry="9" stroke-width="0" />
+                                            <polyline class="chk_img" points="4 9 8.5 13.5 15.5 6.5" />
+                                        </svg>
+                                        <span class="chk_txt"> 10. 최종응답거절</span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td_th" >세부 사유</td>                            
+                                <td colspan="6"><input type="text" class="form_ctrl" style="width:80%;" id="etc8" name="etc8"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="bot_btnbox">                    
+                    
+                    <button type="button" class="btnsty01" id="save">저장 후 종료</button>
+                    <button type="button" class="btnsty03" id="exit">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("footer")
+</div>
+</body>
+</html>
+

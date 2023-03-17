@@ -1,0 +1,101 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q220810_GETLISTResult>
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        @{
+            ViewBag.Title = "2022년 서울청년패널조사";
+        }
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+        <link href="@Url.Content("../../Content/KLIPS/Site.css?version=4")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("../../Content/q210801/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+        <script type="text/javascript">
+            $(document).ready(function () {
+                setStatus();
+
+
+                $('#quota').click(function () {
+                    window.location.href = './Quota';
+                });
+
+            });
+
+            function goContact(pid, status)
+            {
+
+                if (status == "조사완료") {
+                    alert("조사완료 상태입니다.");
+                    return;
+                }
+
+                if (pid != null) {
+                    window.location.href = './Contact?pid=' + pid;
+                }
+            }
+
+            function sendMSG(pid, status) {
+
+                //if (status == "조사완료" || status == "탈락요청")
+                if (status == "조사완료" )
+                {
+                    alert(status+" 상태입니다.\r\n문자를 발송 할 수 없습니다.");
+                    return;
+                }
+
+                if (pid != null) {
+                    $.post("./SendMSG", {
+                        "pid": pid }, function (result) {
+
+                            if (result == '성공') {
+                                alert('문자 발송 완료');
+                                window.location.reload();
+                            }
+                            else{
+                                alert(result);
+                            }
+                        }).error(function (jqXHR, status, error) {
+                            alert(status);
+                            alert(error);
+                        });
+                }
+            }
+
+
+            function setStatus() {
+                $.post("./ProgressPartial", null, function (result) {
+                    $("#Progress").replaceWith(result);
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            }
+
+            function viewYD(keyid)
+            {
+                window.open('https://rpssurvey.hrcglobal.com/Media/12172/'+keyid+'.png');
+
+            }
+
+            function Refresh() {
+                location.reload();
+            }
+        </script>
+    </head>
+    <body>
+        <div style="width : 100%;display: inline-block;">
+            <label id="title">@ViewBag.Title</label>
+            <p/>
+            <div id="Progress">
+                @*@Html.Partial("ProgressPartial", Model)*@
+            </div>
+            @*<div style="text-align:right"><input type="button" id="quota" class="infoButtonT" style="margin-right: 30px;" value="진행현황" /></div>*@
+            <p/>
+            <div style="overflow-x:scroll;width:100%;">
+                @Html.Partial("ListPartial", Model)
+            </div>
+        </div>
+    </body>
+</html>

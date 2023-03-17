@@ -1,0 +1,135 @@
+﻿@using System.Web
+@model TAPI_Interviewer.Models.Project.ProjectInfo
+
+@{
+    ViewBag.Title = "::: TAPI ::::";
+
+    ViewBag.code13 = TAPI_Interviewer.Languages.Languages.code13;
+    ViewBag.code2 = TAPI_Interviewer.Languages.Languages.code2;
+    ViewBag.code3 = TAPI_Interviewer.Languages.Languages.code3;
+    ViewBag.code5 = TAPI_Interviewer.Languages.Languages.code5;
+    ViewBag.code5_1 = TAPI_Interviewer.Languages.Languages.code5_1;
+    ViewBag.code5_2 = TAPI_Interviewer.Languages.Languages.code5_2;
+    ViewBag.code6 = TAPI_Interviewer.Languages.Languages.code6;
+    ViewBag.code7 = TAPI_Interviewer.Languages.Languages.code7;
+    ViewBag.code8 = TAPI_Interviewer.Languages.Languages.code8;
+    ViewBag.code9 = TAPI_Interviewer.Languages.Languages.code9;
+    ViewBag.code10 = TAPI_Interviewer.Languages.Languages.code10;
+}
+           
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        @*<title>::: TAPI ::::</title>*@
+        <link href="../../Content/Project/style.css" rel="stylesheet" type="text/css"  />
+        <link href="../../Content/Project/tapi.css" rel="stylesheet" type="text/css"  />
+
+        <script type="text/javascript">
+            var winProgress;
+
+            $(document).ready(function () {
+                $("#runSurvey").click(function () {
+                    var name = $("#pname").val();
+
+                    if (name != '') {
+                        window.location.href = './Survey?projectNumber=@Model.Number&name=' + name + '&pid=0';
+                    }
+                    else
+                    {
+                        alert('@ViewBag.code13');
+                    }
+                });
+
+                $("#OpenProgress").click(function () {
+                    if (!winProgress || (winProgress && winProgress.closed)) {
+                        winProgress = window.open('./OpenProgress?QN=@Model.Number', '_blank');
+                    } else {
+                        winProgress.location.href = './OpenProgress?QN=@Model.Number';
+                    }
+                });
+            });
+
+            function EditSurvey(pid, isEdit) {
+                if (pid != null) {
+                    window.location.href = './Survey?projectNumber=@Model.Number&name=0&pid=' + pid + '&isedit=' + isEdit;
+                }
+            }
+        </script>
+
+        <style type="text/css">
+            input.btn3 { background:#4cb4f2; border:1px solid #1d8dd1; width:150px; height:30px; text-align:center; color:#fff; cursor:pointer; vertical-align:middle; font:bold 12pt "Malgun Gothic"; float:right; margin-bottom:10px; }
+        </style>
+    </head>
+
+    <body>
+        <div id="wrap">
+            <div id="tapi">
+                <div id="container">
+                    <div class="tapi_title">
+                        <p>@Model.Name</p>
+                    </div>             
+                </div>
+
+                <!--설문참여-->
+                <div class="tapi_join">
+                    <div id="container">
+                        <div class="join_tit">
+                            <p>@ViewBag.code2</p>
+                        </div>
+
+                        <!--컨텐츠-->
+                        <div id="content">                    
+                            <div class="tapi_join_form">
+                                <label>@ViewBag.code3 :</label>
+                                <input id="pname" name="company" type="type" class="tapi"  />
+                                @if (ViewBag.LANG != "")
+                                {
+                                    <span><img id="runSurvey" src="../../images/Project/tapi_join_bt_@(ViewBag.LANG).gif" alt="@ViewBag.code2" /></span>
+                                }
+                                else
+                                {
+                                    <span><img id="runSurvey" src="../../images/Project/tapi_join_bt.gif" alt="@ViewBag.code2" /></span>
+                                }
+                                
+                            </div>
+                        </div>                
+
+                        <!--//컨텐츠-->
+                        <div class="join_bottom">
+                            <p>
+                                @ViewBag.code5<br />
+                                @ViewBag.code5_1<br />
+                                <span class="red b">@ViewBag.code5_2
+                                </span></p>
+                        </div>
+
+                        <!--//설문참여-->
+                        <div class="tapi_join">
+                            <div class="join_tit">
+                                <p>
+                                    <span>@Model.InterviewerName</span> @ViewBag.code6                                 
+                                </p>
+                            </div>
+                        </div>
+
+                        <!--컨텐츠-->
+                        <div id="content">
+                            <span class="join_status">
+                                <span>
+                                    <span>@ViewBag.code7  : </span> @(new HtmlString(Model.AnswerList.Where(w => w.Status == @ViewBag.code7).Count().ToString())) @ViewBag.code9 
+                                    <span class="join_ing">@ViewBag.code8  : </span> @(new HtmlString(Model.AnswerList.Where(w => w.Status == @ViewBag.code8).Count().ToString())) @ViewBag.code9
+                                    <span><input type="button" class="btn3" id="OpenProgress" value="@ViewBag.code10" style="width:300px"/></span>
+                                </span>
+                            </span>
+                            @Html.Partial("ListPartial", Model)
+                        </div>
+                        <!--//컨텐츠-->
+                        <p class="main_box_bottom"><img src="../../images/Project/box_bottom.gif" /></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,50 @@
+﻿@model TAPI_Interviewer.Models.q220677_List
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#contact').click(function () {
+            if ('@(Model.진행상태)' == '완료(대면)' || '@(Model.진행상태)' == '완료(전화)') {
+                if (!confirm('완료 데이터가 있습니다. 비성공 하시겠습니까?')) {
+                    return;
+                }
+            }
+
+            window.location.href = './Contact?pid=@(Model.PID)';
+        });
+
+        $('#survey').click(function () {
+            window.location.href = './AnswerInfo?pid=@(Model.PID)';
+        });
+
+        $('#exit').click(function () {
+            window.location.href = './List';
+        });
+    });
+</script>
+
+
+
+@Html.Partial("header")
+<div id="contwrap">
+    <div class="contentbox">
+        <div class="boardbox">
+            @*<div class="bd_titbox">
+                <h3>타이틀 영역 - 필요에 따라 사용, 필요 없을 경우 .bd_titbox 전체 삭제</h3>
+            </div>*@
+            <div class="bd_contbox">
+                <div class="bot_btnbox" style="margin-top:50px; margin-bottom:50px;">
+                    <button type="button" class="btnsty01" id="survey" >조사 협조</button>
+                    <button type="button" class="btnsty04" id="contact" >비성공 사유</button>
+                    <button type="button" class="btnsty03" id="exit">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("footer")
+</div>
+</body>
+</html>
+
+   

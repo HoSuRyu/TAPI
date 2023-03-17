@@ -1,0 +1,88 @@
+﻿@model TAPI_Interviewer.Models.q221454_DongList
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "2022년도 한국 고령자 기술수용도 패널조사 - 대체요청";
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#ok').click(function () {
+              
+                var status = $(":radio[name='contact']:checked").val();
+                var etc = $(":text[name='etc']").val();
+
+                if (status == undefined || status == '') {
+                    alert('대체 사유를 선택 해 주세요.');
+                    return;
+                }
+                if (status == '2. 기타' && etc == '') {
+                    alert('세부 사유를 입력 해 주세요.');
+                    return;
+                }
+
+          
+                $.post("./ReplaceOK", { "keyid": '@Model.DID', "status": status, "etc": etc }, function (result) {
+                    alert('대체 요청 되었습니다.');
+                    window.location.href = './List';
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+            $('#cancel').click(function () {
+                window.location.href = './List';
+            });
+        });
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js" )"></script>
+</head>
+<body>
+    <div style="width : 100%;display: inline-block;">
+        <table class="infoTable">
+            <tr>
+                <td class="tdValue">동ID</td>
+                <td>@(Model.DID)</td>
+            </tr>
+            <tr>
+                <td class="tdValue">전체 주소 정보</td>
+                <td>@(Model.전체주소정보)</td>
+            </tr>
+            <tr>
+                <td class="tdValue">원/대체</td>
+                <td>@(Model.원대체)</td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    대체 사유
+                </td>
+                <td style="text-align: left;padding-left:10px;"><br />
+                    <input type="radio" name="contact" value="1. 도서 지역으로 접근 어려움" id="contact_1" /><label for="contact_1"> 1. 도서 지역으로 접근 어려움</label><br />
+                    <input type="radio" name="contact" value="2. 기타" id="contact_4" /><label for="contact_4"> 2. 기타</label><br />&nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    세부 사유(100자 이내)
+                </td>
+                <td style="text-align: left;padding-left:10px;">
+                    <input class="textbox" id="etc" name="etc" rows="1" size="50" type="text" value="" maxlength="100" />
+                </td>
+            </tr>
+        </table>
+
+        <div class="buttonDiv">
+            <center>
+                <input type="button" id="ok" class="infoButton" value="대체 요청" />
+                <input type="button" id="cancel" class="infoButton" value="나가기" />
+            </center>
+        </div>
+    </div>
+</body>
+</html>

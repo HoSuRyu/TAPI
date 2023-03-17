@@ -1,0 +1,66 @@
+﻿@model List<TAPI_Interviewer.Models.SP_H2022_GETAPTLISTResult>
+
+<script type="text/javascript">
+            $(document).ready(function () {
+                setStatus();
+            });
+
+            function goHouseList(keyid, status) {
+                if (status == '대체요청') {
+                    alert('대체요청 하셨습니다.');
+                    return;
+                }
+
+                if (keyid != null) {
+                    window.location.href = './HouseListAPT?keyid=' + keyid;
+                }
+            }
+
+            function replace(keyid, status) {
+
+                if (status == "대체요청") {
+                    alert("대체요청 상태입니다.");
+                    return;
+                }
+
+                if (keyid != null) {
+                    window.location.href = './Replace?keyid=' + keyid + '&listType=2';
+                }
+            }
+            function setStatus() {
+
+                $.post("./ProgressPartial", null)
+                    .done(function (result) {
+                        $("#Progress").replaceWith(result);
+                    }).always(function () {
+                        $('#goArea').attr('style', 'background-color: #e7e7e7;display: inline-block;');
+                        $('#goAPT').attr('style', 'background-color: #ca2d35;display: inline-block;');
+                        $('#goETC').attr('style', 'background-color: #e7e7e7;display: inline-block;');
+                    });
+            }
+
+            function Refresh() {
+                location.reload();
+            }
+</script>
+
+@Html.Partial("header")
+<div id="contwrap">
+    <div class="contentbox">
+        <div class="boardbox">
+            <div id="Progress"></div>
+
+            <div class="bd_contbox">                
+                <div class="tablebox" style="overflow-x:scroll;width:100%;">
+                    @Html.Partial("ListAPTPartial", Model)
+                </div>
+            </div>
+        </div>
+
+    </div>
+    @Html.Partial("footer")
+</div>
+
+
+</body>
+</html>

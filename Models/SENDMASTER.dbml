@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="SEND_MASTER" Class="SENDMASTERDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=172.19.100.85,15000;Initial Catalog=SEND_MASTER;Persist Security Info=True;User ID=hrcdv" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="SEND_MASTERConnectionString1" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.T_SendMessage" Member="T_SendMessage">
+    <Type Name="T_SendMessage">
+      <Column Name="id" Type="System.Decimal" DbType="Decimal(38,0) NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="sendKey" Type="System.Decimal" DbType="Decimal(38,0) NOT NULL" CanBeNull="false" />
+      <Column Name="fromtel" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="totel" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="subject" Type="System.String" DbType="VarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="body" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="etc" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="POF" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.T_SendMaster" Member="T_SendMaster">
+    <Type Name="T_SendMaster">
+      <Column Name="sendKey" Type="System.Decimal" DbType="Decimal(38,0) NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="sendType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="requestTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="etc" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="SWID" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="POF" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="popbillSendKey" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="popbillSendErrorCode" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="popbillSendErrorMessage" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="popbillResultCode" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="popbillResultMessage" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="popbillFaxPageCount" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.T_SendEmail" Member="T_SendEmail">
+    <Type Name="T_SendEmail">
+      <Column Name="id" Type="System.Decimal" DbType="Decimal(38,0) NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="sendKey" Type="System.Decimal" DbType="Decimal(38,0) NOT NULL" CanBeNull="false" />
+      <Column Name="fromAddress" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="toAddress" Type="System.String" DbType="VarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="subject" Type="System.String" DbType="VarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="body" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="ccAddress" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="bccAddress" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="attachments" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="etc" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="POF" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.PROC_SEND_MESSAGE" Method="PROC_SEND_MESSAGE">
+    <Parameter Name="P_SWID" Parameter="p_SWID" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="P_FROM_TEL" Parameter="p_FROM_TEL" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="P_TO_TEL" Parameter="p_TO_TEL" Type="System.String" DbType="VarChar(500)" />
+    <Parameter Name="P_SUBJECT" Parameter="p_SUBJECT" Type="System.String" DbType="VarChar(500)" />
+    <Parameter Name="P_BODY" Parameter="p_BODY" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="P_REQUEST_TIME" Parameter="p_REQUEST_TIME" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="P_ETC" Parameter="p_ETC" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="POF" Parameter="pOF" Type="System.String" DbType="VarChar(50)" />
+    <ElementType Name="PROC_SEND_MESSAGEResult">
+      <Column Name="sendKey" Type="System.String" DbType="NChar(20)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.PROC_SEND_EMAIL" Method="PROC_SEND_EMAIL">
+    <Parameter Name="P_SWID" Parameter="p_SWID" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="P_FROM_ADERESS" Parameter="p_FROM_ADERESS" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="P_TO_ADERESS" Parameter="p_TO_ADERESS" Type="System.String" DbType="VarChar(500)" />
+    <Parameter Name="P_SUBJECT" Parameter="p_SUBJECT" Type="System.String" DbType="VarChar(500)" />
+    <Parameter Name="P_BODY" Parameter="p_BODY" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="P_CC_ADERESS" Parameter="p_CC_ADERESS" Type="System.String" DbType="VarChar(500)" />
+    <Parameter Name="P_BCC_ADERESS" Parameter="p_BCC_ADERESS" Type="System.String" DbType="VarChar(500)" />
+    <Parameter Name="P_REQUEST_TIME" Parameter="p_REQUEST_TIME" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="P_ETC" Parameter="p_ETC" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="P_ATTACHMENTS" Parameter="p_ATTACHMENTS" Type="System.String" DbType="VarChar(500)" />
+    <Parameter Name="POF" Parameter="pOF" Type="System.String" DbType="VarChar(50)" />
+    <ElementType Name="PROC_SEND_EMAILResult">
+      <Column Name="sendKey" Type="System.String" DbType="NChar(20)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+</Database>

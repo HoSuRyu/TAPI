@@ -1,0 +1,460 @@
+﻿@model TAPI_Interviewer.Models.q220945_PersonList
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "2022년 경력단절여성 등의 경제활동 실태조사";
+
+        string[] tel = string.IsNullOrEmpty(Model.휴대폰번호) == true ? new string[] { "" } : Model.휴대폰번호.Trim().Split('-');
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("select[name='gaguju']").val("@(Model.가구주와의관계)").attr("selected", "selected");
+            $("select[name='gender']").val("@(Model.성별)").attr("selected", "selected");
+            @*$("select[name='lunar']").val("@(Model.양음력)").attr("selected", "selected");*@
+            
+            $("select[name='tel1']").val("@(tel[0])").attr("selected", "selected");
+
+            $('#save').click(function () {
+                saveInfo('./PersonInfo?keyid=@(Model.조사구일련번호)&hid=@(Model.HID)&pid=@(Model.PID)', false, false);
+            });
+
+            $('#exit').click(function () {
+                window.location.href = './PersonList?keyid=@(Model.조사구일련번호)&hid=@(Model.HID)';
+            });
+
+            $('#runSurvey').click(function () {
+                saveInfo('./Survey?keyid=@(Model.조사구일련번호)&hid=@(Model.HID)&pid=@(Model.PID)', true, false);
+            });
+
+            $('#sendMsg').click(function(){
+
+                alert('문자발송은 이용하실 수 없습니다. \r\n대면조사로 진행해주세요.');
+                return;
+        
+                var ptype = $("#ptype").val();
+                if(ptype != '적격')
+                {
+                    alert('조사 대상이 아닙니다. \r\n문자발송 할 수 없습니다.');
+                    return;
+                }
+
+
+                var tel1 = $("select[name='tel1'] option:selected").val();
+                var phone = tel1;
+
+                if(tel1 == '')
+                {
+                    alert('휴대전화 번호를 입력 해 주세요.');
+                    return;
+                }
+
+                if (tel1 != '') {
+                    phone = tel1 + '-' + $("#tel2").val() + '-' + $("#tel3").val();
+
+                    if (isCellPhone(phone) == false) {
+                        $("#tel2").focus();
+                        alert('유효한 휴대전화 번호를 입력 해 주세요.');
+                        return;
+                    }
+                }
+
+                saveInfo('./PersonInfo?keyid=@(Model.조사구일련번호)&hid=@(Model.HID)&pid=@(Model.PID)', true, true);
+
+
+            });
+
+            $('input[type=tel]').keydown(function (event) {
+                var charCode = (event.which) ? event.which : event.keyCode;
+
+                if (isNumeric(charCode, this) == false) {
+                    event.preventDefault();
+                }
+            });
+
+            $('input[type=tel]').keyup(function (event) {
+                checkPType();
+            });
+
+            $("select[name='lunar']").change(function (event) {
+                checkPType();
+            });
+
+            $("select[name='gender']").change(function (event) {
+                checkPType();
+            });
+
+            checkPType();
+        });
+
+        function checkPType() {
+            var gender = $("select[name='gender'] option:selected").val();
+            //var lunar = $("select[name='lunar'] option:selected").val();
+            var lunar = '양력';
+            var byear = parseInt($("#byear").val());
+            var bmonth = parseInt($("#bmonth").val());
+            var bday = parseInt($("#bday").val());
+
+            var pType = "";
+
+            if (gender == '남')
+            {
+                pType = "비적격";
+            }
+            else
+            {
+                if (byear > 0 && bmonth > 0 && bday > 0) {
+                    pType = "적격";
+
+                    //양력 기준 : 1967년 5월 17일부터 1997년 5월 16일 사이에 태어난 사람
+                    if (lunar == "양력" &&
+                        (byear < 1967 ||
+                         (byear == 1967 && bmonth < 5) ||
+                         (byear == 1967 && bmonth == 5 && bday < 17) ||
+                         byear > 1997 ||
+                         (byear == 1997 && bmonth > 5) ||
+                         (byear == 1997 && bmonth == 5 && bday > 16))) {
+                        pType = "비적격";
+                    }
+
+                    //음력 기준: 1967년 4월 9일부터 1997년 4월 10일 사이에 태어난 사람
+                    if (lunar == "음력" &&
+                        (byear < 1967 ||
+                         (byear == 1967 && bmonth < 4) ||
+                         (byear == 1967 && bmonth == 4 && bday < 9) ||
+                         byear > 1997 ||
+                         (byear == 1997 && bmonth > 4) ||
+                         (byear == 1997 && bmonth == 4 && bday > 10))) {
+                        pType = "비적격";
+                    }
+                }
+            }
+
+            if (pType == '적격')
+            {
+                $('#runSurvey').show();
+            }
+            else
+            {
+                $('#runSurvey').hide();
+            }
+
+            $("#ptype").val(pType);
+        }
+
+
+
+        function saveInfo(href, runSurvey, sendMsg) {
+            var gaguju = $("select[name='gaguju'] option:selected").val();
+            var gender = $("select[name='gender'] option:selected").val();
+            //var lunar = $("select[name='lunar'] option:selected").val();
+            var lunar = '양력';
+
+            var byear = parseInt($("#byear").val());
+            var bmonth = parseInt($("#bmonth").val());
+            var bday = parseInt($("#bday").val());
+
+            var pname = $("#pname").val();
+            var ptype = $("#ptype").val();
+
+            if( gaguju == '가구원 아님')
+            {
+                $.post("./SavePersonInfo", { "keyid": @(Model.조사구일련번호), "hid": @(Model.HID), "pid": @(Model.PID), "pname": '', "gaguju": gaguju, "gender": '', "lunar": '', "byear": 0, "bmonth": 0, "bday": 0, "ptype": '' }, function (result) {
+                    if (result != '')
+                    {
+                        alert(result);
+                    }
+                    else
+                    {
+                        window.location.href = href;
+
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            }
+            else{
+
+                if (pname == '') {
+                    $("#pname").focus();
+                    alert('이름을 입력 해 주세요.');
+                    return;
+                }
+
+                if (pname.length > 50) {
+                    $("#pname").focus();
+                    alert('이름을 50자 이내로 입력 해 주세요.');
+                    return;
+                }
+
+                if (gaguju == '') {
+                    $("#gaguju").focus();
+                    alert('가구주와의 관계를 선택 해 주세요.');
+                    return;
+                }
+
+                if (gender == '') {
+                    $("#gender").focus();
+                    alert('성별을 선택 해 주세요.');
+                    return;
+                }
+
+                if (lunar == '') {
+                    $("#lunar").focus();
+                    alert('양력/음력을 선택 해 주세요.');
+                    return;
+                }
+
+                if (isNaN(byear) == true || byear < 1900 || byear > 2022)
+                {
+                    $("#byear").focus();
+                    alert('년을 확인 해 주세요.');
+                    return;
+                }
+
+                if (isNaN(bmonth) == true || bmonth < 1 || bmonth > 12)
+                {
+                    $("#bmonth").focus();
+                    alert('월을 확인 해 주세요.');
+                    return;
+                }
+
+                if (isNaN(bday) == true || bday < 1 || bday > 31)
+                {
+                    $("#bday").focus();
+                    alert('일을 확인 해 주세요.');
+                    return;
+                }
+
+                if (ptype == '')
+                {
+                    alert('조사대상여부를 확인 해 주세요.');
+                    return;
+                }
+
+                var tel1 = $("select[name='tel1'] option:selected").val();
+                var phone = tel1;
+                if(ptype == '적격' && tel1 == '')
+                {
+                    alert('휴대전화 번호를 입력 해 주세요.');
+                    return;
+                }
+                if (tel1 != '')
+                {
+                    phone = tel1 + '-' + $("#tel2").val() + '-' + $("#tel3").val();
+
+                    if (isCellPhone(phone) == false) {
+                        $("#tel2").focus();
+                        alert('유효한 휴대전화 번호를 입력 해 주세요.');
+                        return;
+                    }
+                }
+
+                if (ptype != '적격' && runSurvey == true)
+                {
+                    alert('조사대상이 아닙니다.');
+                    return;
+                }
+
+
+
+                $.post("./SavePersonInfo", { "keyid": @(Model.조사구일련번호), "hid": @(Model.HID), "pid": @(Model.PID), "pname": pname, "gaguju": gaguju, "gender": gender, "lunar": lunar, "byear": byear, "bmonth": bmonth, "bday": bday, "ptype": ptype, "phone": phone }, function (result) {
+                    if (result != '')
+                    {
+                        alert(result);
+                    }
+                    else
+                    {
+
+                        if (runSurvey == true)
+                        {
+                            $.post("./CheckPersonInfo", { "keyid": @(Model.조사구일련번호), "hid": @(Model.HID) }, function (result) {
+                                if (result != '')
+                                {
+                                    alert(result);
+                                }
+                                else
+                                {
+                                    if( sendMsg == true)
+                                    {
+                                        $.post("./SendMSG", {
+                                            "pid": '@Model.PID', "phone": phone, "keyid":'@Model.조사구일련번호',  "hid": '@Model.HID'
+                                        }, function (result) {
+                                            if (result == '성공') {
+                                                alert('문자 발송 완료');
+                                                window.location.href = href;
+                                            }
+                                            else{
+                                                alert(result);
+                                            }
+                                        }).error(function (jqXHR, status, error) {
+                                            alert(status);
+                                            alert(error);
+                                        });
+                                    }
+                                    else
+                                    {
+                                        window.location.href = href;
+                                    }
+                                }
+                            }).error(function (jqXHR, status, error) {
+                                alert(status);
+                                alert(error);
+                            });
+                        }
+                        else
+                        {
+                            alert('저장되었습니다.');
+                            window.location.href = href;
+                        }
+
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            }
+        }
+
+        function isCellPhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/;
+
+            return regPhone.test(p);
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("../../Content/q210801/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    <div style="width : 100%;display: inline-block;">
+        <table class="infoTable">
+            <tr>
+                <td class="tdValue">
+                    가구원 번호
+                </td>
+                <td class="tdValue3" colspan="3">
+                    @(Model.PID)
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    성명
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="pname" rows="1" size="10" type="text" value="@(Model.성명)" maxlength="50" />
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    가구주와의 관계
+                </td>
+                <td class="tdValue3" colspan="3">
+                    <select id="gaguju" name="gaguju" class="addr_select">
+                        <option></option>
+                        <option value='가구주'>가구주</option>
+                        <option value='배우자'>배우자</option>
+                        <option value='미혼자녀'>미혼자녀</option>
+                        <option value='기혼자녀 및 그 배우자'>기혼자녀 및 그 배우자</option>
+                        <option value='손자/손녀 및 그 배우자'>손자/손녀 및 그 배우자</option>
+                        <option value='부모(배우자의 부모 포함)'>부모(배우자의 부모 포함)</option>
+                        <option value='조부모(배우자의 조부모 포함)'>조부모(배우자의 조부모 포함)</option>
+                        <option value='미혼 형제/자매'>미혼 형제/자매</option>
+                        <option value='기타'>기타</option>
+                        <option value='가구원 아님'>가구원 아님</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    성별
+                </td>
+                <td class="tdValue3" colspan="3">
+                    <select id="gender" name="gender" class="tel_select3">
+                        <option></option>
+                        <option value='남'>남</option>
+                        <option value='여'>여</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    생년월일
+                </td>
+                <td class="tdValue3" colspan="3"> 양력
+                    @*<select id="lunar" name="lunar" class="tel_select3">
+                        <option></option>
+                        <option value='양력'>양력</option>
+                        <option value='음력'>음력</option>
+                    </select>*@
+                    <input class="textbox" id="byear" rows="1" size="4" type="tel" value="@(Model.생년)" maxlength="4"> 년
+                    <input class="textbox" id="bmonth" rows="1" size="2" type="tel" value="@(Model.생월)" maxlength="2"> 월
+                    <input class="textbox" id="bday" rows="1" size="2" type="tel" value="@(Model.생일)" maxlength="2"> 일
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    조사대상여부<br />
+                    (만 25세~만54세 여성)
+                </td>
+                <td class="tdValue3" colspan="3">
+                    <input class="textbox" id="ptype" rows="1" size="10" type="text" value="@(Model.적격여부)" readonly />
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    응답자 연락처
+                </td>
+                <td class="tdValue3" colspan="3">
+                    <input type="submit" id="sendMsg" class="infoButtonT" style="margin-right: 10px;" value="문자 발송" />
+                    <select id="tel1" name="tel1" class="tel_select2">
+                        <option></option>
+                        <option value='010'>010</option>
+                        <option value='011'>011</option>
+                        <option value='016'>016</option>
+                        <option value='017'>017</option>
+                        <option value='018'>018</option>
+                        <option value='019'>019</option>
+                    </select>
+                    - <input class="textbox" id="tel2" rows="1" size="4" type="tel" value="@(tel.Length <= 1 ? "" : tel[1])" maxlength="4">
+                    - <input class="textbox" id="tel3" rows="1" size="4" type="tel" value="@(tel.Length <= 1 ? "" : tel[2])" maxlength="4">
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    설문 진행상태 
+                </td>
+                <td class="tdValue3" colspan="3">
+                    @(Model.설문진행상태)
+                    
+                </td>
+            </tr>
+        </table>
+        <div class="buttonDiv">
+            <center>
+                @{ 
+                    string _버튼1 = "저장";
+                }
+
+                @if (ViewBag.추가상태 == true)
+                {
+                    _버튼1 = "추가 후 닫기";
+                }
+
+                <input type="button" id="save" class="infoButton" style="margin-right: 60px;" value="@(_버튼1)" />
+                <input type="button" id="runSurvey" class="infoButton" style="margin-right: 60px;" value="대면 조사시작" />
+                <input type="button" id="exit" class="infoButton" style="margin-right: 60px;" value="닫기" />
+            </center>
+        </div>
+    </div>
+</body>
+</html>

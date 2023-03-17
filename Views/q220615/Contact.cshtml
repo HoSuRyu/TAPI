@@ -1,0 +1,198 @@
+﻿@model TAPI_Interviewer.Models.q220615_Contact
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#save').click(function () {
+                saveContact('./HouseList?keyid=@(ViewBag.집계구일련번호)');
+            });
+
+            $('#exit').click(function () {
+                window.location.href = './HouseList?keyid=@(ViewBag.집계구일련번호)';
+            });
+
+            $('input[type=tel]').keydown(function (event) {
+                var charCode = (event.which) ? event.which : event.keyCode;
+
+                if (isNumeric(charCode, this) == false) {
+                    event.preventDefault();
+                }
+            });
+
+            $('input[type=tel]').keyup(function (event) {
+                sumCount();
+            });
+
+            sumCount();
+        });
+
+        function sumCount()
+        {
+            
+            var con1 = parseInt($("#Con1").val());
+            
+            var con4 = parseInt($("#Con4").val());
+            var con5 = parseInt($("#Con5").val());
+            var con6 = parseInt($("#Con6").val());
+            var con7 = parseInt($("#Con7").val());
+
+            con2 = con4 + con5 + con6 + con7;
+            con0 = con1 + con2;
+            
+
+            $("#Con0").val(con0);
+            $("#Con2").val(con2);
+        }
+
+        function saveContact(href) {
+            
+            var con0 = parseInt($("#Con0").val());
+            var con1 = parseInt($("#Con1").val());
+            var con2 = parseInt($("#Con2").val());
+            
+            var con4 = parseInt($("#Con4").val());
+            var con5 = parseInt($("#Con5").val());
+            var con6 = parseInt($("#Con6").val());
+            var con7 = parseInt($("#Con7").val());
+            
+            var con9 = parseInt($("#Con9").val());
+
+            
+
+            if (con0 > con9) {
+                alert("전체 접촉 가구 수보다 전체 가구를 방문한 총 횟수가 적습니다. 다시 확인해주세요.");
+                return;
+            }
+
+            $.post("./SaveContact", { "keyid": @(ViewBag.집계구일련번호), "con0": con0, "con1": con1, "con2": con2, "con4": con4, "con5": con5, "con6": con6, "con7": con7, "con9": con9 }, function (result) {
+                if (result != '')
+                {
+                    alert(result);
+                }
+                else
+                {
+                    window.location.href = href;
+                }
+            }).error(function (jqXHR, status, error) {
+                alert(status);
+                alert(error);
+            });
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    <div style="width : 100%;display: inline-block;">
+        <table class="infoTable">
+            <tr>
+                <td colspan="4">접촉일지 입력</td>
+            </tr>
+            <tr>
+                <td class="tdValue" colspan="3">
+                    집계구 일련번호
+                </td>
+                <td class="tdValue3">
+                    @(ViewBag.집계구일련번호)
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue" colspan="3">
+                    주소
+                </td>
+                <td class="tdValue3">
+                    @(ViewBag.집계구주소)
+                </td>
+            </tr>
+          
+            <tr>
+                <td class="tdValue" rowspan="7">
+                    접촉 가구
+                </td>
+                <td class="tdValue" colspan="2">
+                    전체 접촉 가구 수 합계(성공+비성공)
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="Con0" rows="1" size="13" type="tel" value="@(Model.성공비성공)" readonly />
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    성공 가구
+                </td>
+                <td class="tdValue">
+                    성공 가구 수 합계
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="Con1" rows="1" size="13" type="tel" value="@(Model.성공)" readonly />
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue" rowspan="5">
+                    비성공<br />가구
+                </td>
+                <td class="tdValue">
+                    비성공 가구 수 합계(A+B+C+D)
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="Con2" rows="1" size="13" type="tel" value="@(Model.비성공)" readonly />
+                </td>
+            </tr>
+         
+            <tr>
+                <td class="tdValue">
+                    A. 거절 가구 수
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="Con4" rows="1" size="13" type="tel" value="@(Model.비성공A)" maxlength="4" style="background-color:#B7DEE8" />
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    B. 부재 가구 수
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="Con5" rows="1" size="13" type="tel" value="@(Model.비성공B)" maxlength="4" style="background-color:#B7DEE8" />
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    C. 조사대상 가구원 없음
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="Con6" rows="1" size="13" type="tel" value="@(Model.비성공C)" maxlength="4" style="background-color:#B7DEE8" />
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    D. 기타(외국인 가구 등)
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="Con7" rows="1" size="13" type="tel" value="@(Model.비성공D)" maxlength="4" style="background-color:#B7DEE8" />
+                </td>
+            </tr>
+           
+            <tr>
+                <td class="tdValue" colspan="3">
+                    전체 접촉 가구 총 방문 횟수
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="Con9" rows="1" size="13" type="tel" value="@(Model.총방문횟수)" maxlength="4" style="background-color:#B7DEE8" />
+                </td>
+            </tr>
+        </table>
+        <div class="buttonDiv">
+            <center>
+                <input type="button" id="save" class="infoButton" style="margin-right: 100px;" value="저장 후 닫기" />
+                <input type="button" id="exit" class="infoButton" style="margin-right: 100px;" value="닫기" />
+            </center>
+        </div>
+    </div>
+</body>
+</html>

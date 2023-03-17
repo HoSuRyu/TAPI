@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="WebDiary_Horse2014" Class="WebDiary_Horse2014DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=srv1.hrcglobal.com,15000;Initial Catalog=WebDiary_Horse2014;User ID=webifs" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="WebDiary_Horse2014ConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.H_Panel" Member="H_Panels">
+    <Type Name="H_Panel">
+      <Column Name="idx" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Chasu" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PanelCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="List_Authorship" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="List_Authorship_Code" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Industry_Type" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="IsHaveHorseLabel" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="IsHaveHorseCode" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessTypeLabel" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="BusinessTypeCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PanelName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Owner" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Owner2" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="SidoLabel" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="SidoCode" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SigunguLabel" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="SigunguCode" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DongLabel" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="RiLabel" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Phone1" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Phone2" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Phone3" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Phone4" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="IsUpdateCheck" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.H_NewPanel" Member="H_NewPanels">
+    <Type Name="H_NewPanel">
+      <Column Name="idx" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Chasu" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PanelCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="IsHaveHorseLabel" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="IsHaveHorseCode" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BusinessTypeLabel" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="BusinessTypeLabelEtc" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="BusinessTypeCode" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="PanelName" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="Owner" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="SidoLabel" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="SidoCode" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SigunguLabel" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="SigunguCode" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DongLabel" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DetailAddress" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Phone1" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Phone2" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Phone3" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Phone4" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="IsUpdateCheck" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.H_Member" Member="H_Members">
+    <Type Name="H_Member">
+      <Column Name="idx" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MemberId" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="MemberPwd" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="MemberPermission" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="IsLogic" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="MemberName" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>

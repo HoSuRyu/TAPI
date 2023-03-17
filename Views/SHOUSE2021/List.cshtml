@@ -1,0 +1,84 @@
+﻿@model List<TAPI_Interviewer.Models.SP_SHOUSE2021H_GETLISTResult>
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        @{
+            ViewBag.Title = "4차 서울시 공공임대주택 입주자 패널조사 : (기존) 가구 리스트";
+        }
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+        <link href="@Url.Content("../../Content/SHOUSE2017/Site.css?version=7")" rel="stylesheet" type="text/css" />
+        <script type="text/javascript">
+            $(document).ready(function () {
+                setStatus();
+
+
+                $('#goArea').click(function () {
+                    window.location.href = './List';
+                });
+
+                $('#goHappy').click(function () {
+                    window.location.href = './NList';
+                });
+
+            });
+
+            function goPanelInfo(HID, status) {
+                if (status == '이관요청') {
+                    alert('이관요청 하셨습니다.');
+                    return;
+                }
+                if (HID != null) {
+                    window.location.href = './PanelInfo?hid=' + HID;
+                }
+            }
+
+            function goTransfer(HID, status) {
+                if (status == '이관요청') {
+                    alert('이관요청 하셨습니다.');
+                    return;
+                }
+                if (HID != null) {
+                    window.location.href = './Transfer?hid=' + HID;
+                }
+            }
+
+            function setStatus() {
+                $.post("./ProgressPartial", null, function (result) {
+                    $("#Progress").replaceWith(result);
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            }
+
+            function Refresh() {
+                location.reload();
+            }
+
+            function Transfer() {
+                location.reload();
+                alert('이관요청 하셨습니다.');
+            }
+        </script>
+    </head>
+    <body>
+        <div style="width : 100%;display: inline-block;">
+            <label id="title">@ViewBag.Title</label>
+            <div style="float:left;margin:10px 0px;">
+                <input type="button" id="goArea" class="infoButtonBlue" style="margin-right: 10px;" value="기존 패널" />
+                <input type="button" id="goHappy" class="infoButton" style="margin-right: 10px;" value="신규 패널" />                
+            </div>
+            <div id="Progress">
+                @*@Html.Partial("ProgressPartial", Model)*@
+            </div>
+            <p/>
+            <div style="overflow-x:scroll;width:100%;">
+                @Html.Partial("ListPartial", Model)
+            </div>
+        </div>
+    </body>
+</html>

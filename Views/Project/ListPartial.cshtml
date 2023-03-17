@@ -1,0 +1,100 @@
+﻿@*
+////////////////////////////////////////////////////////////
+// 클래스 설명 : 진행상황 리스트
+// 최초 개발자 : 채수용
+// 최초 개발일 : 2016-02-24
+// 수정 이력
+///////////////////////////////////////////////////////////
+*@
+
+@Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "PanelList";
+        settings.KeyFieldName = "PID";
+        settings.CallbackRouteValues = new { Controller = "Project", Action = "ListPartial", projectNumber = Model.Number };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "PID";
+            column.Caption = "PID";
+            column.Visible = false;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "Name";
+            column.Caption = TAPI_Interviewer.Languages.Languages.code11;
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(320);
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "Status";
+            column.Caption = TAPI_Interviewer.Languages.Languages.code12;
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(150);
+
+            column.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+            comboBoxProperties.DataSource = ViewBag.StatusList;
+            comboBoxProperties.DropDownStyle = DropDownStyle.DropDownList;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.Caption = TAPI_Interviewer.Languages.Languages.code11;
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(240);
+            column.SetDataItemTemplateContent(c =>
+            {
+                if (DataBinder.Eval(c.DataItem, "Status") == TAPI_Interviewer.Languages.Languages.code18)
+                {
+                    Html.DevExpress().Image(imgSettings =>
+                    {
+                        imgSettings.Name = "img" + c.VisibleIndex;
+                        imgSettings.ImageUrl = "https://rpssurvey.hrcglobal.com/images/Project/tapi_ing" + TAPI_Interviewer.Languages.Languages.lang + ".gif";
+                        imgSettings.Properties.ClientSideEvents.Click = string.Format("function(s, e) {{ EditSurvey('{0}'); }}", c.KeyValue);
+                    }).Render();
+                }
+                else
+                {
+                    if (Model.IsEdit == true &&
+                        new string[] { "", TAPI_Interviewer.Languages.Languages.code18, TAPI_Interviewer.Languages.Languages.code19 }.Contains(DataBinder.Eval(c.DataItem, "Status")))
+                    {
+                        Html.DevExpress().Image(imgSettings =>
+                        {
+                            imgSettings.Name = "img" + c.VisibleIndex;
+                            imgSettings.ImageUrl = "https://rpssurvey.hrcglobal.com/images/Project/tapi_ing"+TAPI_Interviewer.Languages.Languages.lang+".gif";
+                            imgSettings.Properties.ClientSideEvents.Click = string.Format("function(s, e) {{ EditSurvey('{0}', true); }}", c.KeyValue);
+                        }).Render();
+                    }
+                    else
+                    {
+                        Html.DevExpress().Image(imgSettings =>
+                        {
+                            imgSettings.Name = "img" + c.VisibleIndex;
+                            imgSettings.ImageUrl = string.Format("https://rpssurvey.hrcglobal.com/images/Project/tapi_none.gif", c.Text);
+                        }).Render();
+                    }
+                }
+            });
+        });
+
+        settings.Styles.Cell.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+        settings.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+
+        settings.Settings.ShowFilterRow = true;
+        settings.Settings.ShowFilterRowMenu = false;
+        settings.Settings.VerticalScrollableHeight = (Model.AnswerList.Count == 0 ? 2 : Model.AnswerList.Count)  * 40;
+
+        settings.SettingsBehavior.AllowFocusedRow = false;
+
+        //settings.ClientSideEvents.RowClick = "OnRowClick";
+
+        settings.PreRender = (sender, e) =>
+        {
+            ASPxGridView grid = (ASPxGridView)sender;
+            grid.FocusedRowIndex = -1;
+        };
+    }).Bind(Model.AnswerList).GetHtml()

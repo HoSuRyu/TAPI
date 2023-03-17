@@ -1,0 +1,83 @@
+﻿@model List<TAPI_Interviewer.Models.SP_KLIPS2022_GETLISTResult>
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        @{
+            ViewBag.Title = "2022년 제25차 한국 노동패널 조사";
+        }
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+        <link href="@Url.Content("../../Content/KLIPS/Site.css?version=4")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("../../Content/q210801/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+        <script type="text/javascript">
+            $(document).ready(function () {
+                setStatus();
+            });
+
+            function Refresh() {
+
+                location.reload();
+            }
+
+            function goAnswerInfo(pid, status) {
+
+
+                if (status == '이관요청') {
+                    alert('이관요청 하셨습니다.');
+                    return;
+                }
+
+                if (pid != null) {
+                    window.location.href = './AnswerInfo?hid=' + pid;
+                }
+            }
+
+            function goTransfer(pid, status) {
+
+                if (status == '완료') {
+                    alert('조사 완료한 가구입니다.');
+                    return;
+                }
+                if (status == '이관요청' ) {
+                    alert('이관요청 하셨습니다.');
+                    return;
+                }
+
+                if (pid != null) {
+                    window.location.href = './Transfer?hid=' + pid;
+                }
+            }
+
+            function setStatus() {
+                $.post("./ProgressPartial", null, function (result) {
+                    $("#Progress").replaceWith(result);
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            }
+
+            function Refresh() {
+                location.reload();
+            }
+        </script>
+    </head>
+    <body>
+        <div style="width : 100%;display: inline-block;">
+            <label id="title">@ViewBag.Title</label>
+            <p/>
+            <div style="float:left" ><input type="button" id="refresh" class="infoButtonT" style="margin-right: 30px;" value="새로고침" onclick="Refresh()" /></div>
+                <div style="float:right">    <input type="button" class="infoButtonT" style="margin-right: 0px;" value="@ViewBag.면접원아이디" /><input type="button" class="infoButtonT" style="margin-right: 10px;" value="@ViewBag.면접원이름" /></div>
+            <div id="Progress">
+                @*@Html.Partial("ProgressPartial", Model)*@
+            </div>
+            <p/>
+            <!-- <div style="overflow-x:scroll;width:100%;"></div>-->
+                @Html.Partial("ListPartial", Model)
+            
+        </div>
+    </body>
+</html>

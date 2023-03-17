@@ -1,0 +1,101 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q221657_GETCOMPANYLISTResult>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "상가 임대차 실태조사 - 사업체 리스트";
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setStatus();
+
+           
+
+            $('#exit').click(function () {
+                window.location.href = './List';
+            });
+
+            $('#CreateCompany').click(function () {
+               
+                $.post("./CreateCompany", { "keyid":@(ViewBag.상권ID)}, function (result) {
+                    if (result != '')
+                    {
+                        alert(result);
+                        location.reload();
+                    }
+                    else
+                    {
+                        alert('사업체 추가 되었습니다.');
+                        location.reload();
+
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+            $('input[type=tel]').keydown(function (event) {
+                var charCode = (event.which) ? event.which : event.keyCode;
+
+                if (isNumeric(charCode, this) == false) {
+                    event.preventDefault();
+                }
+            });
+        });
+
+      
+
+        function contact(pid, status)
+        {
+            if (status == '완료') {
+                alert("조사를 완료했습니다. \r접촉일지를 작성할 수 없습니다.");
+                return;
+            }
+            if (pid != null) {
+                window.location.href = './Contact?keyid=@ViewBag.상권ID&pid=' + pid;
+            }
+        }
+
+        function goAnswerInfo(pid) {
+            if (pid != null) {
+                window.location.href = './AnswerInfo?keyid=@ViewBag.상권ID&pid=' + pid;
+            }
+        }
+
+        function setStatus() {
+            $.post("./ProgressPartial2", {"keyid":@(ViewBag.상권ID)}, function (result) {
+                $("#Progress").replaceWith(result);
+            }).error(function (jqXHR, status, error) {
+                alert(status);
+                alert(error);
+            });
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css?version=5")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("../../Content/q210801/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/jquery.chained.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    <div id="main" style="width:100%;">
+        <label id="title">@ViewBag.Title</label>
+        <div id="Progress"></div>
+       
+        <div style="text-align:left;"><input type="button" id="CreateCompany" class="infoButtonT" style="margin-right: 20px;" value="사업체 추가" /></div>
+        
+        <div style="overflow-x:scroll;width:100%;">
+            @Html.Partial("CompanyListPartial", Model)
+        </div>
+        <div class="buttonDiv">
+            <input type="button" id="exit" class="infoButton" style="margin-right: 30px;float:right;" value="닫기" />
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q220557_GETLISTResult>
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        @{
+            ViewBag.Title = "축산 환경 실태 조사";
+        }
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+        <link href="@Url.Content("../../Content/KLIPS/Site.css?version=4")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("../../Content/q200494/PanelInfo.css?version=5")" rel="stylesheet" type="text/css" />
+        <script type="text/javascript">
+            $(document).ready(function () {
+                setStatus();
+            });
+
+            function goAnswerInfo(pid, status) {
+              
+                //if (status == '완료') {
+                //    alert('이미 완료한 응답자 입니다.');
+                //    return;
+                //}
+
+                if (pid != null) {
+                    window.location.href = './AnswerInfo?pid=' + pid;
+                }
+            }
+            function goPicture(pid, status) {
+
+                if (status == '완료') {
+                    alert('이미 완료한 응답자 입니다.');
+                    return;
+                }
+
+                if (pid != null) {
+                    window.location.href = './PictureSurvey?pid=' + pid;
+                }
+            }
+            
+            function goSign()
+            {
+                if ('@ViewBag.보안각서' == '1') {
+                    alert('이미 응답하셨습니다.');
+                }
+                else {
+
+                    window.location.href = './SignSurvey?';
+                }
+            }
+
+            function setStatus() {
+                $.post("./ProgressPartial", null, function (result) {
+                    $("#Progress").replaceWith(result);
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            }
+
+            function Refresh() {
+                location.reload();
+            }
+        </script>
+    </head>
+    <body>
+        <div style="width : 100%;display: inline-block;">
+            <label id="title">@ViewBag.Title</label>
+            <div style="float:left;margin:10px 0px;">
+                <input type="button" id="goSign" class="infoButtonBlue" style="margin-right: 10px;" value="보안각서" onclick="goSign()" />
+            </div>
+            <p/>
+            <div id="Progress">
+                @*@Html.Partial("ProgressPartial", Model)*@
+            </div>
+            <p/>
+            <div style="overflow-x:scroll;width:100%;">
+                @Html.Partial("ListPartial", Model)
+            </div>
+        </div>
+    </body>
+</html>

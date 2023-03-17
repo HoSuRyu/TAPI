@@ -1,0 +1,63 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q220614_GETHOUSELISTResult>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "2022년 인권의식실태조사 - 가구 리스트";
+    }
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/Site.css?version=4")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("../../Content/q210801/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $('#exit').click(function () {
+                    window.location.href = './List';
+                });
+            });
+
+            function goPersonList(keyid, hid) {
+
+                if (keyid != null) {
+                    window.location.href = './PersonList?keyid=' + keyid +'&hid='+hid;
+                }
+            }
+
+            function contact(hid, status)
+            {
+                if (status == '완료')
+                {
+                    alert("조사를 완료했습니다. \r접촉일지를 작성할 수 없습니다.");
+                    return;
+                }
+                if (hid != null) {
+                    window.location.href = './Contact?hid=' + hid;
+                }
+            }
+
+
+
+            function Refresh() {
+                location.reload();
+            }
+    </script>
+</head>
+<body>
+    <div style="width : 100%;display: inline-block;">
+        <label id="title">@ViewBag.Title</label>
+     
+        <div style="overflow-x:scroll;width:100%;">
+            @Html.Partial("HouseListPartial", Model)
+        </div>
+    </div>
+    <div class="buttonDiv">
+        <center>
+            <input type="button" id="exit" class="infoButton" style="margin-right: 60px;" value="닫기" />
+        </center>
+    </div>
+</body>
+</html>

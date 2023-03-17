@@ -1,0 +1,58 @@
+﻿
+
+@Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "QuestionnaireList";
+    settings.KeyFieldName = "questionnaireNumber";
+    settings.CallbackRouteValues = new { Controller = "Home", Action = "ListPartial" };
+    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+    settings.Columns.Add("questionnaireNumber").Visible = false;
+    settings.Columns.Add("url").Visible = false;
+
+    settings.Columns.Add(column =>
+    {
+        column.FieldName = "questionnaireName";
+        column.Caption = ViewBag.Caption;
+    });
+
+    settings.Columns.Add(column =>
+    {
+        column.FieldName = "";
+        column.SetDataItemTemplateContent(c =>
+        {
+            Html.DevExpress().Button(
+                buttonSettings =>
+                {
+
+                    buttonSettings.Name = Guid.NewGuid().ToString();
+                    buttonSettings.Text = "START";
+                    buttonSettings.ClientSideEvents.Click = string.Format("function(s, e) {{ OnGetRowValues('{0}'); }}", DataBinder.Eval(c.DataItem, "url"));
+
+
+                }).Render();
+        });
+        column.Width = System.Web.UI.WebControls.Unit.Pixel(100);
+    });
+
+    settings.Styles.Cell.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+
+    settings.SettingsPager.PageSize = Model.Count;
+
+    settings.Settings.ShowFilterRow = true;
+    settings.Settings.ShowFilterRowMenu = false;
+    settings.Settings.VerticalScrollableHeight = 540;
+
+
+    settings.SettingsBehavior.AllowFocusedRow = true;
+    settings.ControlStyle.Font.Size = System.Web.UI.WebControls.FontUnit.Point(23);
+    settings.ControlStyle.Font.Name = "Nanum Gothic";
+
+    settings.ClientSideEvents.RowClick = "OnRowClick";
+
+    settings.PreRender = (sender, e) =>
+    {
+        ASPxGridView grid = (ASPxGridView)sender;
+        grid.FocusedRowIndex = -1;
+    };
+}).Bind(Model).GetHtml()

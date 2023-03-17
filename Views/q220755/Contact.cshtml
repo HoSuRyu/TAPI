@@ -1,0 +1,127 @@
+﻿@model TAPI_Interviewer.Models.q220755_HouseList
+           
+<html>
+<head>
+    @{  
+        ViewBag.Title = "방문 결과 (최종)";
+    }
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(":radio[name='contact']").filter('[value="@(Model.접촉일지방문결과)"]').prop('checked', true);
+
+            $('#cancel').click(function () {
+                window.location.href = './HouseList?keyid='+@(Model.일련번호);
+            });
+
+            $('#save').click(function () {
+
+                var contact = $(":radio[name='contact']:checked").val();
+
+          
+                var ranking = $("#ranking").val();
+                if( ranking == '' || ranking == '0')
+                {
+                    alert("총 방문 횟수를 입력해 주세요.")
+                    return;
+                }
+
+                if (contact == undefined || contact == '') {
+                    alert("비성공 사유를 선택해 주세요.")
+                    return;
+                }
+
+
+                $.post("./ContactOK", {
+                    "hid": '@Model.HID', "ranking": ranking, "contact": contact
+                }, function (result) {
+
+
+                    if (result == '저장') {
+                        alert('저장 되었습니다.');
+                        window.location.href = './HouseList?keyid=@(Model.일련번호)';
+                    }
+                    else{
+                        alert(result);
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+
+
+        });
+
+    </script>
+    <link href="@Url.Content("../../Content/q200494/Site.css?version=2")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/jquery.chained.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    <table class="infoTable">
+        <tr>
+            <td class="tdHeader">
+                가구일련번호
+            </td>
+            <td class="tdValue">
+                @Model.HID
+            </td>
+        </tr>
+      
+        <tr>
+            <td class="tdHeader">
+                주소
+            </td>
+            <td class="tdValue">
+                @Model.도로명주소
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader" colspan="2">
+                &nbsp; 
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">총 방문횟수</td>
+            <td class="tdValue"><input class="textbox" type="text" id="ranking" style="width:50%" value="@(Model.총방문횟수)"></td>        
+          
+        </tr>      
+        <tr >
+            <td class="tdHeader" colspan="2">
+                비성공 사유
+            </td>
+       </tr>
+        <tr>
+            <td class="tdValue" colspan="2">
+                <input type="radio" name="contact" value="성공" id="contact_01" disabled="disabled" /> <label for="contact_01">1. 조사성공</label><br />
+                <input type="radio" name="contact" value="링크 발송" id="contact_02" disabled="disabled" /> <label for="contact_02">2. 링크 발송</label><br />                
+                <input type="radio" name="contact" value="부재" id="contact_03" /> <label for="contact_03">3. 부재</label><br />                
+                <input type="radio" name="contact" value="거절" id="contact_05" /> <label for="contact_05">4. 거절</label><br />
+                <input type="radio" name="contact" value="조사불능 가구(외국인가구, 집단가구, 기숙사, 빈집 등)" id="contact_06" /> <label for="contact_06">5. 조사불능 가구(외국인가구, 집단가구, 기숙사, 빈집 등)</label><br />
+                <input type="radio" name="contact" value="출입 불가" id="contact_10" /> <label for="contact_10">6. 출입 불가</label><br />
+            </td>
+        </tr>
+        
+     
+         
+    </table>
+
+    <br />
+
+        
+    <table width="100%">
+        <tr>
+            <td align="center" width="50%">
+                <input type="button" id="cancel" class="infoButton" value="나가기" />
+                <input type="button" id="save" class="infoButton" value="저장 후 종료" />
+            </td>
+        </tr>
+    </table>
+        
+</body>
+</html>

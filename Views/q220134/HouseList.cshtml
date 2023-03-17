@@ -1,0 +1,70 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q220134_GETHOUSELISTResult>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "경기도 농촌기본소득 시범사업 조사";
+    }
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/Site.css?version=4")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("../../Content/q210801/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+              
+               
+                $('#create').click(function () {
+                    window.location.href = './CreateHouse';
+                });
+            });
+
+            function goPersonList(hid, contactstate) {
+
+                if( contactstate != '접촉 성공')
+                {
+                    alert("접촉 상태를 확인/기입해 주세요.");
+                    return;
+                }
+
+                if (hid != null) {
+                    window.location.href = './PersonList?hid='+hid;
+                }
+            }
+
+            function contact(hid)
+            {
+              
+                if (hid != null) {
+                    window.location.href = './Contact?hid=' + hid;
+                }
+            }
+
+
+
+            function Refresh() {
+                location.reload();
+            }
+    </script>
+</head>
+<body>
+
+    <div style="width : 100%;display: inline-block;">
+        <label id="title">@ViewBag.Title</label>
+      
+            <div class="buttonDiv">
+                <left>
+                    <input type="button" id="create" class="infoButtonT" style="margin-right: 30px;" value="리스트 추가" />
+                </left>
+            </div>
+       
+            <div style="overflow-x:scroll;width:100%;">
+                @Html.Partial("HouseListPartial", Model)
+            </div>
+</div>
+   
+</body>
+</html>

@@ -1,0 +1,24 @@
+﻿@model TAPI_Interviewer.Models.T_SamplingList_q221411_2
+
+<table class="infoTable">
+    <tr>
+        <td class="tdValue">PID</td>
+        <td class="tdValue">이름</td>
+        <td class="tdValue">나이</td>
+    </tr>
+    @if (Model != null)
+    {
+        <tr>
+            <td>@Model.PID<input type="hidden" id="CheckOPIDYN" value="1" /></td>
+            <td>@Model.QMListData.Elements().Single(s => s.Name == "P2").Attribute("VALUE").Value</td>
+            <td>@Model.QMListData.Elements().Single(s => s.Name == "P4").Attribute("VALUE").Value</td>
+        </tr>
+    }
+    else
+    {
+        <tr>
+            <td colspan="3">검색 결과가 없습니다.<input type="hidden" id="CheckOPIDYN" value="0" /></td>
+        </tr>
+    }
+</table>
+

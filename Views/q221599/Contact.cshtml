@@ -1,0 +1,429 @@
+﻿@model List<TAPI_Interviewer.Models.q221599_Contact>
+           
+<html>
+<head>
+    @{
+        ViewBag.Title = "접촉 일지";
+    }
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            setDisabled();
+
+            $("select[name='contactMonth']").val("@ViewBag.contactMonth").attr("selected", "selected");
+            $("select[name='contactDay']").val("@ViewBag.contactDay").attr("selected", "selected");
+            $("select[name='contactTime']").val("@ViewBag.contactTime").attr("selected", "selected");
+
+
+            $(":radio[name='contact']").change(function () {
+                setDisabled();
+            });
+
+            $('#ok').click(function () {
+
+                if ('@ViewBag.lastContact' == '진행중') {
+
+                    if (!confirm('진행중인 데이터가 있습니다. 접촉일지 작성을 하시겠습니까?')) {
+                        return;
+                    }
+                }
+
+                var contactMonth = $("select[name='contactMonth'] option:selected").text();
+                var contactDay = $("select[name='contactDay'] option:selected").text();
+                var contactTime = $("select[name='contactTime'] option:selected").text();
+
+                var etc = $(":text[name='etc']").val();
+                var bigo = $("#bigo").val();
+
+                var ranking = $(":hidden[name='ranking']").val();
+
+
+
+                var status = $(":radio[name='contact']:checked").val();
+                if (status == undefined || status == '') {
+                    alert('접촉결과를 선택 해 주세요.');
+                    return;
+                }
+
+                if ((status == '기타' && etc == '') || (status == '단순 거부' && etc == '') || (status == '강력 거부' && etc == ''))
+                {
+                    alert('세부 사유를 입력 해 주세요.');
+                    return;
+                }
+
+                var promiseMonth = '';
+                var promiseDay = '';
+                var promiseTime = '';
+
+                if (status == '조사 약속')
+                {
+                    promiseMonth = $("select[name='promiseMonth'] option:selected").text();
+                    promiseDay = $("select[name='promiseDay'] option:selected").text();
+                    if (promiseMonth == '' || promiseMonth == undefined || promiseDay == '' || promiseDay == undefined) {
+                        alert('조사 약속 날짜를 선택 해 주세요');
+                        return;
+                    }
+
+                    promiseTime = $("select[name='promiseTime'] option:selected").text();
+                    if (promiseTime == '' || promiseTime == undefined) {
+                        alert('조사 약속 시간대를 선택 해 주세요');
+                        return;
+                    }
+                }
+
+
+                if ('@ViewBag.lastContact' == '성공') {
+
+                    alert('성공한 데이터가 있습니다. 접촉일지를 작성할 수 없습니다.');
+                    return;
+                }
+
+
+                $.post("./ContactOK", {
+                    "keyID": '@ViewBag.KeyID', "PID": '@ViewBag.PID' ,"ranking": ranking, "contactMonth": contactMonth, "contactDay": contactDay, "contactTime": contactTime, "status": status, "promiseMonth": promiseMonth, "promiseDay": promiseDay, "promiseTime": promiseTime, "etc": etc, "bigo": bigo
+                }, function (result) {
+                    alert(result);
+
+                    if (result == '저장 되었습니다.') {
+                        window.location.href = './List';
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+            $('#cancel').click(function () {
+                window.location.href = './AnswerInfo?keyID=@ViewBag.KeyID';
+            });
+        });
+
+        function setDisabled() {
+
+            if ($(":radio[name='contact']:checked").val() == '조사 약속') {
+                $('select[name="promiseMonth"]').prop('disabled', false);
+                $('select[name="promiseDay"]').prop('disabled', false);
+                $('select[name="promiseTime"]').prop('disabled', false);
+
+
+            }
+            else {
+                $('select[name="promiseMonth"]').prop('disabled', true);
+                $('select[name="promiseMonth"]').val('').attr('selected', 'selected');
+                $('select[name="promiseDay"]').prop('disabled', true);
+                $('select[name="promiseDay"]').val('').attr('selected', 'selected');
+                $('select[name="promiseTime"]').prop('disabled', true);
+                $('select[name="promiseTime"]').val('').attr('selected', 'selected');
+
+            }
+
+        }
+    </script>
+    <link href="@Url.Content("../../Content/p170980/Site.css?version=2")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/jquery.chained.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    <table class="infoTable">
+        <tr>
+            <td class="tdHeader">
+                KEYID
+            </td>
+            <td class="tdValue">
+                @ViewBag.KeyID
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                PID
+            </td>
+            <td class="tdValue">
+                @ViewBag.PID
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                기관명
+            </td>
+            <td class="tdValue">
+                @ViewBag.기관명
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                ATYPE
+            </td>
+            <td class="tdValue">
+                @ViewBag.ATYPE
+            </td>
+        </tr>
+    </table>
+
+    @Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "접촉리스트";
+        settings.KeyFieldName = "접촉 리스트";
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "접촉횟수";
+            column.Caption = "접촉 횟수";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(100);
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "접촉일자";
+            column.Caption = "접촉 일자";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(130);
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "접촉시간";
+            column.Caption = "접촉 시간";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(180);
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "접촉결과";
+            column.Caption = "접촉 결과";
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(180);
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "비성공세부사유";
+            column.Caption = "비성공 세부사유";
+            column.CellStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Left;
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(300);
+        });
+
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "특이사항";
+            column.Caption = "특이사항(비고)";
+            column.CellStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Left;
+            column.Width = System.Web.UI.WebControls.Unit.Pixel(300);
+        });
+
+        settings.Styles.Cell.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+
+        settings.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+
+        settings.Settings.ShowFilterRow = false;
+        settings.Settings.ShowFilterRowMenu = false;
+        settings.Settings.VerticalScrollableHeight = 150;
+        settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
+        settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+    }).Bind(Model).GetHtml()
+
+    <table class="infoTable">
+        <tr>
+            <td class="tdHeader">접촉횟수</td>
+            <td class="tdValue"><b>@ViewBag.Ranking</b>  회<input type="hidden" name="ranking" value="@ViewBag.Ranking" /></td>        
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                접촉일자
+            </td>
+            <td class="tdValue">
+                <select id="contactMonth" name="contactMonth"  class="date_select">
+                    <option value="01">01</option>          
+                    <option value="02">02</option>          
+                    <option value="03">03</option>          
+                    <option value="04">04</option>          
+                    <option value="05">05</option>          
+                    <option value="06">06</option>          
+                    <option value="07">07</option>          
+                    <option value="08">08</option>          
+                    <option value="09">09</option>          
+                    <option value="10">10</option>          
+                    <option value="11">11</option>          
+                    <option value="12">12</option>          
+                </select>
+                &nbsp;월
+                <select id="contactDay" name="contactDay"  class="date_select">
+                    <option value="01">01</option>          
+                    <option value="02">02</option>          
+                    <option value="03">03</option>          
+                    <option value="04">04</option>          
+                    <option value="05">05</option>          
+                    <option value="06">06</option>          
+                    <option value="07">07</option>          
+                    <option value="08">08</option>          
+                    <option value="09">09</option>          
+                    <option value="10">10</option>          
+                    <option value="11">11</option>          
+                    <option value="12">12</option>          
+                    <option value="13">13</option>          
+                    <option value="14">14</option>          
+                    <option value="15">15</option>          
+                    <option value="16">16</option>          
+                    <option value="17">17</option>          
+                    <option value="18">18</option>          
+                    <option value="19">19</option>          
+                    <option value="20">20</option>          
+                    <option value="21">21</option>          
+                    <option value="22">22</option>          
+                    <option value="23">23</option>          
+                    <option value="24">24</option>          
+                    <option value="25">25</option>          
+                    <option value="26">26</option>          
+                    <option value="27">27</option>          
+                    <option value="28">28</option>          
+                    <option value="29">29</option>          
+                    <option value="30">30</option>          
+                    <option value="31">31</option>          
+                </select>
+                &nbsp;일
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                접촉시간
+            </td>
+            <td class="tdValue">
+                <select id="contactTime" name="contactTime"  class="time_select2">
+                    <option value="오전 7시 이전"> 오전 7시 이전 </option>
+                    <option value="오전 7시~ 오전8시 이전"> 오전 7시~ 오전8시 이전 </option>
+                    <option value="오전 8시~ 오전9시 이전"> 오전 8시~ 오전9시 이전 </option>
+                    <option value="오전 9시~ 오전10시 이전"> 오전 9시~ 오전10시 이전 </option>
+                    <option value="오전 10시~ 오전11시 이전"> 오전 10시~ 오전11시 이전</option>
+                    <option value="오전 11시~ 오전12시 이전"> 오전 11시~ 오전12시 이전</option>
+                    <option value="오전 12시~ 오후1시 이전"> 오전 12시~ 오후1시 이전 </option>
+                    <option value="오후 1시~ 오후2시 이전"> 오후 1시~ 오후2시 이전 </option>
+                    <option value="오후2시~ 오후3시 이전"> 오후2시~ 오후3시 이전 </option>
+                    <option value="오후 3시~ 오후4시 이전"> 오후 3시~ 오후4시 이전 </option>
+                    <option value="오후 4시~ 오후5시 이전"> 오후 4시~ 오후5시 이전 </option>
+                    <option value="오후 5시~ 오후6시 이전"> 오후 5시~ 오후6시 이전 </option>
+                    <option value="오후 6시~ 오후7시 이전"> 오후 6시~ 오후7시 이전 </option>
+                    <option value="오후 7시~ 오후8시 이전"> 오후 7시~ 오후8시 이전 </option>
+                    <option value="오후 8시~ 오후9시 이전"> 오후 8시~ 오후9시 이전 </option>
+                    <option value="오후 9시~ 오후10시 이전"> 오후 9시~ 오후10시 이전 </option>
+                    <option value="오후 10시~ 오후11시 이전"> 오후 10시~ 오후11시 이전</option>
+                    <option value="오후 11시 이후"> 오후 11시 이후</option>     
+                </select>
+            </td>
+        </tr>
+       
+        <tr>
+            <td class="tdHeader">
+                접촉 결과
+            </td>
+            <td class="tdValue" colspan="5">
+                <input type="radio" name="contact" value="통화중/비수신/부재" id="contact_1" /><label for="contact_1">1. 통화중/비수신/부재</label><br />
+                <input type="radio" name="contact" value="재접촉 예정" id="contact_2" /><label for="contact_2">2. 재접촉 예정</label><br />
+                <input type="radio" name="contact" value="조사 약속" id="contact_3" /><label for="contact_3">3. 조사 약속</label>
+                <select id="promiseMonth" name="promiseMonth" class="date_select">
+                    <option></option>
+                    <option value="01">01</option>
+                    <option value="02">02</option>
+                    <option value="03">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                    <option value="06">06</option>
+                    <option value="07">07</option>
+                    <option value="08">08</option>
+                    <option value="09">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                </select>
+                &nbsp;월
+                <select id="promiseDay" name="promiseDay" class="date_select">
+                    <option></option>
+                    <option value="01">01</option>
+                    <option value="02">02</option>
+                    <option value="03">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                    <option value="06">06</option>
+                    <option value="07">07</option>
+                    <option value="08">08</option>
+                    <option value="09">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                    <option value="25">25</option>
+                    <option value="26">26</option>
+                    <option value="27">27</option>
+                    <option value="28">28</option>
+                    <option value="29">29</option>
+                    <option value="30">30</option>
+                    <option value="31">31</option>
+                </select>
+                &nbsp;일 &nbsp;
+                <select id="promiseTime" name="promiseTime" class="time_select2">
+                    <option></option>
+                    <option value="오전 7시 이전"> 오전 7시 이전 </option>
+                    <option value="오전 7시~ 오전8시 이전"> 오전 7시~ 오전8시 이전 </option>
+                    <option value="오전 8시~ 오전9시 이전"> 오전 8시~ 오전9시 이전 </option>
+                    <option value="오전 9시~ 오전10시 이전"> 오전 9시~ 오전10시 이전 </option>
+                    <option value="오전 10시~ 오전11시 이전"> 오전 10시~ 오전11시 이전</option>
+                    <option value="오전 11시~ 오전12시 이전"> 오전 11시~ 오전12시 이전</option>
+                    <option value="오전 12시~ 오후1시 이전"> 오전 12시~ 오후1시 이전 </option>
+                    <option value="오후 1시~ 오후2시 이전"> 오후 1시~ 오후2시 이전 </option>
+                    <option value="오후2시~ 오후3시 이전"> 오후2시~ 오후3시 이전 </option>
+                    <option value="오후 3시~ 오후4시 이전"> 오후 3시~ 오후4시 이전 </option>
+                    <option value="오후 4시~ 오후5시 이전"> 오후 4시~ 오후5시 이전 </option>
+                    <option value="오후 5시~ 오후6시 이전"> 오후 5시~ 오후6시 이전 </option>
+                    <option value="오후 6시~ 오후7시 이전"> 오후 6시~ 오후7시 이전 </option>
+                    <option value="오후 7시~ 오후8시 이전"> 오후 7시~ 오후8시 이전 </option>
+                    <option value="오후 8시~ 오후9시 이전"> 오후 8시~ 오후9시 이전 </option>
+                    <option value="오후 9시~ 오후10시 이전"> 오후 9시~ 오후10시 이전 </option>
+                    <option value="오후 10시~ 오후11시 이전"> 오후 10시~ 오후11시 이전</option>
+                    <option value="오후 11시 이후"> 오후 11시 이후</option>
+                </select><br />
+                <input type="radio" name="contact" value="조사 대상 아님(대체필요/리스트 삭제 예정)" id="contact_4" /><label for="contact_4">4. 조사 대상 아님(대체필요/리스트 삭제 예정)</label>               
+                <input type="radio" name="contact" value="전화번호 결번" id="contact_5" /><label for="contact_5">5. 전화번호 결번 </label>                                 
+                <input type="radio" name="contact" value="단순 거부" id="contact_6" /><label for="contact_6">6. 단순 거부</label><br />
+                <input type="radio" name="contact" value="강력 거부" id="contact_7" /><label for="contact_7">7. 강력 거부</label><br />
+                <input type="radio" name="contact" value="코로나 거부" id="contact_8" /><label for="contact_8">8. 코로나 거부</label><br />
+                <input type="radio" name="contact" value="기타" id="contact_9" /><label for="contact_9">9. 기타</label><br />
+
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                비성공_세부 사유
+            </td>
+            <td class="tdValue" colspan="5">
+                <input class="textbox" id="etc" name="etc" rows="1" size="30" type="text" value="" maxlength="100" />
+            </td>
+        </tr>
+      
+        <tr>
+            <td class="tdHeader">
+                특이사항(비고)
+            </td>
+            <td class="tdValue" colspan="5">
+                <input class="textbox" id="bigo" name="bigo" rows="1" size="50" type="text" value="" maxlength="100" />
+            </td>
+        </tr>
+    </table>
+
+    <div class="buttonDiv">
+        <center>
+            <input type="button" id="ok" class="infoButton" value="저장 후 종료" />
+            <input type="button" id="cancel" class="infoButton" value="나가기" />
+        </center>
+    </div>
+</body>
+</html>

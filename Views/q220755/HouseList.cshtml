@@ -1,0 +1,158 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q220755_GETHOUSELISTResult>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "2022년 주거실태 시범조사";
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+            $('#exit').click(function () {
+                window.location.href = './List';
+            });
+
+            $('input[type=tel]').keydown(function (event) {
+                var charCode = (event.which) ? event.which : event.keyCode;
+
+                if (isNumeric(charCode, this) == false) {
+                    event.preventDefault();
+                }
+            });
+        });
+
+        function contact(hid, status)
+        {
+            if (status == '완료') {
+                alert("조사를 완료했습니다. \r접촉일지를 작성할 수 없습니다.");
+                return;
+            }
+            if (status == '선정탈락') {
+                alert("선정탈락한 가구 입니다. \r접촉일지를 작성할 수 없습니다.");
+                return;
+            }
+            if (hid != null) {
+                window.location.href = './Contact?hid=' + hid;
+            }
+        }
+
+        function goAnswerInfo(hid, status, atype)
+        {
+            if(status == '완료' && (atype == 'WEB' || atype =='IWEB'))
+            {
+                alert("모바일로 조사를 완료한 가구 입니다.");
+                return;
+            }
+            if (status == '선정탈락') {
+                alert("선정탈락한 가구 입니다. ");
+                return;
+            }
+
+            if (hid != null) {
+                window.location.href = './AnswerInfo?hid=' + hid;
+                }
+        }
+
+        function sendMsg(hid, status, atype, phone) {
+
+            if (status == '완료' && atype == 'WEB') {
+                alert("조사를 완료했습니다. \발송 할 수 없습니다.");
+                return;
+            }
+            else if (status == '선정탈락') {
+                alert("선정탈락 가구입니다. \r발송 할 수 없습니다.");
+                return;
+            }
+
+            if (phone == '') {
+                alert("모바일 연락처가 없습니다. \r발송 할 수 없습니다.");
+                return;
+            }
+
+
+            var infoText = phone + ' 번호로 문자를 발송합니다. \r번호가 맞습니까?';
+            if (confirm(infoText) == false) {
+                return;
+            }
+
+
+            $.post("./DirectSendMSG", {
+                "hid": hid, "phone": phone
+            }, function (result) {
+
+                if (result == '성공') {
+                    alert('문자 발송 완료');
+                    location.reload();
+                }
+                else {
+                    alert(result);
+                }
+            }).error(function (jqXHR, status, error) {
+                alert(status);
+                alert(error);
+            });
+        }
+
+        function sendEmail(hid, status, atype, email)
+        {
+            if (status == '완료') {
+                alert("조사를 완료했습니다. \발송 할 수 없습니다.");
+                return;
+            }
+            else if (status == '선정탈락') {
+                alert("선정탈락 가구입니다. \r발송 할 수 없습니다.");
+                return;
+            }
+
+            if (email == '') {
+                alert("이메일 연락처가 없습니다. \r발송 할 수 없습니다.");
+                return;
+            }
+
+
+            var infoText = email + ' 로 메일을 발송합니다. \r메일 주소가 맞습니까?';
+            if (confirm(infoText) == false) {
+                return;
+            }
+
+
+            $.post("./DirectSendEmail", {
+                "hid": hid, "email": email
+            }, function (result) {
+
+                if (result == '성공') {
+                    alert('메일 발송 완료');
+                    location.reload();
+                }
+                else {
+                    alert(result);
+                }
+            }).error(function (jqXHR, status, error) {
+                alert(status);
+                alert(error);
+            });
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css?version=5")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/jquery.chained.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    <div id="main" style="width:100%;">
+        <div class="buttonDiv">
+         
+            <input type="button" id="exit" class="infoButton" style="margin-right: 30px;float:right;" value="닫기" />
+        </div>
+        <div style="overflow-x:scroll;width:100%;">
+            @Html.Partial("HouseListPartial", Model)
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q221026_GETLISTResult>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "경기도 농촌기본소득 시범사업 조사";
+        ViewBag.idx = 1;
+
+        string[] tel = string.IsNullOrEmpty(ViewBag.집전화) == true ? new string[] { "" } : ViewBag.집전화.Trim().Split('-');
+        string[] phone = string.IsNullOrEmpty(ViewBag.휴대전화) == true ? new string[] { "" } : ViewBag.휴대전화.Trim().Split('-');
+
+
+    }
+
+    <script type="text/javascript">
+
+
+        
+        $(document).ready(function () {
+            
+        });
+
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/q210801/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    <div style="width : 100%;display: inline-block;">
+        @Html.Partial("CommonAddressSearchScript")
+
+        <table class="infoTable">
+            <tr>
+                <td class="tdValue">
+                    단지코드
+                </td>
+                <td class="tdValue3">
+                    @(ViewBag.단지코드)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="tdValue">
+                    단지명
+                </td>                
+                <td class="tdValue3" >
+                    @(ViewBag.단지명)
+                </td>
+            </tr>
+           
+        </table>
+       
+     
+        <div style="overflow-x:scroll;width:100%;">          
+            @Html.Action("PersonListPartial", "q221026", new { code = @ViewBag.code});         
+        </div>
+        
+    </div>
+</body>
+</html>

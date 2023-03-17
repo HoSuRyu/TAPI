@@ -1,0 +1,321 @@
+﻿@model TAPI_Interviewer.Models.SP_q221024_GETLISTResult
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "접촉 일지";
+    }
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("select[name='contact1']").val("@Model.컨택1차").attr("selected", "selected");
+            $("select[name='contact2']").val("@Model.컨택2차").attr("selected", "selected");
+            $("select[name='contact3']").val("@Model.컨택최종").attr("selected", "selected");
+
+            $("select[name='surveyTP']").val("@Model.설문참여유형").attr("selected", "selected");
+            $("select[name='weakYn']").val("@Model.주거약자주택여부").attr("selected", "selected");
+
+            $('#ok').click(function () {
+                saveContact('./List', false);
+            });
+
+            $('#survey_1').click(function () {
+
+                saveContact('./Survey_1?pid=@Model.pid', true);
+            });
+
+            $('#survey_2').click(function () {
+
+                saveContact('./Survey_2?pid=@Model.pid', true);
+            });
+
+            $('#cancel').click(function () {
+                window.location.href = './List';
+            });
+
+            selectChanged();
+        });
+
+        function selectChanged() {
+            var survaytp = $("select[name='surveyTP'] option:selected").text();
+            var survey1 = document.getElementById('survey_1');
+            var survey2 = document.getElementById('survey_2');
+            if (survaytp == "개별+심층") {
+                if ('@Model.개별진행상태' != "완료") {
+                    ChangeCss(survey1, survey2, false, true);
+                    survey2.style.disabled = true;
+                }
+                else if('@Model.개별진행상태'=="완료") {
+                    ChangeCss(survey1, survey2, true, true);
+                    survey1.style.disabled = false;
+                }
+            }
+            else if (survaytp == "개별만") {
+
+                ChangeCss(survey1, survey2, false);
+            }
+            else if (survaytp == "심층만") {
+
+
+                ChangeCss(survey1, survey2, true);
+
+            }
+        }
+
+        function ChangeCss(element1, element2, disaYN, bothYn = false) {
+
+            if (disaYN == true) {
+                element1.style.background = "#6c6c6c";
+                element1.style.color = "#ffffff";
+                element1.style.display = "none";
+                element2.style.background = "#ebf1de";
+                element2.style.color = "#6c6c6c";
+                element2.style.display = "inline";
+
+            }
+            else {
+                element1.style.background = "#ebf1de";
+                element1.style.color = "#6c6c6c";
+                element1.style.display = "inline";
+                element2.style.background = "#6c6c6c";
+                element2.style.color = "#ffffff";
+                element2.style.display = "none";
+            }
+
+            if (bothYn) {
+                element1.style.display = "inline";
+                element2.style.display = "inline";
+            }
+        }
+
+        function saveContact(url, isSurvey) {
+            var contactMonth = $("select[name='contactMonth'] option:selected").text();
+
+            var status1 = $("select[name='contact1'] option:selected").text();
+            var etc1 = $(":text[name='etc1']").val();
+
+            var status2 = $("select[name='contact2'] option:selected").text();
+            var etc2 = $(":text[name='etc2']").val();
+
+            var status3 = $("select[name='contact3'] option:selected").text();
+            var etc3 = $(":text[name='etc3']").val();
+
+            var etc = $(":text[name='etc']").val();
+            var num;
+            var weak;
+            var survaytp = $("select[name='surveyTP'] option:selected").text();
+
+
+
+            if ('@Model.공백리스트' == '1' || '@Model.공백리스트' == '2' ) {
+                num = $(":text[name='phoneNum1']").val()+"-" + $(":text[name='phoneNum2']").val() +"-"+ $(":text[name='phoneNum3']").val();
+            }
+            else {
+                num = '@Model.휴대폰번호';
+            }
+
+            if ('@Model.공백리스트' == '1' ) {
+                weak = $("select[name='weakYn'] option:selected").text();
+            }
+            else {
+                weak = '@Model.주거약자주택여부';
+            }
+
+
+            $.post("./ContactOK", { "pid": '@Model.pid', "status1": status1, "etc1": etc1, "status2": status2, "etc2": etc2, "status3": status3, "etc3": etc3, "etc": etc, "surveytype": survaytp, "phonenum": num, "weakYn": weak }, function (result) {
+                if (result == '') {
+                    window.location.href = url;
+                }
+                else {
+                    alert(result);
+                }
+            }).error(function (jqXHR, status, error) {
+                alert(status);
+                alert(error);
+            });
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    <table class="infoTable">
+        <tr>
+            <td class="tdHeader">
+                입주민 PID
+            </td>
+            <td class="tdValue tdValue3">
+                @Model.pid
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                단지명
+            </td>
+            <td class="tdValue tdValue3">
+                @Model.단지명
+            </td>
+        </tr>
+
+        <tr>
+            <td class="tdHeader">
+                주택유형
+            </td>
+            <td class="tdValue tdValue3">
+                @Model.공급유형
+            </td>
+        </tr>
+
+        <tr>
+            <td class="tdHeader">
+                휴대폰번호
+            </td>
+            <td class="tdValue tdValue3">
+                @if ("0".Equals(Model.공백리스트)) //# 휴대폰 번호 수정 불가능
+                {
+                    <span id="phoneNum" name="phoneNum">@Model.휴대폰번호</span>
+                }
+                else //# 휴대폰 번호 수정 가능
+                {
+                    string[] number = { "","",""};
+                    if(!string.IsNullOrWhiteSpace(Model.휴대폰번호))
+                    {
+                        number = Model.휴대폰번호.Split('-');
+                    }
+
+                    <input class="textbox" id="phoneNum1" name="phoneNum1" rows="1" style="width:5%;" type="text" value="@number[0]" maxlength="3" />
+                    <span>-</span>
+                    <input class="textbox" id="phoneNum2" name="phoneNum2" rows="1" style="width:5%;" type="text" value="@number[1]" maxlength="4" />
+                    <span>-</span>
+                    <input class="textbox" id="phoneNum3" name="phoneNum3" rows="1" style="width:5%;" type="text" value="@number[2]" maxlength="4" />
+                }
+                
+
+
+            </td>
+        </tr>
+
+        <tr>
+            <td class="tdHeader">
+                주거약자 여부
+            </td>
+            <td class="tdValue tdValue3">
+                @if ("1".Equals(Model.공백리스트)) //# 주거약자주택여부 수정 가능
+                {
+                    <select id="weakYn" name="weakYn" class="addr_select">
+                        <option value=""></option>
+                        <option value="Y">Y</option>
+                        <option value="N">N</option>
+                    </select>
+                }
+                else //# 주거약자주택여부 수정 불가능
+                {
+                    <span id="수정해야함" name="수정해야함">@Model.주거약자주택여부</span>
+                }
+            </td>
+        </tr>
+
+        <tr>
+            <td class="tdHeader">
+                1차 컨택 사유
+            </td>
+            <td class="tdValue tdValue3">
+                <select id="contact1" name="contact1" class="addr_select">
+                    <option value=""></option>
+                    <option value="성공">성공</option>
+                    <option value="안받음">안받음</option>
+                    <option value="다시 연락 요청">다시 연락 요청</option>
+                    <option value="거절">거절</option>
+                    <option value="잘못된 번호/결혼">잘못된 번호/결혼</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                기타 사유
+            </td>
+            <td class="tdValue tdValue3">
+                <input class="textbox" id="etc1" name="etc1" rows="1" style="width:60%;" type="text" value="@Model.컨택1차특이사항" maxlength="100" />
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                2차 컨택 사유
+            </td>
+            <td class="tdValue tdValue3">
+                <select id="contact2" name="contact2" class="addr_select">
+                    <option value=""></option>
+                    <option value="성공">성공</option>
+                    <option value="안받음">안받음</option>
+                    <option value="다시 연락 요청">다시 연락 요청</option>
+                    <option value="거절">거절</option>
+                    <option value="잘못된 번호/결혼">잘못된 번호/결혼</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                기타 사유
+            </td>
+            <td class="tdValue tdValue3">
+                <input class="textbox" id="etc2" name="etc2" rows="1" style="width:60%;" type="text" value="@Model.컨택2차특이사항" maxlength="100" />
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                최종 컨택 사유
+            </td>
+            <td class="tdValue tdValue3">
+                <select id="contact3" name="contact3" class="addr_select">
+                    <option value=""></option>
+                    <option value="면접 진행">면접 진행</option>
+                    <option value="비진행">비진행</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                기타 사유
+            </td>
+            <td class="tdValue tdValue3">
+                <input class="textbox" id="etc3" name="etc3" rows="1" style="width:60%;" type="text" value="@Model.컨택최종특이사항" maxlength="100" />
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                특이 사항
+            </td>
+            <td class="tdValue tdValue3">
+                <input class="textbox" id="etc" name="etc" rows="1" style="width:60%;" type="text" value="@Model.특이사항" maxlength="100" />
+            </td>
+        </tr>
+        <tr>
+            <td class="tdHeader">
+                설문 참여 유형
+            </td>
+            <td class="tdValue tdValue3">
+                <select id="surveyTP" name="surveyTP" class="addr_select"  onchange="selectChanged()" >
+                    <option value=""></option>
+                    <option value="개별+심층">개별+심층</option>
+                    <option value="개별만">개별만</option>
+                    <option value="심층만">심층만</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+
+    <div class="buttonDiv">
+        <center>
+            <input type="button" id="ok" class="infoButton" value="저장 후 종료" />
+            <input type="button" id="survey_1" class="infoButton" value="개별설문응답"  />
+            <input type="button" id="survey_2" class="infoButton" value="심층설문응답" />
+            <input type="button" id="cancel" class="infoButton" value="나가기" />
+        </center>
+    </div>
+</body>
+</html>

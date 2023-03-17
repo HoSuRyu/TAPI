@@ -1,0 +1,48 @@
+﻿@model TAPI_Interviewer.Models.Project.ProgressCount
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    
+
+        $('#goArea').click(function () {
+            window.location.href = './List';
+        });
+
+        $('#goAPT').click(function () {
+            window.location.href = './ListAPT';            
+        });
+
+        $('#goETC').click(function () {
+            window.location.href = './ListETC';            
+        });
+    });
+</script>
+
+<div class="bd_titbox">
+    <div class="btnbox">
+        <div class="li_stat" style="display: inline-block;" id="goArea">조사구</div>
+        <div class="li_stat" style="display: inline-block;" id="goAPT">신축아파트</div>
+        <div class="li_stat" style="display: inline-block;" id="goETC">주택 외 거처</div>
+
+    </div>
+    <div class="filterbox">
+        @{
+            if (Model == null)
+            {
+                <div class="txt_prog">배부: 00</div>
+                <div class="txt_prog">진행: 00</div>
+                <div class="txt_prog">완료: 00</div>
+            }
+            else
+            {
+                <div class="txt_prog">배부: @Model.All</div>
+                <div class="txt_prog">진행: @Model.Ing</div>
+                <div class="txt_prog">완료: @Model.End</div>
+            }
+        }
+    </div>
+</div>
+
+
+

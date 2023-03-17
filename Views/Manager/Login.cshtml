@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "한국리서치 TAPI 면접원등록";
+}
+
+<link href="@Url.Content("../../Content/Login.css")" rel="stylesheet" type="text/css" />
+<div id="title">
+    <img src="../../images/emblemorange.png" width="140" height="126" /><img src="../../images/logoorange.png" width="306" height="106" />@*@ViewBag.Title*@
+</div>
+
+<div id="login">
+    @using (Html.BeginForm("Login", "Manager", FormMethod.Post))
+    {
+        <div class="uid_container">
+            <input type="text" name="uid" placeholder="이름" value="@ViewBag.Uid" tabindex="1" />
+        </div>
+        <div class="button_container">
+            <input type="submit" id="sign_in_button" value="로그인" tabindex="3" autocomplete="off" />
+        </div>
+        <div class="password_container">
+            <input type="password" name="password" placeholder="사원번호" value="@ViewBag.Password" tabindex="2" />
+        </div>
+        
+        if (ViewBag.Error != null &&
+            string.IsNullOrEmpty(ViewBag.Error.ToString()) == false)
+        {
+            <div id="message">
+                @ViewBag.Error
+            </div>
+        }
+    }
+</div>

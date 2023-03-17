@@ -1,0 +1,768 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 88.625, 69.375" name="DataClasses1">
+  <DataContextMoniker Name="/TAPIDataContext" />
+  <nestedChildShapes>
+    <classShape Id="612a4be9-86fa-41dd-9dbe-1d3f1819275b" absoluteBounds="0.5, 0.5, 2, 2.3478011067708335">
+      <DataClassMoniker Name="/TAPIDataContext/T_Memo" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5d94d7bc-ef06-4ed0-84e4-af2714a55b51" absoluteBounds="0.51500000000000057, 0.96, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="b090c7bc-7c51-43ef-b285-c2bff1a48e8c" absoluteBounds="5.25, 20.25, 2, 2.5401025390625">
+      <DataClassMoniker Name="/TAPIDataContext/q210991_CountList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4e1179e6-b691-4d7a-92c2-adcb16aebd6c" absoluteBounds="5.2650000000000006, 20.71, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="fcd3176e-c616-4fec-8276-fa9fafa7a68f" absoluteBounds="5.25, 23, 2, 2.5401025390625">
+      <DataClassMoniker Name="/TAPIDataContext/q210991_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3c5e66d0-1941-430f-8738-a7f8dc3e0873" absoluteBounds="5.2650000000000006, 23.46, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="6066e6bd-1c08-45f3-b683-3ccda1f13d01" absoluteBounds="5.375, 25.75, 2, 3.1170068359375">
+      <DataClassMoniker Name="/TAPIDataContext/q210991_Replace" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d505eb45-db94-43ae-b8e5-cbed431a2d06" absoluteBounds="5.3900000000000006, 26.21, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="06ff5519-3c08-458e-a0bc-1494b454e110" absoluteBounds="7.5, 0.5, 2, 5.0400211588541657">
+      <DataClassMoniker Name="/TAPIDataContext/q220134_HouseList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d9c7e129-108e-4abc-ac3a-b6ee81694f73" absoluteBounds="7.5150000000000006, 0.96, 1.9700000000000002, 4.4800211588541661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="4595681a-185a-4a1f-ac50-189b4f4e39b2" absoluteBounds="7.5, 5.625, 2, 3.3093082682291666">
+      <DataClassMoniker Name="/TAPIDataContext/q220134_PersonList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6020c103-15af-4a20-b20c-11b829a68fe9" absoluteBounds="7.5150000000000006, 6.085, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="adcdf8b1-a06e-4bef-9ba8-65dcfbfc6f74" absoluteBounds="9.875, 13.625, 2, 3.3093082682291666">
+      <DataClassMoniker Name="/TAPIDataContext/KLIPS2022_PersonList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d3a106ef-fced-432b-926f-259d6b41ba91" absoluteBounds="9.89, 14.085, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="dbbd9a62-f76a-4325-8412-8d3e1ed40f32" absoluteBounds="10, 17.125, 2, 3.8862125651041666">
+      <DataClassMoniker Name="/TAPIDataContext/KLIPS2022_SplitHouseList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="60137cbb-7819-4cb5-a657-2b8a937ba376" absoluteBounds="10.015, 17.585, 1.9700000000000002, 3.3262125651041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="07f331c5-17b7-4910-9fde-928acc2b0f56" absoluteBounds="10.125, 21.125, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/TAPIDataContext/KLIPS2022_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="191e8f0a-8328-488a-9743-4ede7fb70cce" absoluteBounds="10.14, 21.585, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="6f4ce577-c69e-4a4b-9050-dfaaa9cb3814" absoluteBounds="10.125, 24.125, 2, 4.4631168619791666">
+      <DataClassMoniker Name="/TAPIDataContext/KLIPS2022_Transfer" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8b526bc6-8e34-4436-96d4-da72c4f8e644" absoluteBounds="10.14, 24.585, 1.9700000000000002, 3.903116861979167" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9a3b785e-3b2a-4537-b2c9-09422ef10b9b" absoluteBounds="9.75, 0.5, 2, 13.116681315104165">
+      <DataClassMoniker Name="/TAPIDataContext/KLIPS2022_HouseList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e747d485-552c-4231-9a8a-eca7f742e5ae" absoluteBounds="9.765, 0.96, 1.9700000000000002, 12.556681315104166" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="143fafd1-6c63-4ff1-ae5e-11e0a574aee1" absoluteBounds="12, 0.5, 2, 6.9630354817708326">
+      <DataClassMoniker Name="/TAPIDataContext/q220674_4_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b688e3b9-23c9-45c9-86a0-07fb53756365" absoluteBounds="12.015, 0.96, 1.9700000000000002, 6.403035481770833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="71dcd7ac-c5e6-4a20-a126-c98be3a67c49" absoluteBounds="14.125, 0.625, 2, 20.231834309895834">
+      <DataClassMoniker Name="/TAPIDataContext/q220677_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="17d9bd6a-4155-4cb9-a798-2d65b64439d2" absoluteBounds="14.14, 1.085, 1.9700000000000002, 19.671834309895832" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="bcaf38e7-8c25-4d7d-82ba-16ef5b89922b" absoluteBounds="14.125, 21, 2, 2.5401025390625">
+      <DataClassMoniker Name="/TAPIDataContext/q220677_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="00d4edbd-d48a-4aad-a803-c99e30a586e6" absoluteBounds="14.14, 21.46, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="8de4ce8a-18dc-4d05-836f-51eba153de01" absoluteBounds="14.125, 23.625, 2, 2.5401025390625">
+      <DataClassMoniker Name="/TAPIDataContext/q220677_Replace" />
+      <nestedChildShapes>
+        <elementListCompartment Id="11ad7ea9-377f-4841-ac9d-f2772444fbcf" absoluteBounds="14.14, 24.085, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="410c16f9-b9b3-4eb1-bee0-660ebdbe3497" absoluteBounds="14.125, 26.25, 2, 3.5016097005208326">
+      <DataClassMoniker Name="/TAPIDataContext/q220677_Transfer" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a2375559-4a44-449d-b1ba-8de2459f2776" absoluteBounds="14.14, 26.71, 1.9700000000000002, 2.941609700520833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c17d7e62-e681-4f19-9ae8-e7f972433f5f" absoluteBounds="16.25, 10.375, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/TAPIDataContext/q220557_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="467763af-7c62-4472-b6a8-a295fe557f15" absoluteBounds="16.265, 10.835, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3a1f15f5-c49b-4102-b48c-c7b4f367d167" absoluteBounds="18.5, 0.5, 2, 9.4629541015625">
+      <DataClassMoniker Name="/TAPIDataContext/HOUSE2022_AreaList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="eb920e2b-6a92-4cd4-9586-7ce1d97b4a86" absoluteBounds="18.514999999999986, 0.96, 1.9700000000000002, 8.9029541015625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3c89043d-470b-48dc-bb70-2a17ec554760" absoluteBounds="18.5, 10.125, 2, 10.0398583984375">
+      <DataClassMoniker Name="/TAPIDataContext/HOUSE2022_HouseList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="196e09ed-d569-4a75-ac37-5e3d16688525" absoluteBounds="18.514999999999986, 10.585, 1.9700000000000002, 9.4798583984375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="63441448-229e-4533-8054-923459f015d8" absoluteBounds="18.5, 20.25, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/TAPIDataContext/HOUSE2022_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7261b394-59da-48c0-b105-03578225b1e2" absoluteBounds="18.514999999999986, 20.71, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="85c5821e-40fb-4ecf-8588-5e28b4b5544a" absoluteBounds="20.5, 0.5, 2, 9.0783512369791648">
+      <DataClassMoniker Name="/TAPIDataContext/HOUSE2022_APTList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="9c540e57-e58e-4c5f-9150-1819df52b0a5" absoluteBounds="20.514999999999986, 0.96, 1.9700000000000002, 8.5183512369791661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="80965c52-1bd0-44b9-87f9-c34784eb0312" absoluteBounds="20.5, 10.125, 2, 6.0015283203125">
+      <DataClassMoniker Name="/TAPIDataContext/HOUSE2022_APTHouseList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="81f88c8d-f69f-4e06-ab2a-2cc84ac22b16" absoluteBounds="20.514999999999986, 10.585, 1.9700000000000002, 5.4415283203125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="cc6379aa-7feb-499a-860d-cc068ed2900d" absoluteBounds="22.5, 0.5, 2, 8.5014469401041666">
+      <DataClassMoniker Name="/TAPIDataContext/HOUSE2022_EtcList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e8d208bb-f3e2-45cb-8e9c-dceafe226802" absoluteBounds="22.514999999999986, 0.96, 1.9700000000000002, 7.941446940104167" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="1419439a-3113-449a-bd3f-9222821cca78" absoluteBounds="24.875, 0.5, 2, 6.7707340494791657">
+      <DataClassMoniker Name="/TAPIDataContext/q220614_AreaList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="175bfbf6-576d-4921-84c4-602c78e4cba4" absoluteBounds="24.889999999999986, 0.96, 1.9700000000000002, 6.2107340494791661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="6b6288a5-1b00-455d-aa27-cefe79fe523c" absoluteBounds="24.875, 7.375, 2, 6.5784326171875">
+      <DataClassMoniker Name="/TAPIDataContext/q220614_HouseList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3927dbf1-bbca-4d37-a9ac-39bc040ab5b2" absoluteBounds="24.889999999999986, 7.8350000000000009, 1.9700000000000002, 6.0184326171875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="e474d489-15b7-43c8-a79f-aefd9a2fa051" absoluteBounds="24.875, 14, 2, 4.4631168619791666">
+      <DataClassMoniker Name="/TAPIDataContext/q220614_PersonList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="522c29ab-13cd-4ebe-bc70-c1084f11aeac" absoluteBounds="24.889999999999986, 14.46, 1.9700000000000002, 3.903116861979167" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="0181a035-841c-4478-848a-2365c5d75cdd" absoluteBounds="24.875, 18.625, 2, 2.3478011067708335">
+      <DataClassMoniker Name="/TAPIDataContext/q220614_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2d1c80b2-579b-4f2e-b09f-6482ef93fccc" absoluteBounds="24.889999999999986, 19.085, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="30fe1e65-71c2-448e-a44f-4bfc0e45919e" absoluteBounds="24.875, 21.125, 2, 2.9247054036458331">
+      <DataClassMoniker Name="/TAPIDataContext/q220614_Replace" />
+      <nestedChildShapes>
+        <elementListCompartment Id="bda24b47-17a4-4213-8d75-ad5c254ed538" absoluteBounds="24.889999999999986, 21.585, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d356a176-40c5-4900-8fb6-e75f2e281d95" absoluteBounds="29.125, 0.5, 2, 15.424298502604165">
+      <DataClassMoniker Name="/TAPIDataContext/q220678_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="07dd162d-5aae-4b0d-a581-333e5b3b0dde" absoluteBounds="29.139999999999986, 0.96, 1.9700000000000002, 14.864298502604166" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3190765e-ad41-46b8-a843-ceaa944925fa" absoluteBounds="29.125, 16.125, 2, 2.5401025390625">
+      <DataClassMoniker Name="/TAPIDataContext/q220678_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6840df53-3fd4-4d1f-bbb1-f41cc7f74afb" absoluteBounds="29.139999999999986, 16.585, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="18e336be-04cb-4ff5-bd41-da0ef3b2799e" absoluteBounds="29.125, 18.75, 2, 2.5401025390625">
+      <DataClassMoniker Name="/TAPIDataContext/q220678_Replace" />
+      <nestedChildShapes>
+        <elementListCompartment Id="f7c8a09c-c8c8-42e3-87c7-070df42c4280" absoluteBounds="29.139999999999986, 19.21, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="cc19a532-2684-4ad7-ba87-296cc9ee5248" absoluteBounds="29.125, 21.5, 2, 3.5016097005208326">
+      <DataClassMoniker Name="/TAPIDataContext/q220678_Transfer" />
+      <nestedChildShapes>
+        <elementListCompartment Id="9da78d84-d992-415c-b971-ddc883f2007c" absoluteBounds="29.139999999999986, 21.96, 1.9700000000000002, 2.941609700520833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="08a6ad0e-ed16-4cb8-b486-5d45e178d177" absoluteBounds="27, 0.5, 2, 7.7322412109375005">
+      <DataClassMoniker Name="/TAPIDataContext/q220674_5_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="daf864c4-e314-4336-891a-d6b8661a16b9" absoluteBounds="27.014999999999986, 0.96, 1.9700000000000002, 7.1722412109375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="69f0ef50-e5b3-4050-a432-c643ef957e65" absoluteBounds="16.375, 0.5, 2, 9.2706526692708326">
+      <DataClassMoniker Name="/TAPIDataContext/q220557_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d7f48579-14e5-45c0-a09e-17fcaa959563" absoluteBounds="16.39, 0.96, 1.9700000000000002, 8.7106526692708321" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="58a4652e-726d-4ee7-bbf8-ea15140694e4" absoluteBounds="22.5, 10.125, 2, 11.385968424479165">
+      <DataClassMoniker Name="/TAPIDataContext/HOUSE2022_EtcHouseList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8485ff17-8a24-4eb0-962d-6058ffb1c070" absoluteBounds="22.514999999999986, 10.585, 1.9700000000000002, 10.825968424479166" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="cea7a73e-994f-4175-b834-f0b24bb2267e" absoluteBounds="16.375, 13.375, 2, 1.3862939453125">
+      <DataClassMoniker Name="/TAPIDataContext/q220557_UnameList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0c9a4b13-e0ee-4b60-badc-00ede9d55e22" absoluteBounds="16.39, 13.835, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9e5c9b01-1225-4060-a955-92a2951f5209" absoluteBounds="27, 8.375, 2, 7.7322412109375005">
+      <DataClassMoniker Name="/TAPIDataContext/q220674_6_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="aa5ea2cd-4521-4ee6-afc0-c0acb5c0f00d" absoluteBounds="27.014999999999986, 8.835, 1.9700000000000002, 7.1722412109375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="07bd1eb9-d256-4c5b-a826-4215bd397849" absoluteBounds="31.375, 0.5, 2, 4.2708154296875">
+      <DataClassMoniker Name="/TAPIDataContext/q220817_AreaList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="af0a4e84-f1fd-4e70-aea4-d956b5af5782" absoluteBounds="31.389999999999986, 0.96, 1.9700000000000002, 3.7108154296875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="6a52dd83-8e6f-4501-b61d-a88d914fa28d" absoluteBounds="31.375, 4.875, 2, 1.3862939453125">
+      <DataClassMoniker Name="/TAPIDataContext/q220817_PersonList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c18f99df-e9cb-43ad-a070-0ab4f056ede6" absoluteBounds="31.389999999999986, 5.335, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c1ec771c-a6c9-4b6c-8df2-5fbee42bff4f" absoluteBounds="33.5, 0.5, 2, 5.8092268880208326">
+      <DataClassMoniker Name="/TAPIDataContext/q220818_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8c8a7c0f-7a3f-4dbf-bb91-724b490e065a" absoluteBounds="33.514999999999986, 0.96, 1.9700000000000002, 5.249226888020833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9ac23995-6b98-456e-b07b-6c9cd52487ba" absoluteBounds="35.625, 6.75, 2, 3.8862125651041666">
+      <DataClassMoniker Name="/TAPIDataContext/q220615_HouseList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0bdea295-9ad2-423c-af30-a2fe7fb0970a" absoluteBounds="35.639999999999986, 7.2100000000000009, 1.9700000000000002, 3.3262125651041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c1a5f066-4600-427f-91a5-6d139c24207f" absoluteBounds="35.625, 10.75, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/TAPIDataContext/q220615_PersonList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c66a0680-04d4-4cc8-9d8b-b1f7b36a7dd5" absoluteBounds="35.639999999999986, 11.21, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="1b487818-8dda-4724-9079-dcb56f3c8692" absoluteBounds="35.625, 13.625, 2, 2.9247054036458331">
+      <DataClassMoniker Name="/TAPIDataContext/q220615_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="943fc5a0-d983-4092-a307-551bd64201a8" absoluteBounds="35.639999999999986, 14.085, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="5f4ad11a-8439-438d-af66-af05b0cc63ab" absoluteBounds="35.625, 16.625, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/TAPIDataContext/q220615_Replace" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3b44d7ed-a294-482e-b0af-84bcbab899f7" absoluteBounds="35.639999999999986, 17.085, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="6b86518c-bd84-4615-b9af-b5642b3b9696" absoluteBounds="37.75, 10.625, 2, 3.8862125651041666">
+      <DataClassMoniker Name="/TAPIDataContext/q220945_PersonList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="46fda743-5792-425e-a331-a6520662ff34" absoluteBounds="37.764999999999986, 11.085, 1.9700000000000002, 3.3262125651041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="25072f79-6fbd-4dcd-b9bd-5a8d42c00032" absoluteBounds="37.75, 14.625, 2, 3.3093082682291666">
+      <DataClassMoniker Name="/TAPIDataContext/q220945_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="abe6b56d-7e30-4644-a2a4-54b3442c0132" absoluteBounds="37.764999999999986, 15.085, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="55eedb87-183a-4f8b-9e0a-43663c5aeebc" absoluteBounds="37.75, 18.125, 2, 2.5401025390625">
+      <DataClassMoniker Name="/TAPIDataContext/q220945_HouseContact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="9bca3e13-d785-4674-8203-1da4a314fd96" absoluteBounds="37.764999999999986, 18.585, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="45577ddc-64ca-45e5-9942-8ea9c5fe8837" absoluteBounds="37.75, 20.875, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/TAPIDataContext/q220945_Replace" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d1570135-8703-4f79-8659-c213b049a8d6" absoluteBounds="37.764999999999986, 21.335, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="f3aef406-06a4-4e45-a7e2-f2ef19b43438" absoluteBounds="35.625, 0.5, 2, 6.3861311848958326">
+      <DataClassMoniker Name="/TAPIDataContext/q220615_AreaList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="cb939974-c66b-4723-83d2-8dbdb032bdd3" absoluteBounds="35.639999999999986, 0.96, 1.9700000000000002, 5.826131184895833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="60a37a99-dde4-4a0f-a765-62a7503bc9b3" absoluteBounds="42, 0.5, 2, 4.6554182942708326">
+      <DataClassMoniker Name="/TAPIDataContext/q220850_AreaList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ce4f4c90-b122-4e23-8861-21822abd9a8a" absoluteBounds="42.014999999999986, 0.96, 1.9700000000000002, 4.095418294270833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d3535c45-c534-46b6-aff2-3c121b880029" absoluteBounds="42, 5.25, 2, 2.3478011067708335">
+      <DataClassMoniker Name="/TAPIDataContext/q220850_PersonList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="257d0d11-751a-48fc-8877-92222e95cac9" absoluteBounds="42.014999999999986, 5.71, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="163298ba-47b9-45b4-84a7-cc50e2449eb6" absoluteBounds="42, 7.75, 2, 1.9631982421875">
+      <DataClassMoniker Name="/TAPIDataContext/q220850_Covid19" />
+      <nestedChildShapes>
+        <elementListCompartment Id="f8deafe3-883c-49cc-9680-e492564d2c37" absoluteBounds="42.014999999999986, 8.21, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="e644ac5e-2a8d-47ab-b3fb-406c4a2633be" absoluteBounds="39.875, 0.5, 2, 5.8092268880208326">
+      <DataClassMoniker Name="/TAPIDataContext/q221024_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0e4db1d2-d9ac-4f03-b3e1-000877b0cbce" absoluteBounds="39.889999999999986, 0.96, 1.9700000000000002, 5.249226888020833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3aace429-8366-44d0-9c5e-8211b9d4cab8" absoluteBounds="37.75, 6.25, 2, 4.0785139973958326">
+      <DataClassMoniker Name="/TAPIDataContext/q220945_HouseList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="aec35376-e474-48c3-a589-5e8a017b3309" absoluteBounds="37.764999999999986, 6.71, 1.9700000000000002, 3.518513997395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="2d829686-dfb8-4320-920a-c30f80b9b15d" absoluteBounds="27, 16.25, 2, 7.7322412109375005">
+      <DataClassMoniker Name="/TAPIDataContext/q220674_7_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8335ba10-9dcd-401c-9763-43e9c57c570c" absoluteBounds="27.014999999999986, 16.71, 1.9700000000000002, 7.1722412109375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d5905253-1175-4b90-a4f7-0a489a6691c4" absoluteBounds="44.125, 0.5, 2, 6.0015283203125">
+      <DataClassMoniker Name="/TAPIDataContext/q221026_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="692fa7eb-0446-4714-8d58-313ba7059d5f" absoluteBounds="44.139999999999986, 0.96, 1.9700000000000002, 5.4415283203125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="443af8d8-4784-43e7-a7bc-f49bce85b9c4" absoluteBounds="37.75, 0.5, 2, 5.2323225911458326">
+      <DataClassMoniker Name="/TAPIDataContext/q220945_AreaList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="dcc699fd-53a6-449a-8972-12b5dc13173f" absoluteBounds="37.764999999999986, 0.96, 1.9700000000000002, 4.672322591145833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="fa81542b-afff-474e-9b18-7ab3c6b71b92" absoluteBounds="46.25, 9, 2, 4.0785139973958326">
+      <DataClassMoniker Name="/TAPIDataContext/q221081_Split" />
+      <nestedChildShapes>
+        <elementListCompartment Id="19b9fc8f-0af7-4209-a089-7b4b601f1d92" absoluteBounds="46.264999999999986, 9.46, 1.9700000000000002, 3.518513997395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9e916654-4076-45d5-91e2-a710848fa1d3" absoluteBounds="46.25, 6.25, 2, 2.5401025390625">
+      <DataClassMoniker Name="/TAPIDataContext/q221081_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="f8722f9e-d6ac-4089-bd7e-ad475b49647d" absoluteBounds="46.264999999999986, 6.71, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="df6d4ff1-e848-47b9-9f03-977e65578993" absoluteBounds="46.25, 13.25, 2, 3.6939111328124996">
+      <DataClassMoniker Name="/TAPIDataContext/q221081_Transfer" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a9757671-f2c8-476f-bd22-672e68407f08" absoluteBounds="46.264999999999986, 13.71, 1.9700000000000002, 3.1339111328125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="05b70830-34ab-473c-8d7f-6a802706a3f2" absoluteBounds="48.5, 5.125, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/TAPIDataContext/q220810_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="46b9c81f-3e9c-4af8-a023-646e13b6fab8" absoluteBounds="48.514999999999986, 5.585, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="1e4fe4a3-13e2-473d-a671-6c580a7de2e7" absoluteBounds="29.125, 25.125, 2, 7.7322412109375005">
+      <DataClassMoniker Name="/TAPIDataContext/q220674_8_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a9968104-36b3-4c3f-b84f-848f26192018" absoluteBounds="29.139999999999986, 25.585, 1.9700000000000002, 7.1722412109375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="47934a7e-7742-4f84-84a4-0ee69c086c52" absoluteBounds="50.5, 11.875, 2, 2.5401025390625">
+      <DataClassMoniker Name="/TAPIDataContext/q220846_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8cab314c-8b97-43d0-a0cb-7e42bf3af65f" absoluteBounds="50.514999999999986, 12.335, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="69847a20-d469-4c27-82e8-d8c745564569" absoluteBounds="50.625, 0.5, 2, 5.8092268880208326">
+      <DataClassMoniker Name="/TAPIDataContext/q220846_AreaList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a3c673c1-878d-4dcb-93a9-914ea0fdda71" absoluteBounds="50.639999999999986, 0.96, 1.9700000000000002, 5.249226888020833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c1139b23-c6a5-4897-8c76-35ba5927e51b" absoluteBounds="50.625, 6.375, 2, 5.4246240234375">
+      <DataClassMoniker Name="/TAPIDataContext/q220846_HouseList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="137758c1-225c-4946-8e8d-5ff36ab76db4" absoluteBounds="50.639999999999986, 6.835, 1.9700000000000002, 4.8646240234375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3d29544c-77c9-4f2a-a840-deac307ac830" absoluteBounds="50.625, 15, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/TAPIDataContext/q220846_Replace" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0c666762-0027-4483-abe4-461fc4ad9d66" absoluteBounds="50.639999999999986, 15.46, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="f41a5d19-322b-4718-99ad-970637390a4d" absoluteBounds="48.5, 0.625, 2, 4.2708154296875">
+      <DataClassMoniker Name="/TAPIDataContext/q220810_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3614f4fd-8359-4758-b3f8-a010d11b4aa3" absoluteBounds="48.514999999999986, 1.085, 1.9700000000000002, 3.7108154296875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="18a675e0-ddf7-4409-9189-1ddfcb63d7f1" absoluteBounds="46.25, 0.625, 2, 6.1938297526041657">
+      <DataClassMoniker Name="/TAPIDataContext/q221081_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="af8181eb-3c7b-4fd0-8a7a-95ec7d81d0e4" absoluteBounds="46.264999999999986, 1.085, 1.9700000000000002, 5.6338297526041661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="ef004a7c-8828-4ad4-8e72-fb80228cdd90" absoluteBounds="52.75, 10.5, 2, 2.5401025390625">
+      <DataClassMoniker Name="/TAPIDataContext/q221228_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2756e738-b852-4477-b314-81df15078823" absoluteBounds="52.764999999999986, 10.96, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="b456b984-1b20-432f-893c-4026c3e9e8fc" absoluteBounds="53, 1, 2, 9.8475569661458326">
+      <DataClassMoniker Name="/TAPIDataContext/q221228_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1763dd9e-8d8d-4086-a1c4-b9a9928cec29" absoluteBounds="53.014999999999986, 1.46, 1.9700000000000002, 9.2875569661458321" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="beb3eac8-8f5b-4c32-9be5-041014987685" absoluteBounds="55.25, 0.625, 2, 7.5399397786458326">
+      <DataClassMoniker Name="/TAPIDataContext/q220807_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="cde9ff1a-24ee-4169-937c-b743050e75e4" absoluteBounds="55.264999999999986, 1.085, 1.9700000000000002, 6.979939778645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c2e4d175-1370-4795-aac7-b850f1c61c8b" absoluteBounds="57.375, 0.5, 2, 5.2323225911458326">
+      <DataClassMoniker Name="/TAPIDataContext/q221150_AreaList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2d0d9c05-e475-4567-9266-dc31793d71be" absoluteBounds="57.389999999999986, 0.96, 1.9700000000000002, 4.672322591145833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="2b7f9cc0-73ae-46df-a67d-cbeb7a31f106" absoluteBounds="57.5, 17.625, 2, 2.5401025390625">
+      <DataClassMoniker Name="/TAPIDataContext/q221150_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8cfc9d91-9405-4e36-bfb1-2c5eca29ec89" absoluteBounds="57.514999999999986, 18.085, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="40f16aef-3fbf-4403-81e5-2149de4cf41d" absoluteBounds="57.375, 6.125, 2, 7.7322412109375005">
+      <DataClassMoniker Name="/TAPIDataContext/q221150_HouseList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="fe6b5264-83a5-4f96-99b6-67b2cbab420d" absoluteBounds="57.389999999999986, 6.585, 1.9700000000000002, 7.1722412109375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a621b1b9-d6b6-4923-bea6-74367898d5b4" absoluteBounds="57.375, 14.125, 2, 2.9247054036458331">
+      <DataClassMoniker Name="/TAPIDataContext/q221150_PersonList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ff3f4e48-d267-4ccd-903c-06ea736a7798" absoluteBounds="57.389999999999986, 14.585, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="70c48d3a-7098-44de-bd40-b200c05f0281" absoluteBounds="59.75, 13.5, 2, 2.5401025390625">
+      <DataClassMoniker Name="/TAPIDataContext/q220486_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4e376f53-4e13-4b42-927c-bc1115e16d1d" absoluteBounds="59.764999999999986, 13.96, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="093843cc-af4e-4f22-b570-ff6eec0cdc47" absoluteBounds="59.75, 16.25, 2, 3.3093082682291666">
+      <DataClassMoniker Name="/TAPIDataContext/q220486_Replace" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6e3e8fad-34dc-4755-838c-b89a06731642" absoluteBounds="59.764999999999986, 16.71, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="405dabb9-3434-4f86-a3ab-997bb4108962" absoluteBounds="57.5, 20.375, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/TAPIDataContext/q221150_Replace" />
+      <nestedChildShapes>
+        <elementListCompartment Id="40aff5cc-f3d1-46a1-a17f-21b26d19b6cc" absoluteBounds="57.514999999999986, 20.835, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="518fc6a5-9e5a-47a6-b036-090def5146ef" absoluteBounds="27.5, 24.875, 2, 7.7322412109375005">
+      <DataClassMoniker Name="/TAPIDataContext/q220674_9_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="39232902-2c56-462e-bbf7-78edecb34d9c" absoluteBounds="27.514999999999986, 25.335, 1.9700000000000002, 7.1722412109375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="4f74257a-0e45-4fda-b5a2-4553bc479d1f" absoluteBounds="62.125, 7.375, 2, 3.1170068359375">
+      <DataClassMoniker Name="/TAPIDataContext/q221454_PersonList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8b077f67-f3cb-4da4-b73c-eea0dd3bc41e" absoluteBounds="62.139999999999986, 7.8350000000000009, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="0bd36055-854c-4b63-81d4-67ef30c85c53" absoluteBounds="62.25, 0.875, 2, 6.7707340494791657">
+      <DataClassMoniker Name="/TAPIDataContext/q221454_DongList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="89ad19b4-5a26-4263-b938-f08966dccf96" absoluteBounds="62.264999999999986, 1.335, 1.9700000000000002, 6.2107340494791661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="6550131a-ee18-488a-844e-c9067906ce50" absoluteBounds="62, 10.625, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/TAPIDataContext/q221454_Replace" />
+      <nestedChildShapes>
+        <elementListCompartment Id="08c8d49a-10e3-4af6-90f9-12dff93606ee" absoluteBounds="62.014999999999986, 11.085, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="dcda1bf0-8af1-42a8-9914-d07974935435" absoluteBounds="64.375, 0.625, 2, 19.654930013020834">
+      <DataClassMoniker Name="/TAPIDataContext/q221264_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="af0d2139-426d-433e-9fa2-b39a1d034626" absoluteBounds="64.389999999999986, 1.085, 1.9700000000000002, 19.094930013020832" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="ef85a1c2-0d46-4366-8d0d-4d36030cec5e" absoluteBounds="64.375, 20.5, 2, 2.5401025390625">
+      <DataClassMoniker Name="/TAPIDataContext/q221264_Replace" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0ebfc055-bfed-4dce-9bca-52e31dc2d48e" absoluteBounds="64.389999999999986, 20.96, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="844ffefd-d268-4c2c-aa83-507e60fdaced" absoluteBounds="64.5, 23.25, 2, 3.5016097005208326">
+      <DataClassMoniker Name="/TAPIDataContext/q221264_Transfer" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3b315f41-cd7d-4cd1-bac7-9c1677662b24" absoluteBounds="64.514999999999986, 23.71, 1.9700000000000002, 2.941609700520833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="e9a5cb29-81ae-49ba-9b43-1a56501dfc7a" absoluteBounds="64.5, 26.875, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/TAPIDataContext/q221264_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="43946ecf-bceb-4e1a-93db-9bb84c8cb08a" absoluteBounds="64.514999999999986, 27.335, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a897fa2e-17db-4c83-998e-ee0103abead2" absoluteBounds="66.625, 7, 2, 2.9247054036458331">
+      <DataClassMoniker Name="/TAPIDataContext/q221643_PersonList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="51bc5157-a4f1-4081-8dd0-1f3b93f2126d" absoluteBounds="66.639999999999986, 7.4600000000000009, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9509a809-818d-4edb-ba7c-9628f85e1aac" absoluteBounds="66.625, 0.625, 2, 6.5784326171875">
+      <DataClassMoniker Name="/TAPIDataContext/q221643_DongList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="fc41473e-fb7b-4e44-9d4c-200e64b7c2a7" absoluteBounds="66.639999999999986, 1.085, 1.9700000000000002, 6.0184326171875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d4f98b69-63f1-4598-b3a0-2a58743dcfe8" absoluteBounds="68.75, 7.375, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/TAPIDataContext/q221579_PersonList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0bd85df6-0b95-4150-b5d1-125112e27ecb" absoluteBounds="68.764999999999986, 7.8350000000000009, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c13b0962-2daa-481d-967d-706c70eff6ad" absoluteBounds="68.75, 10.25, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/TAPIDataContext/q221579_Replace" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1ad8d4e2-8ec4-4fa3-938d-bd47156e14ef" absoluteBounds="68.764999999999986, 10.71, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="4311e735-aa56-490c-861e-ea1f8d2bdc67" absoluteBounds="68.75, 13.125, 2, 3.1170068359375">
+      <DataClassMoniker Name="/TAPIDataContext/q221579_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2f50586c-6ddb-44d9-a450-959e6f278e2b" absoluteBounds="68.764999999999986, 13.585, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="db8a87a8-560e-4e04-a156-17aa158e8a46" absoluteBounds="71, 15.75, 2, 3.3093082682291666">
+      <DataClassMoniker Name="/TAPIDataContext/KLOWF2022_PersonInfo" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c32c4506-dde6-4bc9-ad5c-928cc1a810f6" absoluteBounds="71.014999999999986, 16.21, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="56d97eb1-cd19-44eb-8a4f-f7227115a4ad" absoluteBounds="71, 0.625, 2, 15.039695638020833">
+      <DataClassMoniker Name="/TAPIDataContext/KLOWF2022_Panel" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b8d6ef21-1c9d-4766-a133-f0383f8d20a2" absoluteBounds="71.014999999999986, 1.085, 1.9700000000000002, 14.479695638020832" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="43203c8e-8843-4071-b7ff-1ce0ecda3938" absoluteBounds="71, 19.25, 2, 2.3478011067708335">
+      <DataClassMoniker Name="/TAPIDataContext/KLOWF2022_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e1e32076-042c-4757-9e1f-f6e8f7b065a5" absoluteBounds="71.014999999999986, 19.71, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="311155f3-637e-435f-93d4-c12701b1cb59" absoluteBounds="71, 21.75, 2, 4.0785139973958326">
+      <DataClassMoniker Name="/TAPIDataContext/KLOWF2022_Split" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1e2f146a-74ef-4e65-88cd-6ed688696965" absoluteBounds="71.014999999999986, 22.21, 1.9700000000000002, 3.518513997395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="b9a0c54b-b18b-4ad0-b790-6e5e7b9b5391" absoluteBounds="71, 26, 2, 2.9247054036458331">
+      <DataClassMoniker Name="/TAPIDataContext/KLOWF2022_Transfer" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8c665f9d-0b06-46a7-8358-bf1691a54919" absoluteBounds="71.014999999999986, 26.46, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d52191db-4d77-445a-b8d0-bb72ba8c53b1" absoluteBounds="68.875, 0.75, 2, 6.9630354817708326">
+      <DataClassMoniker Name="/TAPIDataContext/q221579_AreaList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5c339373-d06b-4b87-8a1b-a0afd6b0351a" absoluteBounds="68.889999999999986, 1.21, 1.9700000000000002, 6.403035481770833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="7aa88a86-94e4-4455-87f7-8f6a9f1bbdc1" absoluteBounds="73.25, 6.75, 2, 2.5401025390625">
+      <DataClassMoniker Name="/TAPIDataContext/q221657_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="df9d8309-a84c-4da8-8d70-8f0bc547e175" absoluteBounds="73.264999999999986, 7.2100000000000009, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a07c5f5c-f9ea-4ee1-a9b1-ad6f0af2038c" absoluteBounds="73.25, 9.5, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/TAPIDataContext/q221657_Replace" />
+      <nestedChildShapes>
+        <elementListCompartment Id="31516586-ea21-4549-98ea-59452be73192" absoluteBounds="73.264999999999986, 9.96, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="faa6906f-8ff1-473d-87c3-899ff0dd7a11" absoluteBounds="73.375, 12.375, 2, 3.6939111328125005">
+      <DataClassMoniker Name="/TAPIDataContext/q221657_AreaList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ece9395f-36b9-442b-a725-65f0e095427d" absoluteBounds="73.389999999999986, 12.835, 1.9700000000000002, 3.1339111328125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="826f1de2-e00a-463e-8e7e-41bea6bdb295" absoluteBounds="75.5, 0.75, 2, 7.7322412109375005">
+      <DataClassMoniker Name="/TAPIDataContext/q220674_10_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="f4ae998a-897f-424d-b40b-ea0853077be3" absoluteBounds="75.514999999999986, 1.21, 1.9700000000000002, 7.1722412109375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="46ccb05e-4fcc-48e5-b0f8-05e1887547b4" absoluteBounds="77.625, 0.875, 2, 5.6169254557291657">
+      <DataClassMoniker Name="/TAPIDataContext/q221268_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="28ff3fcc-1c8c-4588-bbef-2744ef5e0369" absoluteBounds="77.639999999999986, 1.335, 1.9700000000000002, 5.0569254557291661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="6e1d22db-59ef-4430-939f-8a109ec71462" absoluteBounds="73.25, 0.75, 2, 5.8092268880208326">
+      <DataClassMoniker Name="/TAPIDataContext/q221657_CompanyList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2fcf336f-1f25-483b-b7d3-c947b215ef55" absoluteBounds="73.264999999999986, 1.21, 1.9700000000000002, 5.249226888020833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="318aa18b-9103-4af7-8183-6d531829ee91" absoluteBounds="75.625, 8.75, 2, 7.7322412109375005">
+      <DataClassMoniker Name="/TAPIDataContext/q220674_11_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2c978c3f-e46d-47b7-a916-0ee773ab89e5" absoluteBounds="75.639999999999986, 9.21, 1.9700000000000002, 7.1722412109375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="fd1f16ad-3268-49fb-b48e-5f4fa702618f" absoluteBounds="79.75, 0.875, 2, 5.4246240234375">
+      <DataClassMoniker Name="/TAPIDataContext/q221764_OrganList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="704f95d5-ec99-4cc6-8482-e818d0bcbffb" absoluteBounds="79.764999999999986, 1.335, 1.9700000000000002, 4.8646240234375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="786abd1a-2818-40c7-bdb8-83d82879befa" absoluteBounds="79.875, 6.375, 2, 4.6554182942708326">
+      <DataClassMoniker Name="/TAPIDataContext/q221764_PersonList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="987e4dc5-4dfd-4872-8065-1a7679c9382d" absoluteBounds="79.889999999999986, 6.835, 1.9700000000000002, 4.095418294270833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="ee80bb91-7e67-4440-8a8b-bb7a711ce091" absoluteBounds="82, 0.75, 2, 8.1168440755208326">
+      <DataClassMoniker Name="/TAPIDataContext/q220755_AreaList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="76daa344-6a00-4a70-8aee-2531eedc9a3e" absoluteBounds="82.014999999999986, 1.21, 1.9700000000000002, 7.556844075520833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="eb3f9754-ee42-4dfb-b23d-98cc9740d122" absoluteBounds="82, 20.375, 2, 2.9247054036458331">
+      <DataClassMoniker Name="/TAPIDataContext/q220755_Replace" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2ce0e99d-c4e3-470f-805e-a9e29bd3b4f1" absoluteBounds="82.014999999999986, 20.835, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="0f2de0a0-1a1c-4a50-9123-93a6f5222b2c" absoluteBounds="2.75, 0.625, 2, 2.5401025390625">
+      <DataClassMoniker Name="/TAPIDataContext/q220001_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="bb56fb2e-cf50-4a02-bfc8-3f2210c0f178" absoluteBounds="2.7649999999999997, 1.085, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="f07dcbc6-621b-44be-b537-61906ba5e346" absoluteBounds="0.5, 3.5, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/TAPIDataContext/q220001_Replace" />
+      <nestedChildShapes>
+        <elementListCompartment Id="f67f5159-8de8-4d68-ab3e-d9eafde4d9f3" absoluteBounds="0.51499999999999968, 3.96, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d64147f6-6c79-4f2a-94f3-e9f4811c2488" absoluteBounds="0.5, 6.5, 2, 9.2706526692708326">
+      <DataClassMoniker Name="/TAPIDataContext/q221599_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="abeda230-c014-439e-97d3-225739c046ea" absoluteBounds="0.51499999999999968, 6.9600000000000009, 1.9700000000000002, 8.7106526692708321" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="73360bde-3f67-4c9b-9315-3f59a900274c" absoluteBounds="2.75, 8.875, 2, 3.1170068359375">
+      <DataClassMoniker Name="/TAPIDataContext/q221599_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="fb935eb2-ffea-4e5b-8e53-864fd060d24e" absoluteBounds="2.7649999999999997, 9.335, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3f495d14-ce66-495d-bab8-74b87ed8bb4b" absoluteBounds="2.75, 12.25, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/TAPIDataContext/q221599_CompleteStatus" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b0edbfc7-ced7-4ecb-a978-80a85808e52b" absoluteBounds="2.7649999999999997, 12.71, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="0c422e57-ffec-4051-ba40-8e6af6259fe9" absoluteBounds="2.75, 3.5, 2, 5.2323225911458326">
+      <DataClassMoniker Name="/TAPIDataContext/q220001_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d0ac7128-6c5f-4cda-ac8f-24695a3e2837" absoluteBounds="2.765, 3.96, 1.9700000000000002, 4.672322591145833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="e5700555-0d83-422d-8cda-6da128d2d174" absoluteBounds="59.75, 0.625, 2, 13.693585611979165">
+      <DataClassMoniker Name="/TAPIDataContext/q220486_List" />
+      <nestedChildShapes>
+        <elementListCompartment Id="592aff1f-c2d0-40e6-a21a-85c76b1637df" absoluteBounds="59.764999999999986, 1.085, 1.9700000000000002, 13.133585611979166" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="7ef227e2-dba6-47d4-a496-fe674c2537db" absoluteBounds="59.75, 19.75, 2, 5.0400211588541657">
+      <DataClassMoniker Name="/TAPIDataContext/q220486_Transfer" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7edfa710-2555-483e-8165-04613661a716" absoluteBounds="59.764999999999986, 20.21, 1.9700000000000002, 4.4800211588541661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="26f5c081-26db-4472-afd3-3f531d660d19" absoluteBounds="82.125, 9.125, 2, 11.578269856770833">
+      <DataClassMoniker Name="/TAPIDataContext/q220755_HouseList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8746f489-85b0-4bc0-aaf8-8e3183c49520" absoluteBounds="82.139999999999986, 9.585, 1.9700000000000002, 11.018269856770832" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="122c4d83-fd39-420e-b388-83ab1889f4a5" absoluteBounds="0.5, 16.25, 2, 4.2708154296875">
+      <DataClassMoniker Name="/TAPIDataContext/q220002_AreaList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="767ba516-a68a-41fc-bb42-d6342e7d7fb2" absoluteBounds="0.51499999999999968, 16.71, 1.9700000000000002, 3.7108154296875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d5469194-cbfa-4dc7-b739-48a1068e754f" absoluteBounds="2.75, 16.25, 2, 3.8862125651041666">
+      <DataClassMoniker Name="/TAPIDataContext/q220002_HouseList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ef35c960-34f9-40d1-ac5d-177083b9915c" absoluteBounds="2.765, 16.71, 1.9700000000000002, 3.3262125651041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="433be405-099f-42b3-83cf-eb20664aefc2" absoluteBounds="2.625, 20.5, 2, 2.5401025390625">
+      <DataClassMoniker Name="/TAPIDataContext/q220002_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a0783caa-fd4c-4e69-b101-04c3485b0177" absoluteBounds="2.64, 20.96, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c0ee0b58-244a-4875-ae3b-c954d27e7ca7" absoluteBounds="0.5, 20.875, 2, 2.9247054036458331">
+      <DataClassMoniker Name="/TAPIDataContext/q220002_Replace" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6d972386-5488-4268-bbd0-e9545177375a" absoluteBounds="0.51500000000000012, 21.335, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="bae0d4e1-e23e-4b55-b92b-e34b6fb97b18" absoluteBounds="84.25, 0.625, 2, 15.808901367187502">
+      <DataClassMoniker Name="/TAPIDataContext/KLIPS2023_HouseList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b5d321b4-4e64-4122-8553-ca086cc18210" absoluteBounds="84.265, 1.085, 1.9700000000000002, 15.2489013671875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="643815d9-83bc-43dc-88d6-a5994f5ae6dc" absoluteBounds="84.25, 16.5, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/TAPIDataContext/KLIPS2023_Contact" />
+      <nestedChildShapes>
+        <elementListCompartment Id="173ef0b3-c81a-4181-908f-03d613415cf4" absoluteBounds="84.265, 16.96, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="2f1464be-fd8d-4839-b149-390b4515c30c" absoluteBounds="84.25, 19.375, 2, 4.4631168619791666">
+      <DataClassMoniker Name="/TAPIDataContext/KLIPS2023_Transfer" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3bb5e97d-7247-43e0-bdcf-b44d91aa2eab" absoluteBounds="84.265, 19.835, 1.9700000000000002, 3.903116861979167" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="e7102280-3f6e-4dc1-997e-c337ea9b7890" absoluteBounds="84.25, 23.875, 2, 3.5016097005208326">
+      <DataClassMoniker Name="/TAPIDataContext/KLIPS2023_PersonList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2e98b18f-8fcf-42de-8847-7773d5d52028" absoluteBounds="84.265, 24.335, 1.9700000000000002, 2.941609700520833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="aadbb463-9c8e-4054-8109-6ad7223ea5bf" absoluteBounds="84.25, 27.5, 2, 3.8862125651041666">
+      <DataClassMoniker Name="/TAPIDataContext/KLIPS2023_SplitHouseList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c518ff07-3823-4753-89d1-c6f9031dc700" absoluteBounds="84.265, 27.96, 1.9700000000000002, 3.3262125651041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="cffefcce-5a6f-4940-a18f-3a1c0347d4f5" absoluteBounds="86.375, 0.625, 2, 68.499493815104145">
+      <DataClassMoniker Name="/TAPIDataContext/KLIPS2023_InfoSheet" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2a20f4a5-8914-4f67-b0d4-58c022c3a86a" absoluteBounds="86.39, 1.085, 1.9700000000000002, 67.939493815104157" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

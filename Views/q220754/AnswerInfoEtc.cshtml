@@ -1,0 +1,399 @@
+﻿@model TAPI_Interviewer.Models.SP_H2022_GETETCHOUSELISTResult
+@{
+    string[] tel = string.IsNullOrEmpty(Model.집전화) == true ? new string[] { "" } : Model.집전화.Trim().Split('-');
+    string[] hp = string.IsNullOrEmpty(Model.휴대전화) == true ? new string[] { "" } : Model.휴대전화.Trim().Split('-');
+}
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            $("select[name='gender']").val("@(Model.응답자성별)").attr("selected", "selected");
+            $("select[name='tel1']").val("@(tel[0])").attr("selected", "selected");
+            $("select[name='hp1']").val("@(hp[0])").attr("selected", "selected");
+
+            $("select[name='contact1'] option[codelabel='@(Model.접촉결과)']").attr("selected", "selected");
+
+            $('#save').click(function () {
+                saveInfo('./HouseListEtc?keyid=@(Model.HRC일련번호)', true);
+            });
+
+            $('#survey').click(function () {
+                saveInfo('./SurveyETC?keyid=@(Model.HRC일련번호)&hid=@(Model.HID)&listType=3', false);
+            });
+
+            $('#exit').click(function () {
+                window.location.href = './HouseListEtc?keyid=@(Model.HRC일련번호)';
+            });
+
+            $("#contact2").chained("#contact1");
+
+            $('#init').click(function () {
+
+                if('@(Model.진행상태)'=='완료')
+                {
+                    alert('설문을 끝까지 완료하신 가구는 가구 기본정보를 초기화 할 수 없습니다.\r\n주소가 잘못되었다면 담당 수퍼바이저에게 보고해 주십시오.');
+                    return;
+                }
+
+                if(confirm('건물명, 호수, 응답자 정보의 기본 정보를 정말 초기화하시겠습니까?') == false)
+                {
+                    return;
+                }
+
+                $.post("./InitInfoEtc", {  "hid": @(Model.HID) }, function (result) {
+                    if (result != '')
+                    {
+                        alert(result);
+                    }
+                    else
+                    {
+                        location.reload();
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+        });
+
+        $(window).load(function(){
+            $("select[name='contact2']").val("@(Model.주택유형)").attr("selected", "selected");
+        });
+
+        function saveInfo(href, isContactCheck) {
+            var gender = $("select[name='gender'] option:selected").val();
+            var tel1 = $("select[name='tel1'] option:selected").val();
+            var hp1 = $("select[name='hp1'] option:selected").val();
+
+            var contact1 = $("select[name='contact1'] option:selected").attr('codelabel');
+            var contact2 = $("select[name='contact2']").val();
+
+            var tel = tel1;
+            var hp = hp1;
+
+            var pname = $("#pname").val();
+            var building = $("#building").val();
+            var hosu = $("#hosu").val();
+            var contactCount = $("#contactCount").val();
+            var contact1Etc = $("#contact1Etc").val();
+            var contact2Etc = $("#contact2Etc").val();
+
+            if (contact1 == '')
+            {
+
+                if ((tel1 == '' || tel1 == '없음') && (hp1 == '' || hp1 == '없음')) {
+                    alert('연락처를 하나는 입력 해 주세요.');
+                    return;
+                }
+
+                if (pname == '') {
+                    $("#pname").focus();
+                    alert('이름을 입력 해 주세요.');
+                    return;
+                }
+
+                if (pname.length > 50) {
+                    $("#pname").focus();
+                    alert('이름을 50자 이내로 입력 해 주세요.');
+                    return;
+                }
+
+                if (gender == '')
+                {
+                    alert('성별을 선택 해 주세요.');
+                    return;
+                }
+
+
+            }
+
+            if (tel1 != '없음'  && tel1 != '') {
+                tel = tel1 + '-' + $("#tel2").val() + '-' + $("#tel3").val();
+
+                if (tel != '02-000-0000' && tel != '02-0000-0000' && contact1 == '' && isTelePhone(tel) == false) {
+                    $("#tel2").focus();
+                    console.log(tel);
+                    alert('유효한 집전화 번호를 입력 해 주세요.');
+                    return;
+                }
+            }
+
+            if (hp1 != '없음' && hp1 != '') {
+                hp = hp1 + '-' + $("#hp2").val() + '-' + $("#hp3").val();
+
+                if (hp != '010-0000-0000' && contact1 == '' && isCellPhone(hp) == false) {
+                    $("#hp2").focus();
+                    alert('유효한 휴대전화 번호를 입력 해 주세요.');
+                    return;
+                }
+            }
+
+            if (contactCount == '')
+            {
+                alert('총 방문횟수를 입력 해 주세요.');
+                return;
+            }
+
+            if (isContactCheck == true)
+            {
+                if (('@(Model.진행상태)' == '진행중' ||
+                     '@(Model.진행상태)' == '완료') &&
+                     contact1 != '')
+                {
+                    if (!confirm('입력 DATA가 있습니다.\r\n조사실패 처리 하시겠습니까?'))
+                    {
+                        return;
+                    }
+
+                    if (contact2 == '')
+                    {
+                        alert('주택유형을 선택 해 주세요.');
+                        return;
+                    }
+                }
+
+                if ('@(Model.진행상태)' != '진행중' &&
+                    '@(Model.진행상태)' != '완료')
+                {
+                    if (contact1 == '')
+                    {
+                        alert('조사실패 사유를 선택 해 주세요.');
+                        return;
+                    }
+
+                    if (contact2 == '')
+                    {
+                        alert('주택유형을 선택 해 주세요.');
+                        return;
+                    }
+                }
+
+                if (contact1 == '기타' &&
+                    $.trim(contact1Etc) == '')
+                {
+                    alert('조사실패 사유 기타를 입력 해 주세요.');
+                    return;
+                }
+
+                if (contact2 == '기타' &&
+                    $.trim(contact2Etc) == '')
+                {
+                    alert('주택유형 기타를 입력 해 주세요.');
+                    return;
+                }
+
+                if (contact1 != '기타')
+                {
+                    contact1Etc = ''
+                }
+
+                if (contact2 != '기타')
+                {
+                    contact2Etc = ''
+                }
+            }
+            else
+            {
+                contact1 = ''
+                contact2 = ''
+                contact1Etc = ''
+                contact2Etc = ''
+            }
+
+            var infoText = '가구일련번호 @(Model.HRC일련번호) \r@(Model.세부주소) '+building+'이/가 맞습니까?';
+            if( confirm(infoText) == false)
+            {
+                return;
+            }
+
+            $.post("./SaveInfoEtc", { "keyid": @(Model.HRC일련번호), "hid": @(Model.HID), "building":building, "hosu":hosu, "pname": pname, "gender": gender, "tel": tel, "hp": hp, "contactCount": contactCount, "contact1": contact1, "contact2": contact2, "contact1Etc": contact1Etc, "contact2Etc": contact2Etc }, function (result) {
+                if (result != '')
+                {
+                    alert(result);
+                }
+                else
+                {
+                    window.location.href = href;
+                }
+            }).error(function (jqXHR, status, error) {
+                alert(status);
+                alert(error);
+            });
+        }
+
+        function isTelePhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^(0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]|70|505))[1-9]+[0-9]{6,7}$/;
+
+            return regPhone.test(p);
+        }
+
+        function isCellPhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/;
+
+            return regPhone.test(p);
+        }
+
+
+</script>
+
+
+@Html.Partial("header")
+<!--contents -->
+<div id="contwrap">
+    <div class="contentbox">
+        <div class="boardbox">
+            <div class="bd_contbox">
+                <div class="tablebox">
+                    <table class="tbl_sty01" cellpadding="0" cellspacing="0" border="0" style="width:100%;">
+                        <tbody>
+                            <tr>
+                                <td class="td_th txt_center" style="width:210px;">가구일련번호</td>
+                                <td>@(Model.HID)</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">세부주소</td>
+                                <td>@(Model.세부주소)</td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">건물명</td>
+                                <td>
+                                    <input type="text" class="form_ctrl" size="10" id="building" value="@(Model.건물명)">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">호수</td>
+                                <td>
+                                    <input class="form_ctrl" type="text" maxlength="5" size="13" id="hosu" value="@(Model.호수)">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">응답자 이름</td>
+                                <td>
+                                    <input type="text" class="form_ctrl" size="10" id="pname" value="@(Model.응답자이름)">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">응답자 성별</td>
+                                <td>
+                                    <select class="form_ctrl" id="gender" name="gender">
+                                        <option></option>
+                                        <option value='남'>남</option>
+                                        <option value='여'>여</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">집전화 </td>
+                                <td>
+                                    <select class="form_ctrl" id="tel1" name="tel1">
+                                        <option></option>
+                                        <option value='없음'>없음</option>
+                                        <option value='02'>서울 02</option>
+                                        <option value='051'>부산 051</option>
+                                        <option value='053'>대구 053</option>
+                                        <option value='032'>인천 032</option>
+                                        <option value='062'>광주 062</option>
+                                        <option value='042'>대전 042</option>
+                                        <option value='052'>울산 052</option>
+                                        <option value='044'>세종 044</option>
+                                        <option value='031'>경기 031</option>
+                                        <option value='033'>강원 033</option>
+                                        <option value='043'>충북 043</option>
+                                        <option value='041'>충남 041</option>
+                                        <option value='063'>전북 063</option>
+                                        <option value='061'>전남 061</option>
+                                        <option value='054'>경북 054</option>
+                                        <option value='055'>경남 055</option>
+                                        <option value='064'>제주 064</option>
+                                        <option value='070'>인터넷전화 070</option>
+                                    </select>
+                                    -
+                                    <input type="text" class="form_ctrl" size="4" id="tel2" value="@(tel.Length <= 1 ? "" : tel[1])" maxlength="4">
+                                    -
+                                    <input type="text" class="form_ctrl" size="4" id="tel3" value="@(tel.Length <= 1 ? "" : tel[2])" maxlength="4">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">휴대전화 </td>
+                                <td>
+                                    <select class="form_ctrl" id="hp1" name="hp1">
+                                        <option></option>
+                                        <option value='010'>010</option>
+                                        <option value='011'>011</option>
+                                        <option value='없음'>없음</option>
+                                    </select>
+                                    -
+                                    <input type="text" class="form_ctrl" size="4" id="hp2" value="@(hp.Length <= 1 ? "" : hp[1])" maxlength="4">
+                                    -
+                                    <input type="text" class="form_ctrl" size="4" id="hp3" value="@(hp.Length <= 1 ? "" : hp[2])" maxlength="4">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">총 방문횟수</td>
+                                <td>
+                                    <input class="form_ctrl" type="tel" maxlength="5" size="13" id="contactCount" value="@(Model.총방문횟수)">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">조사실패 사유(접촉결과)</td>
+                                <td>
+                                    <select class="form_ctrl" id="contact1" name="contact1">
+                                        <option codelabel=''></option>
+                                        <option value='1' codelabel='주택외거처 아님'>1. 주택외거처 아님</option>
+                                        <option value='2' codelabel='건물(주택/거처) 자체가 없음(공터 등)'>2. 건물(주택/거처) 자체가 없음(공터 등)</option>
+                                        <option value='3' codelabel='사람이 거주 안 함'>3. 사람이 거주 안 함</option>
+                                        <option value='4' codelabel='조사불가(외국인가구, 기숙사, 집단가구 등)'>4. 조사불가(외국인가구, 기숙사, 집단가구 등)</option>
+                                        <option value='5' codelabel='출입불가(관리소 거절, 공동출입구 출입이 불가능한 경우 등)'>5. 출입불가(관리소 거절, 공동출입구 출입이 불가능한 경우 등)</option>
+                                        <option value='6' codelabel='거절'>6. 거절</option>
+                                        <option value='7' codelabel='부재'>7. 부재</option>
+                                        <option value='8' codelabel='목표 가구 이미 완료함'>8. 목표 가구 이미 완료함</option>
+                                        <option value='9' codelabel='기타'>9. 기타</option>
+                                    </select>
+                                    <br />
+                                    기타사유 : <input class="form_ctrl" id="contact1Etc" rows="1" style="width:600px;" type="text" value="@(Model.접촉결과기타)" maxlength="100">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td_th txt_center">주택유형(조사실패 시)</td>
+                                <td>
+                                    <select class="form_ctrl" id="contact2" name="contact2">
+                                        <option class='0 1 2 3 4 5 6 7 8 9'></option>
+                                        <option class='1 3 4 5 6 7 8 9' value='일반단독주택'>1. 일반단독주택</option>
+                                        <option class='1 3 4 5 6 7 8 9' value='다가구단독주택'>2. 다가구단독주택</option>
+                                        <option class='1 3 4 5 6 7 8 9' value='영업겸용단독주택'>3. 영업겸용단독주택</option>
+                                        <option class='1 3 4 5 6 7 8 9' value='아파트'>4. 아파트</option>
+                                        <option class='1 3 4 5 6 7 8 9' value='연립주택'>5. 연립주택</option>
+                                        <option class='1 3 4 5 6 7 8 9' value='다세대주택'>6. 다세대주택</option>
+                                        <option class='1 3 4 5 6 7 8 9' value='비거주용건물(상가/공장/여관 등)내 주택'>7. 비거주용건물(상가/공장/여관 등)내 주택</option>
+                                        <option class='1 3 4 5 6 7 8 9' value='오피스텔'>8. 오피스텔</option>
+                                        <option class='3 4 5 6 7 8 9' value='고시원'>9. 고시원</option>
+                                        <option class='3 4 5 6 7 8 9' value='판잣집, 비닐하우스, 컨테이너, 움막'>10. 판잣집, 비닐하우스, 컨테이너, 움막</option>
+                                        <option class='3 4 5 6 7 8 9' value='기타'>11. 기타</option>
+                                        <option class='2' value='건물(주택/거처) 자체가 없음(공터 등)'>12. 건물(주택/거처) 자체가 없음(공터 등)</option>         
+                                    </select>
+                                    <br />
+                                    기타사유 : <input class="form_ctrl" id="contact2Etc" rows="1" style="width:600px;" type="text" value="@(Model.주택유형기타)" maxlength="100">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bot_btnbox" style="text-align:left;">
+                    <button type="button" class="btnsty03" id="init">초기화</button>
+                </div>
+                <div class="bot_btnbox">
+                    <button type="button" class="btnsty02" id="save">저장 후 종료</button>
+                    <button type="button" class="btnsty01" id="survey">조사하기</button>                    
+                    <button type="button" class="btnsty03" id="exit">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("footer")
+
+</div>
+</body>
+</html>

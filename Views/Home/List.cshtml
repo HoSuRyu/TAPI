@@ -1,0 +1,53 @@
+﻿
+@model List<TAPI_Interviewer.Models.GET_TAPIProjectResult>
+           
+
+
+
+<script type="text/javascript">
+    function OnRowClick(s, e) {
+        s.GetRowValues(e.visibleIndex, 'url', OnGetRowValues);
+    }
+
+    function OnGetRowValues(url) {
+
+
+        if ('@(ViewBag.LANG)' != '') {
+            window.location.href = '@(ViewBag.URL)/' + url + '&lang=@(ViewBag.LANG)';
+        }
+        else {
+            window.location.href = '@(ViewBag.URL)/' + url;
+        }
+    }
+
+    function GoLogin() {
+        window.location.href = '@(ViewBag.URL)';
+    }
+</script>
+
+<div id="contwrap">
+    <div class="contentbox">
+        <div class="sideutil">
+            @using (Html.BeginForm("Logout", "Home", FormMethod.Post))
+            {
+
+                <button type="submit" class="btnsty04 btn_logout" value="@ViewBag.Logout">로그아웃</button>
+            }
+        </div>
+        <div class="boardbox select_surveybox">
+            <div class="bd_contbox">
+                <div class="tablebox">
+
+
+                    @Html.Partial("ListPartial", Model)
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("footer")
+
+
+
+</div>
+</body>
+</html>

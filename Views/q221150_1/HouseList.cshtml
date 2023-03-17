@@ -1,0 +1,81 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q221150_GETHOUSELISTResult>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "2022년 사이버폭력 실태조사(성인) - 가구리스트";
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#createHouse').click(function () {
+
+                $.post("./CreateHouse", { "keyid": @ViewBag.HRC일련번호}, function (result) {
+                    if (result != '')
+                    {
+                        alert(result);
+                    }
+                    else
+                    {   
+                        alert('가구 추가 되었습니다!');
+                        location.reload();
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+        
+
+            $('#exit').click(function () {
+                window.location.href = './List';
+            });
+
+            $('input[type=tel]').keydown(function (event) {
+                var charCode = (event.which) ? event.which : event.keyCode;
+
+                if (isNumeric(charCode, this) == false) {
+                    event.preventDefault();
+                }
+            });
+        });
+
+        function goContact(hid) {
+            if (hid != null) {
+                window.location.href = './Contact?keyid=@ViewBag.HRC일련번호&hid=' + hid;
+            }
+        }
+
+        function goInfo(hid) {
+            if (hid != null) {
+                window.location.href = './AnswerInfo?keyid=@ViewBag.HRC일련번호&hid=' + hid;
+            }
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/KLIPS/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    <div style="width : 100%;display: inline-block;">
+        <label id="title">@ViewBag.Title</label>
+        <div class="buttonDiv" style="text-align:left;">
+                <input type="button" id="createHouse" class="infoButton" style="margin-right: 30px;" value="가구 추가" />
+        </div>
+        <div style="overflow-x:scroll;width:100%;">
+            @Html.Partial("HouseListPartial", Model)
+        </div>
+    </div>
+    <div class="buttonDiv">
+        <center>
+            <input type="button" id="exit" class="infoButton" style="margin-right: 30px;" value="닫기" />
+        </center>
+    </div>
+</body>
+
+</html>

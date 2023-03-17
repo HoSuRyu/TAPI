@@ -1,0 +1,964 @@
+﻿@model TAPI_Interviewer.Models.KLIPS2023_InfoSheet
+
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>2023년 노동패널 인포시트</title>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+
+        });
+    </script>
+    <style>
+        table {
+            display: table;
+            border-collapse: separate;
+            border-spacing: 2px;
+            border-color: gray;
+            width: 1900px;
+            text-align: center;
+            border-collapse: collapse;
+        }
+
+        table, td, th {
+            border: 1px solid black;
+            table-layout: fixed;
+            word-wrap: break-word;
+        }
+
+        td {
+            height: 25px;
+        }
+
+        .top {
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .side {
+            border-left: 1px solid rgba(0,0,0,0.1);
+            border-right: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .red {
+            color: red;
+        }
+    </style>
+
+
+</head>
+<body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
+
+    <table border="1">
+        <tr>
+            <th colspan="9">응답여부(비응답사유)</th>
+            <th colspan="4">최종 응답 시기</th>
+            <th class="top"></th>
+            <th colspan="2" rowspan="2">가구번호</th>
+            <th colspan="2" rowspan="2">이전가구번호</th>
+            <th class="top" colspan="2"></th>
+            <th colspan="2">면접원 성명</th>
+            <th colspan="3">@Model.면접원성명</th>
+            <th class="side top"></th>
+            <th class="side top"></th>
+            <th class="side top"></th>
+        </tr>
+        <tr>
+            <td style="width:5%;">1차</td>
+            <td colspan="2">@Model.비응답사유1차</td>
+            <td>13차</td>
+            <td colspan="2">@Model.비응답사유13차</td>
+            <td><span class="red">25차</span></td>
+            <td colspan="2"><span class="red">@Model.비응답사유25차</span></td>
+            <td colspan="2">차수</td>
+            <td colspan="2">일시</td>
+            <td class="top"></td>
+            <td class="top" colspan="2"></td>
+            <td colspan="2">면접원 ID</td>
+            <td colspan="3">@Model.면접원ID</td>
+            <td class="side top"></td>
+            <td class="side top"></td>
+            <td class="side top"></td>
+
+        </tr>
+        <tr>
+            <td>2차</td>
+            <td colspan="2">@Model.비응답사유2차</td>
+            <td>14차</td>
+            <td colspan="2">@Model.비응답사유14차</td>
+            <td></td>
+            <td colspan="2"></td>
+            <td rowspan="10" colspan="2">@Model.최종조사차수</td>
+            <td rowspan="10" colspan="2">
+                <span class="red">
+                    @Model.최종조사일자_년<br />
+                    @Model.최종조사일자_월<br />
+                    @Model.최종조사일자_일<br />
+                </span>
+            </td>
+            <td class="top"></td>
+            <td colspan="2" rowspan="3">@Model.HID</td>
+            <td colspan="2" rowspan="3">@Model.이전가구번호</td>
+            <td class="top" colspan="2"></td>
+            <td colspan="2">응답자 성명</td>
+            <td colspan="3">@Model.응답자성명</td>
+            <td class="side top"></td>
+            <td class="side top"></td>
+            <td class="side top"></td>
+        </tr>
+
+        <tr>
+            <td>3차</td>
+            <td colspan="2">@Model.비응답사유3차</td>
+            <td>15차</td>
+            <td colspan="2">@Model.비응답사유15차</td>
+            <td></td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td class="top side" colspan="2"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+        </tr>
+
+        <tr>
+            <td>4차</td>
+            <td colspan="2">@Model.비응답사유4차</td>
+            <td>16차</td>
+            <td colspan="2">@Model.비응답사유16차</td>
+            <td></td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td class="top" colspan="2"></td>
+            <td colspan="2" rowspan="10">특이사항</td>
+            <td colspan="6" rowspan="5">@Model.SMEMO</td>
+
+        </tr>
+
+
+        <tr>
+            <td>5차</td>
+            <td colspan="2">@Model.비응답사유5차</td>
+            <td>17차</td>
+            <td colspan="2">@Model.비응답사유17차</td>
+            <td></td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td colspan="4" rowspan="6">@Model.거절가구구분</td>
+            <td class="top" colspan="2"></td>
+        </tr>
+        <tr>
+            <td>6차</td>
+            <td colspan="2">@Model.비응답사유6차</td>
+            <td>18차</td>
+            <td colspan="2">@Model.비응답사유18차</td>
+            <td></td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td class="top" colspan="2"></td>
+        </tr>
+
+        <tr>
+            <td>7차</td>
+            <td colspan="2">@Model.비응답사유7차</td>
+            <td>19차</td>
+            <td colspan="2">@Model.비응답사유19차</td>
+            <td></td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td class="top" colspan="2"></td>
+        </tr>
+
+        <tr>
+            <td>8차</td>
+            <td colspan="2">@Model.비응답사유8차</td>
+            <td>20차</td>
+            <td colspan="2">@Model.비응답사유20차</td>
+            <td></td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td class="top" colspan="2"></td>
+        </tr>
+
+        <tr>
+            <td>9차</td>
+            <td colspan="2">@Model.비응답사유9차</td>
+            <td>21차</td>
+            <td colspan="2">@Model.비응답사유21차</td>
+            <td></td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td class="top" colspan="2"></td>
+            <td colspan="6" rowspan="5">@Model.사례비특이사항</td>
+
+        </tr>
+        <tr>
+            <td>10차</td>
+            <td colspan="2">@Model.비응답사유10차</td>
+            <td>22차</td>
+            <td colspan="2">@Model.비응답사유22차</td>
+            <td></td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td class="top" colspan="2"></td>
+        </tr>
+        <tr>
+            <td>11차</td>
+            <td colspan="2">@Model.비응답사유11차</td>
+            <td>23차</td>
+            <td colspan="2">@Model.비응답사유23차</td>
+            <td></td>
+            <td colspan="2"></td>
+            <td class="top side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="top" colspan="2"></td>
+        </tr>
+
+        <tr>
+            <td>12차</td>
+            <td colspan="2">@Model.비응답사유12차</td>
+            <td>24차</td>
+            <td colspan="2">@Model.비응답사유24차</td>
+            <td colspan="3">사례비 입금 현황</td>
+            <td colspan="2">@Model.은행</td>
+            <td colspan="2">@Model.예금주</td>
+            <td class="top"></td>
+            <td>입금일자</td>
+            <td colspan="3">@Model.입금일자</td>
+            <td class="top" colspan="2"></td>
+        </tr>
+
+        <tr>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side top" colspan="2"> </td>
+        </tr>
+
+        <tr>
+            <td colspan="3">응답차수</td>
+            <td colspan="3">가구주</td>
+            <td colspan="7">응답주소</td>
+            <td colspan="3">전화번호</td>
+            <td colspan="2">핸드폰번호</td>
+            <td class="top" colspan="2"></td>
+            <td rowspan="2" colspan="2">전화확인주소</td>
+            <td rowspan="2" colspan="6">@Model.최종주소</td>
+        </tr>
+
+        <tr>
+            <td colspan="3">24차조사</td>
+            <td colspan="3">@Model.가구주성명</td>
+            <td colspan="7">@Model.조사주소</td>
+            <td colspan="3">@Model.전화번호</td>
+            <td colspan="2">@Model.핸드폰</td>
+            <td class="top" colspan="2"></td>
+        </tr>
+
+        <tr>
+            <td colspan="3">@Model.PRE1_WAVE</td>
+            <td colspan="3">@Model.PRE1_가구주성명</td>
+            <td colspan="7">@Model.PRE1_조사주소</td>
+            <td colspan="3">@Model.PRE1_전화번호</td>
+            <td colspan="2">@Model.PRE1_핸드폰</td>
+            <td class="top" colspan="2"></td>
+            <td rowspan="2" colspan="2">도로명주소</td>
+            <td rowspan="2" colspan="6"></td>
+        </tr>
+        <tr>
+            <td colspan="3">@Model.PRE2_WAVE</td>
+            <td colspan="3">@Model.PRE2_가구주성명</td>
+            <td colspan="7">@Model.PRE2_조사주소</td>
+            <td colspan="3">@Model.PRE2_전화번호</td>
+            <td colspan="2">@Model.PRE2_핸드폰</td>
+            <td class="top" colspan="2"></td>
+
+        </tr>
+
+        <tr>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side" colspan="2"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side top"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+            <td class="side"></td>
+        </tr>
+        <tr>
+            <td rowspan="2">가구원<br />일련번호</td>
+            <td rowspan="2">원가구<br />원<br />여부</td>
+            <td colspan="2">문1. 성명</td>
+            <td rowspan="2" colspan="1">문6.동거여부</td>
+            <td rowspan="2" colspan="2">문A6-1.비동거이유</td>
+            <td rowspan="2" colspan="2">문7.성별</td>
+            <td rowspan="2" colspan="2">문8.가구주와의관계</td>
+            <td rowspan="2" colspan="3">문9.생년월일</td>
+            <td colspan="4">문10.교육수준</td>
+            <td rowspan="2" colspan="2">주민등록번호 / 핸드폰</td>
+            <td class="top" rowspan="2"></td>
+            <td rowspan="2"></td>
+            <td rowspan="2" colspan="2">일자리명</td>
+            <td rowspan="2" colspan="2">시작시기</td>
+            <td rowspan="2">종사상지위</td>
+            <td rowspan="2">혼인여부</td>
+        </tr>
+        <tr>
+            <td colspan="2">응답시기</td>
+            <td>학력</td>
+            <td>이수여부</td>
+            <td>졸업/수료/<br />중퇴 시기</td>
+            <td>학력</td>
+        </tr>
+        <tr>
+            <td rowspan="3">@Model.가구원번호1</td>
+            <td rowspan="3">@Model.원가여부1</td>
+            <td colspan="2">@Model.성명1</td>
+            <td>@Model.동거여부1</td>
+            <td colspan="2">@Model.비동거이유1</td>
+            <td colspan="2">@Model.성별1</td>
+            <td colspan="2">@Model.가구주관계1</td>
+            <td>@Model.양음1</td>
+            <td>@Model.생년월일1</td>
+            <td>@Model.만나이1</td>
+            <td>@Model.학력1</td>
+            <td>@Model.이수여부1</td>
+            <td>@Model.졸수중시기1</td>
+            <td>@Model.학력1</td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td>가1</td>
+            <td colspan="2">@Model.일자리명1_1</td>
+            <td colspan="2">@Model.시작시기1_1</td>
+            <td>@Model.지위1_1</td>
+            <td>@Model.결혼여부_1</td>
+        </tr>
+        <tr>
+            <td colspan="2">응답시기_1</td>
+            <td style="text-align:left;" colspan="14">분가한 주소 : 시/도 구/시/군</td>
+            <td colspan="2">
+                @Model.핸드폰1
+            </td>
+            <td class="top"></td>
+            <td>가2</td>
+            <td colspan="2">@Model.일자리명2_1</td>
+            <td colspan="2">@Model.시작시기2_1</td>
+            <td>@Model.지위2_1</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2">설문지유형_1</td>
+            <td style="text-align:left;" colspan="14">연락처 : </td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td>가2</td>
+            <td colspan="2">@Model.일자리명3_1</td>
+            <td colspan="2">@Model.시작시기3_1</td>
+            <td>@Model.지위3_1</td>
+            <td></td>
+
+        </tr>
+        <tr>
+            <td rowspan="3">@Model.가구원번호2</td>
+            <td rowspan="3">@Model.원가여부2</td>
+            <td colspan="2">@Model.성명2</td>
+            <td>@Model.동거여부2</td>
+            <td colspan="2">@Model.비동거이유2</td>
+            <td colspan="2">@Model.성별2</td>
+            <td colspan="2">@Model.가구주관계2</td>
+            <td>@Model.양음2</td>
+            <td>@Model.생년월일2</td>
+            <td>@Model.만나이2</td>
+            <td>@Model.학력2</td>
+            <td>@Model.이수여부2</td>
+            <td>@Model.졸수중시기2</td>
+            <td>@Model.학력2</td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td>가1</td>
+            <td colspan="2">@Model.일자리명1_2</td>
+            <td colspan="2">@Model.시작시기1_2</td>
+            <td>@Model.지위1_2</td>
+            <td>@Model.결혼여부_2</td>
+        </tr>
+        <tr>
+            <td colspan="2">응답시기_2</td>
+            <td style="text-align:left;" colspan="14">분가한 주소 : 시/도 구/시/군</td>
+            <td colspan="2">
+                @Model.핸드폰2
+            </td>
+            <td class="top"></td>
+            <td>가2</td>
+            <td colspan="2">@Model.일자리명2_2</td>
+            <td colspan="2">@Model.시작시기2_2</td>
+            <td>@Model.지위2_2</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2">설문지유형_2</td>
+            <td style="text-align:left;" colspan="14">연락처 : </td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td>가2</td>
+            <td colspan="2">@Model.일자리명3_2</td>
+            <td colspan="2">@Model.시작시기3_2</td>
+            <td>@Model.지위3_2</td>
+            <td></td>
+
+        </tr>
+
+
+        <tr>
+            <td rowspan="3">@Model.가구원번호3</td>
+            <td rowspan="3">@Model.원가여부3</td>
+            <td colspan="2">@Model.성명3</td>
+            <td>@Model.동거여부3</td>
+            <td colspan="2">@Model.비동거이유3</td>
+            <td colspan="2">@Model.성별3</td>
+            <td colspan="2">@Model.가구주관계3</td>
+            <td>@Model.양음3</td>
+            <td>@Model.생년월일3</td>
+            <td>@Model.만나이3</td>
+            <td>@Model.학력3</td>
+            <td>@Model.이수여부3</td>
+            <td>@Model.졸수중시기3</td>
+            <td>@Model.학력3</td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td>가1</td>
+            <td colspan="2">@Model.일자리명1_3</td>
+            <td colspan="2">@Model.시작시기1_3</td>
+            <td>@Model.지위1_3</td>
+            <td>@Model.결혼여부_3</td>
+        </tr>
+        <tr>
+            <td colspan="2">응답시기_3</td>
+            <td style="text-align:left;" colspan="14">분가한 주소 : 시/도 구/시/군</td>
+            <td colspan="2">
+                @Model.핸드폰3
+            </td>
+            <td class="top"></td>
+            <td>가2</td>
+            <td colspan="2">@Model.일자리명2_3</td>
+            <td colspan="2">@Model.시작시기2_3</td>
+            <td>@Model.지위2_3</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2">설문지유형_3</td>
+            <td style="text-align:left;" colspan="14">연락처 : </td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td>가2</td>
+            <td colspan="2">@Model.일자리명3_3</td>
+            <td colspan="2">@Model.시작시기3_3</td>
+            <td>@Model.지위3_3</td>
+            <td></td>
+
+        </tr>
+        <tr>
+            <td rowspan="3">@Model.가구원번호4</td>
+            <td rowspan="3">@Model.원가여부4</td>
+            <td colspan="2">@Model.성명4</td>
+            <td>@Model.동거여부2</td>
+            <td colspan="2">@Model.비동거이유4</td>
+            <td colspan="2">@Model.성별4</td>
+            <td colspan="2">@Model.가구주관계4</td>
+            <td>@Model.양음4</td>
+            <td>@Model.생년월일4</td>
+            <td>@Model.만나이4</td>
+            <td>@Model.학력4</td>
+            <td>@Model.이수여부4</td>
+            <td>@Model.졸수중시기4</td>
+            <td>@Model.학력4</td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td>가1</td>
+            <td colspan="2">@Model.일자리명1_4</td>
+            <td colspan="2">@Model.시작시기1_4</td>
+            <td>@Model.지위1_4</td>
+            <td>@Model.결혼여부_4</td>
+        </tr>
+        <tr>
+            <td colspan="2">응답시기_4</td>
+            <td style="text-align:left;" colspan="14">분가한 주소 : 시/도 구/시/군</td>
+            <td colspan="2">
+                @Model.핸드폰4
+            </td>
+            <td class="top"></td>
+            <td>가2</td>
+            <td colspan="2">@Model.일자리명2_4</td>
+            <td colspan="2">@Model.시작시기2_4</td>
+            <td>@Model.지위2_4</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2">설문지유형_4</td>
+            <td style="text-align:left;" colspan="14">연락처 : </td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td>가2</td>
+            <td colspan="2">@Model.일자리명3_4</td>
+            <td colspan="2">@Model.시작시기3_4</td>
+            <td>@Model.지위3_4</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td rowspan="3">@Model.가구원번호5</td>
+            <td rowspan="3">@Model.원가여부5</td>
+            <td colspan="2">@Model.성명5</td>
+            <td>@Model.동거여부5</td>
+            <td colspan="2">@Model.비동거이유5</td>
+            <td colspan="2">@Model.성별5</td>
+            <td colspan="2">@Model.가구주관계5</td>
+            <td>@Model.양음5</td>
+            <td>@Model.생년월일5</td>
+            <td>@Model.만나이5</td>
+            <td>@Model.학력5</td>
+            <td>@Model.이수여부5</td>
+            <td>@Model.졸수중시기5</td>
+            <td>@Model.학력5</td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td>가1</td>
+            <td colspan="2">@Model.일자리명1_5</td>
+            <td colspan="2">@Model.시작시기1_5</td>
+            <td>@Model.지위1_5</td>
+            <td>@Model.결혼여부_5</td>
+        </tr>
+        <tr>
+            <td colspan="2">응답시기_5</td>
+            <td style="text-align:left;" colspan="14">분가한 주소 : 시/도 구/시/군</td>
+            <td colspan="2">
+                @Model.핸드폰5
+            </td>
+            <td class="top"></td>
+            <td>가2</td>
+            <td colspan="2">@Model.일자리명2_5</td>
+            <td colspan="2">@Model.시작시기2_5</td>
+            <td>@Model.지위2_5</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2">설문지유형_5</td>
+            <td style="text-align:left;" colspan="14">연락처 : </td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td>가2</td>
+            <td colspan="2">@Model.일자리명3_5</td>
+            <td colspan="2">@Model.시작시기3_5</td>
+            <td>@Model.지위3_5</td>
+            <td></td>
+
+        </tr>
+
+        <tr>
+            <td rowspan="3">@Model.가구원번호6</td>
+            <td rowspan="3">@Model.원가여부6</td>
+            <td colspan="2">@Model.성명6</td>
+            <td>@Model.동거여부6</td>
+            <td colspan="2">@Model.비동거이유6</td>
+            <td colspan="2">@Model.성별6</td>
+            <td colspan="2">@Model.가구주관계6</td>
+            <td>@Model.양음6</td>
+            <td>@Model.생년월일6</td>
+            <td>@Model.만나이6</td>
+            <td>@Model.학력6</td>
+            <td>@Model.이수여부6</td>
+            <td>@Model.졸수중시기6</td>
+            <td>@Model.학력6</td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td>가1</td>
+            <td colspan="2">@Model.일자리명1_6</td>
+            <td colspan="2">@Model.시작시기1_6</td>
+            <td>@Model.지위1_6</td>
+            <td>@Model.결혼여부_6</td>
+        </tr>
+        <tr>
+            <td colspan="2">응답시기_6</td>
+            <td style="text-align:left;" colspan="14">분가한 주소 : 시/도 구/시/군</td>
+            <td colspan="2">
+                @Model.핸드폰6
+            </td>
+            <td class="top"></td>
+            <td>가2</td>
+            <td colspan="2">@Model.일자리명2_6</td>
+            <td colspan="2">@Model.시작시기2_6</td>
+            <td>@Model.지위2_6</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2">설문지유형_6</td>
+            <td style="text-align:left;" colspan="14">연락처 : </td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td>가2</td>
+            <td colspan="2">@Model.일자리명3_6</td>
+            <td colspan="2">@Model.시작시기3_6</td>
+            <td>@Model.지위3_6</td>
+            <td></td>
+
+        </tr>
+
+        <tr>
+            <td rowspan="3">@Model.가구원번호7</td>
+            <td rowspan="3">@Model.원가여부7</td>
+            <td colspan="2">@Model.성명7</td>
+            <td>@Model.동거여부7</td>
+            <td colspan="2">@Model.비동거이유7</td>
+            <td colspan="2">@Model.성별7</td>
+            <td colspan="2">@Model.가구주관계7</td>
+            <td>@Model.양음7</td>
+            <td>@Model.생년월일7</td>
+            <td>@Model.만나이7</td>
+            <td>@Model.학력7</td>
+            <td>@Model.이수여부7</td>
+            <td>@Model.졸수중시기7</td>
+            <td>@Model.학력7</td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td>가1</td>
+            <td colspan="2">@Model.일자리명1_7</td>
+            <td colspan="2">@Model.시작시기1_7</td>
+            <td>@Model.지위1_7</td>
+            <td>@Model.결혼여부_7</td>
+        </tr>
+        <tr>
+            <td colspan="2">응답시기_7</td>
+            <td style="text-align:left;" colspan="14">분가한 주소 : 시/도 구/시/군</td>
+            <td colspan="2">
+                @Model.핸드폰7
+            </td>
+            <td class="top"></td>
+            <td>가2</td>
+            <td colspan="2">@Model.일자리명2_7</td>
+            <td colspan="2">@Model.시작시기2_7</td>
+            <td>@Model.지위2_7</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2">설문지유형_7</td>
+            <td style="text-align:left;" colspan="14">연락처 : </td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td>가2</td>
+            <td colspan="2">@Model.일자리명3_7</td>
+            <td colspan="2">@Model.시작시기3_7</td>
+            <td>@Model.지위3_7</td>
+            <td></td>
+
+        </tr>
+
+        <tr>
+            <td rowspan="3">@Model.가구원번호8</td>
+            <td rowspan="3">@Model.원가여부8</td>
+            <td colspan="2">@Model.성명8</td>
+            <td>@Model.동거여부8</td>
+            <td colspan="2">@Model.비동거이유8</td>
+            <td colspan="2">@Model.성별8</td>
+            <td colspan="2">@Model.가구주관계8</td>
+            <td>@Model.양음8</td>
+            <td>@Model.생년월일8</td>
+            <td>@Model.만나이8</td>
+            <td>@Model.학력8</td>
+            <td>@Model.이수여부8</td>
+            <td>@Model.졸수중시기8</td>
+            <td>@Model.학력8</td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td>가1</td>
+            <td colspan="2">@Model.일자리명1_8</td>
+            <td colspan="2">@Model.시작시기1_8</td>
+            <td>@Model.지위1_8</td>
+            <td>@Model.결혼여부_8</td>
+        </tr>
+        <tr>
+            <td colspan="2">응답시기_8</td>
+            <td style="text-align:left;" colspan="14">분가한 주소 : 시/도 구/시/군</td>
+            <td colspan="2">
+                @Model.핸드폰8
+            </td>
+            <td class="top"></td>
+            <td>가2</td>
+            <td colspan="2">@Model.일자리명2_8</td>
+            <td colspan="2">@Model.시작시기2_8</td>
+            <td>@Model.지위2_8</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2">설문지유형_8</td>
+            <td style="text-align:left;" colspan="14">연락처 : </td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td>가2</td>
+            <td colspan="2">@Model.일자리명3_8</td>
+            <td colspan="2">@Model.시작시기3_8</td>
+            <td>@Model.지위3_2</td>
+            <td></td>
+
+        </tr>
+
+        <tr>
+            <td rowspan="3">@Model.가구원번호9</td>
+            <td rowspan="3">@Model.원가여부9</td>
+            <td colspan="2">@Model.성명9</td>
+            <td>@Model.동거여부9</td>
+            <td colspan="2">@Model.비동거이유9</td>
+            <td colspan="2">@Model.성별9</td>
+            <td colspan="2">@Model.가구주관계9</td>
+            <td>@Model.양음9</td>
+            <td>@Model.생년월일9</td>
+            <td>@Model.만나이9</td>
+            <td>@Model.학력9</td>
+            <td>@Model.이수여부9</td>
+            <td>@Model.졸수중시기9</td>
+            <td>@Model.학력9</td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td>가1</td>
+            <td colspan="2">@Model.일자리명1_9</td>
+            <td colspan="2">@Model.시작시기1_9</td>
+            <td>@Model.지위1_9</td>
+            <td>@Model.결혼여부_9</td>
+        </tr>
+        <tr>
+            <td colspan="2">응답시기_9</td>
+            <td style="text-align:left;" colspan="14">분가한 주소 : 시/도 구/시/군</td>
+            <td colspan="2">
+                @Model.핸드폰9
+            </td>
+            <td class="top"></td>
+            <td>가2</td>
+            <td colspan="2">@Model.일자리명2_9</td>
+            <td colspan="2">@Model.시작시기2_9</td>
+            <td>@Model.지위2_9</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2">설문지유형_9</td>
+            <td style="text-align:left;" colspan="14">연락처 : </td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td>가2</td>
+            <td colspan="2">@Model.일자리명3_9</td>
+            <td colspan="2">@Model.시작시기3_9</td>
+            <td>@Model.지위3_9</td>
+            <td></td>
+
+        </tr>
+
+        <tr>
+            <td rowspan="3">@Model.가구원번호10</td>
+            <td rowspan="3">@Model.원가여부10</td>
+            <td colspan="2">@Model.성명10</td>
+            <td>@Model.동거여부10</td>
+            <td colspan="2">@Model.비동거이유10</td>
+            <td colspan="2">@Model.성별10</td>
+            <td colspan="2">@Model.가구주관계10</td>
+            <td>@Model.양음10</td>
+            <td>@Model.생년월일10</td>
+            <td>@Model.만나이10</td>
+            <td>@Model.학력10</td>
+            <td>@Model.이수여부10</td>
+            <td>@Model.졸수중시기10</td>
+            <td>@Model.학력10</td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td>가1</td>
+            <td colspan="2">@Model.일자리명1_10</td>
+            <td colspan="2">@Model.시작시기1_10</td>
+            <td>@Model.지위1_10</td>
+            <td>@Model.결혼여부_10</td>
+        </tr>
+        <tr>
+            <td colspan="2">응답시기_10</td>
+            <td style="text-align:left;" colspan="14">분가한 주소 : 시/도 구/시/군</td>
+            <td colspan="2">
+                @Model.핸드폰10
+            </td>
+            <td class="top"></td>
+            <td>가2</td>
+            <td colspan="2">@Model.일자리명2_10</td>
+            <td colspan="2">@Model.시작시기2_10</td>
+            <td>@Model.지위2_10</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2">설문지유형_10</td>
+            <td style="text-align:left;" colspan="14">연락처 : </td>
+            <td colspan="2"></td>
+            <td class="top"></td>
+            <td>가2</td>
+            <td colspan="2">@Model.일자리명3_10</td>
+            <td colspan="2">@Model.시작시기3_10</td>
+            <td>@Model.지위3_10</td>
+            <td></td>
+
+        </tr>
+
+
+        <tr>
+            <td style="text-align: left" colspan="28">
+                <span class="red"> ■ 연결 가구 정보</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td colspan="2">가구번호</td>
+            <td colspan="2">가구원번호</td>
+            <td colspan="2">이름</td>
+            <td colspan="3">전화번호</td>
+            <td colspan="3">가구 핸드폰</td>
+            <td colspan="3">개인 핸드폰</td>
+            <td colspan="12">주소</td>
+        </tr>
+
+        <tr>
+            <td>1</td>
+            <td colspan="2">
+                @Model.REL1_HOUSEID
+            </td>
+            <td colspan="2">
+                @Model.REL1_가구원번호
+            </td>
+            <td colspan="2">
+                @Model.REL1_성명
+            </td>
+            <td colspan="3">
+                @Model.REL1_전화번호
+            </td>
+            <td colspan="3">
+                @Model.REL1_가구핸드폰
+            </td>
+            <td colspan="3">
+                @Model.REL1_핸드폰
+            </td>
+            
+
+            <td colspan="12">
+                @Model.REL1_조사주소
+            </td>
+        </tr>
+
+        <tr>
+            <td>2</td>
+            <td colspan="2">
+                @Model.REL2_HOUSEID
+            </td>
+            <td colspan="2">
+                @Model.REL2_가구원번호
+            </td>
+            <td colspan="2">
+                @Model.REL2_성명
+            </td>
+            <td colspan="3">
+                @Model.REL2_전화번호
+            </td>
+            <td colspan="3">
+                @Model.REL2_가구핸드폰
+            </td>
+            <td colspan="3">
+                @Model.REL2_핸드폰
+            </td>            
+
+            <td colspan="12">
+                @Model.REL2_조사주소
+            </td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td colspan="2">
+                @Model.REL3_HOUSEID
+            </td>
+            <td colspan="2">
+                @Model.REL3_가구원번호
+            </td>
+            <td colspan="2">
+                @Model.REL3_성명
+            </td>
+            <td colspan="3">
+                @Model.REL3_전화번호
+            </td>
+            <td colspan="3">
+                @Model.REL3_가구핸드폰
+            </td>
+            <td colspan="3">
+                @Model.REL3_핸드폰
+            </td>
+            
+
+            <td colspan="12">
+                @Model.REL3_조사주소
+            </td>
+        </tr>
+
+        <tr>
+            <td style="text-align: left" colspan="28">
+                <span class="red">■ 기타 친인척 연락처</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>1</td>
+            <td colspan="9">@Model.친지11</td>
+            <td colspan="9">@Model.친지12</td>
+            <td colspan="9">@Model.친지13</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td colspan="9">@Model.친지21</td>
+            <td colspan="9">@Model.친지22</td>
+            <td colspan="9">@Model.친지23</td>
+        </tr>
+    </table>
+
+
+</body>
+</html>

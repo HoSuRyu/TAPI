@@ -1,0 +1,98 @@
+﻿@model TAPI_Interviewer.Models.q221764_PersonList
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(":radio[name='contact']").filter('[value="@(Model.최종접촉결과)"]').prop('checked', true);
+
+            $('#save').click(function () {
+
+
+                var contact = $(":radio[name='contact']:checked").val();
+                if (contact == undefined) {
+                    contact = '';
+                }
+                var etc = $("#etc").val();
+
+                $.post("./ContactOK", { "pid": @(Model.PID), "contact": contact, "etc": etc}, function (result) {
+                    if (result == '저장') {
+                        alert('저장 되었습니다.');
+                        window.location.href = './PersonList?keyid='+@Model.OID;
+                    }
+                    else{
+                        alert(result);
+                    }
+                }).error(function (jqXHR, status, error) {
+                    alert(status);
+                    alert(error);
+                });
+            });
+
+            $('#exit').click(function () {
+                window.location.href = './PersonList?keyid='+@Model.OID;
+            });
+
+        });
+
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/q200494/Site.css?version=2")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/jquery.chained.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    <div style="width : 100%;display: inline-block;">
+        <table class="infoTable">
+            <tr>
+                <td colspan="4" style="text-align:center;"><b>최종 접촉 입력</b></td>
+            </tr>
+            <tr>
+                <td class="tdValue" colspan="3">
+                    수행기관명
+                </td>
+                <td class="tdValue3">
+                    &nbsp; @(Model.수행기관명)
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue" colspan="3">
+                    접촉결과
+                </td>
+                <td class="tdValue3">
+                    <input type='radio' name='contact' value='성공' id='contact_01' disabled="disabled" /><label for='contact_01'>1. 성공</label><br />
+                    <input type='radio' name='contact' value='단순거부' id='contact_02' /><label for='contact_02'>2. 단순거부</label><br />
+                    <input type='radio' name='contact' value='강력거부' id='contact_03' /><label for='contact_03'>3. 강력거부</label><br />
+                    <input type='radio' name='contact' value='코로나 거부' id='contact_04' /><label for='contact_04'>4. 코로나 거부</label><br />
+                    <input type='radio' name='contact' value='재접촉 예정' id='contact_05' /><label for='contact_05'>5. 재접촉 예정</label><br />
+                    <input type='radio' name='contact' value='조사 대상 아님' id='contact_06' /><label for='contact_06'>6. 조사 대상 아님</label><br />
+                    <input type='radio' name='contact' value='조사 약속' id='contact_07' /><label for='contact_07'>7. 조사 약속</label><br />
+                    <input type='radio' name='contact' value='기타' id='contact_08' /><label for='contact_08'>8. 기타</label><br />
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue" colspan="3">
+                    특이사항
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="etc" name="etc" rows="1" size="60" type="text" value="@(Model.특이사항)" maxlength="100" />
+                </td>
+            </tr>
+            
+            
+          
+        </table><br />
+        <div class="buttonDiv">
+            <center>
+                <input type="button" id="save" class="infoButton" style="margin-right: 100px;" value="저장 후 닫기" />
+                <input type="button" id="exit" class="infoButton" style="margin-right: 100px;" value="닫기" />
+            </center>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,245 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q220134_GETPERSONLISTResult>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        ViewBag.Title = "경기도 농촌기본소득 시범사업 조사";
+        ViewBag.idx = 1;
+
+        string[] tel = string.IsNullOrEmpty(ViewBag.집전화) == true ? new string[] { "" } : ViewBag.집전화.Trim().Split('-');
+        string[] phone = string.IsNullOrEmpty(ViewBag.휴대전화) == true ? new string[] { "" } : ViewBag.휴대전화.Trim().Split('-');
+
+
+    }
+
+    <script type="text/javascript">
+
+
+        function goSurvey(pid, status)
+        {
+            window.location.href = './Survey?pid='+pid;
+        }
+
+        function personDeleteClick(pid, status)
+        {
+        
+            if(status=='완료')
+            {
+                if( confirm('설문을 완료했습니다. \r삭제하시겠습니까?\r삭제 후 데이터 복구는 불가능합니다.') == false)
+                {
+                    return;
+                }
+
+            }
+            else  if(status=='진행중')
+            {
+                if( confirm('진행중인 가구원 설문이 있습니다. \r삭제하시겠습니까?\r삭제 후 데이터 복구는 불가능합니다.') == false)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                if( confirm('가구원을 삭제하시겠습니까? ') == false)
+                {
+                    return;
+                }
+            }
+
+            $.post("./DeletePerson", { "pid":pid }, function (result) {
+                if (result != '')
+                {
+                    alert(result);
+                    location.reload();
+                }
+                else
+                {
+                    location.reload();
+
+                }
+            }).error(function (jqXHR, status, error) {
+                alert(status);
+                alert(error);
+            });
+
+        }
+
+        $(document).ready(function () {
+
+
+
+            $('#save').click(function () {
+                var personCount = $("#personCount").val();
+                if( personCount == 0)
+                {
+                    alert("가구원 수를 입력해 주세요.");
+                    return;
+                }
+
+
+                saveInfo('./PersonList?hid=@(ViewBag.HID)', false);
+            });
+
+
+
+            $('#exit').click(function () {
+                window.location.href = './List'
+            });
+
+
+
+
+            $('input[type=tel]').keydown(function (event) {
+                var charCode = (event.which) ? event.which : event.keyCode;
+
+                if (isNumeric(charCode, this) == false) {
+                    event.preventDefault();
+                }
+            });
+        });
+
+
+
+        function saveInfo(href, addPerson) {
+
+
+            var personCount = $("#personCount").val();
+            if (personCount == '')
+            {
+                alert('가구원수를 확인 해 주세요.');
+                return;
+            }
+            var addressMemo = $("#addressMemo").val();
+            $.post("./CreatePerson", { "hid": @(ViewBag.HID), "personCount": personCount, "addressMemo": addressMemo}, function (result) {
+                if (result != '')
+                {
+                    alert(result);
+                    location.reload();
+                }
+                else
+                {
+                    location.reload();
+
+                }
+            }).error(function (jqXHR, status, error) {
+                alert(status);
+                alert(error);
+            });
+
+
+
+        }
+
+        function isTelePhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^(0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]|70|505))[1-9]+[0-9]{6,7}$/;
+
+            return regPhone.test(p);
+        }
+
+        function isCellPhone(p) {
+            p = p.split('-').join('');
+
+            var regPhone = /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/;
+
+            return regPhone.test(p);
+        }
+
+        function runSurvey(pid) {
+            if (pid != null) {
+                window.location.href = './Survey?keyid=@(ViewBag.HRC일련번호)&hid=@(ViewBag.가구일련번호)&pid=' + pid;
+            }
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="@Url.Content("../../Content/q210801/PanelInfo.css?version=4")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/RPS_Script.js"></script>
+</head>
+<body>
+    <div style="width : 100%;display: inline-block;">
+        @Html.Partial("CommonAddressSearchScript")
+
+        <table class="infoTable">
+            <tr>
+                <td class="tdValue">
+                    주소아이디
+                </td>
+                <td class="tdValue3">
+                    @(ViewBag.HID)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="tdValue">
+                    시도
+                </td>                
+                <td class="tdValue3" >
+                    @(ViewBag.시도)
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    시군구
+                </td>
+                <td class="tdValue3">
+                    @(ViewBag.시군구)
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    읍면동
+                </td>
+                <td class="tdValue3" >
+                    @(ViewBag.읍면동)                    
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    상세주소
+                </td>
+                <td class="tdValue3">
+                    @(ViewBag.상세주소)
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    주소 메모
+                </td>
+                <td class="tdValue3">                    
+                    <input class="textbox" type="text" id="addressMemo" maxlength="50" style="width:60%" value="@(ViewBag.주소메모)">
+                </td>
+         
+            <tr>
+                <td class="tdValue" colspan="2">
+                    조사 대상 : 2003년 12월 출생자까지만, 2004년 이후 출생자 제외
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValue">
+                    조사 대상 가구원 수
+                </td>
+                <td class="tdValue3">
+                    <input class="textbox" id="personCount" rows="1" size="4" type="tel" value="@(ViewBag.조사대상가구원수)" maxlength="2" />
+                </td>              
+            </tr>
+        </table>
+        <div class="buttonDiv">
+            <center>
+                <input type="button" id="save" class="infoButton" style="margin-right: 60px;" value="가구 정보 저장" />
+                
+            </center>
+        </div>
+       
+     
+        <div style="overflow-x:scroll;width:100%;">
+            @Html.Action("PersonListPartial", "q220134", new {hid=@ViewBag.HID })            
+        </div>
+        
+    </div>
+</body>
+</html>

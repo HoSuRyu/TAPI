@@ -1,0 +1,125 @@
+﻿@model List<TAPI_Interviewer.Models.SP_q220850_GETPERSONLISTResult>
+
+
+<br />
+
+
+<table class="infoTable" style="width:1600px" >
+    <tr>
+        <td class="tdValue9">
+            PID
+        </td>
+       
+        <td class="tdValue9">
+            이름
+        </td>
+        
+        <td class="tdValue9">
+            연락처
+        </td>
+        <td class="tdValue9">
+            조사하기
+        </td>
+        <td class="tdValue9">
+            연령
+        </td>
+        <td class="tdValue9">
+            진행상태
+        </td>
+       
+    </tr>
+    @{ 
+        int idx = 0;
+
+
+        foreach (TAPI_Interviewer.Models.SP_q220850_GETPERSONLISTResult list in Model)
+        {
+            idx++;
+
+            
+
+
+
+
+        <tr align="center">
+            <td class="tdValue3c" width="100px" align="center">
+                 @(list.PID)
+            </td>
+            
+
+            <td class="tdValue3c" width="100px" align="center">
+                @(list.이름)
+            </td>
+            <td class="tdValue3c" width="500px" align="center">
+               @(list.연락처)
+            </td>
+            
+            <td class="tdValue3c"  width="200px" align="center">
+                
+                <input type="button" id="personStart" class="infoButtonT2" style="margin-right: 10px;" value="진행하기" onclick="goSurvey( @(list.PID));" />
+            </td>
+
+            <td class="tdValue3c" width="100px" align="center">
+                @(list.연령)
+            </td>
+            <td class="tdValue3c"  width="100px" align="center">
+                @(list.설문진행상태)
+            </td>
+           
+        </tr>
+            }
+        }
+
+</table>
+<br />
+<div class="buttonDiv">
+    <center>
+        <input type="button" id="exit" class="infoButton" style="margin-right: 60px;" value="나가기" />
+    </center>
+</div>
+<style>
+    .infoButtonT2 {
+        background-color: #80a6e6;
+        display: inline-block;
+        cursor: pointer;
+        color: #ffffff;
+        font-family: 'Malgun Gothic';
+        font-size: 18px;
+        font-weight: bold;
+        text-decoration: none;
+        border: none;
+        width: 90px;
+        height: 35px;
+    }
+
+    .infoButtonTdisabled2 {
+        background-color: #d2d2d2;
+        display: inline-block;
+        cursor: pointer;
+        color: #ffffff;
+        font-family: 'Malgun Gothic';
+        font-size: 18px;
+        font-weight: bold;
+        text-decoration: none;
+        border: none;
+        width: 90px;
+        height: 35px;
+    }
+
+    .tel_select4
+{
+    color: black;
+    font-family: "Malgun Gothic";
+	font-size: 20px;
+	width:180px;
+}
+
+        .tel_select5
+{
+    color: black;
+    font-family: "Malgun Gothic";
+	font-size: 20px;
+	width:200px;
+}
+
+    </style>
